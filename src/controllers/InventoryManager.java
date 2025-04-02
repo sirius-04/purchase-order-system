@@ -11,7 +11,8 @@ public class InventoryManager extends User {
     }
     
     @Override
-    public void displayMenu(User user) {
+    public void displayMenu() {
+        System.out.println("inventoryyyyyy");
     }
     
     // role based function here

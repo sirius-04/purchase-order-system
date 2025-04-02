@@ -15,7 +15,7 @@ public class Admin extends User {
     }
 
     @Override
-    public void displayMenu(User user) {
+    public void displayMenu() {
     }
     
     // role based functions here

@@ -16,7 +16,7 @@ public class FinanceManager extends User {
     }
 
     @Override
-    public void displayMenu(User user) {
+    public void displayMenu() {
 
     }
 
