@@ -130,7 +130,7 @@ public class Main extends javax.swing.JFrame {
         String enteredPassword = passwordTextField.getText();
 
         try {
-            // polymorphism
+            // runtime polymorphism
             User user = auth.login(enteredUsername, enteredPassword);
             this.dispose();
             user.displayMenu();
@@ -141,6 +141,10 @@ public class Main extends javax.swing.JFrame {
         } catch (AuthenticationManager.InvalidRoleException e) {
             JOptionPane.showMessageDialog(null, "Error: Invalid user role!", "Login Failed", JOptionPane.ERROR_MESSAGE);
         }
+        
+        // empty the text field after submit
+        usernameTextField.setText("");
+        passwordTextField.setText("");
     }//GEN-LAST:event_submitButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
