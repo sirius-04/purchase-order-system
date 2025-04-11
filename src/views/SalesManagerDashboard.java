@@ -16,6 +16,7 @@ public class SalesManagerDashboard extends javax.swing.JFrame {
         initComponents();
         
         setTitle("Sales Manager Dashboard");
+        setLocationRelativeTo(null);
         
         jLabel2.setText("Welcome: " + currentUser.getUsername());
     }
