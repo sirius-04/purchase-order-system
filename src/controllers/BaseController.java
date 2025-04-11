@@ -3,21 +3,19 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package controllers;
-import models.User;
+
+import models.users.User;
 
 /**
  *
  * @author Chan Yong Liang
  */
-public class PurchaseManager extends User {
-    public PurchaseManager(String userId, String username, String password) {
-        super(userId, username, password);
+public abstract class BaseController {
+    protected User user;
+    
+    public BaseController(User user) {
+        this.user = user;
     }
     
-    @Override
-    public void displayMenu() {
-
-    }
-    
-    // role based function here
+    public abstract void displayMenu();
 }

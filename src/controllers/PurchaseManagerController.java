@@ -4,21 +4,19 @@
  */
 package controllers;
 
-import models.User;
+import models.users.PurchaseManager;
 
 /**
  *
  * @author Chan Yong Liang
  */
-public class FinanceManager extends User {
-    public FinanceManager(String userId, String username, String password) {
-        super(userId, username, password);
+public class PurchaseManagerController extends BaseController {
+    public PurchaseManagerController(PurchaseManager user) {
+        super(user);
     }
 
     @Override
     public void displayMenu() {
-
+        System.out.println("Purchase manager");
     }
-
-    // role based function here
 }

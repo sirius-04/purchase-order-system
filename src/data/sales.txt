@@ -1,0 +1,1 @@
+saleID,itemID,quantity,date,totalAmount

@@ -1,6 +1,6 @@
 package views;
 
-import controllers.SalesManager;
+import models.users.SalesManager;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -12,13 +12,13 @@ import controllers.SalesManager;
  * @author Chan Yong Liang
  */
 public class SalesManagerDashboard extends javax.swing.JFrame {
-    public SalesManagerDashboard(SalesManager currentUser) {
+    public SalesManagerDashboard() {
         initComponents();
         
         setTitle("Sales Manager Dashboard");
         setLocationRelativeTo(null);
         
-        jLabel2.setText("Welcome: " + currentUser.getUsername());
+//        jLabel2.setText("Welcome: " + currentUser.getUsername());
     }
 
     /**

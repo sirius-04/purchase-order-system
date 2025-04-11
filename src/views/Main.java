@@ -8,8 +8,10 @@ package views;
  *
  * @author Chan Yong Liang
  */
+import controllers.BaseController;
+import controllers.factory.ControllerFactory;
 import javax.swing.JOptionPane;
-import models.User;
+import models.users.User;
 import services.AuthenticationManager;
 
 public class Main extends javax.swing.JFrame {
@@ -130,10 +132,12 @@ public class Main extends javax.swing.JFrame {
         String enteredPassword = passwordTextField.getText();
 
         try {
-            // runtime polymorphism
             User user = auth.login(enteredUsername, enteredPassword);
+            BaseController controller = ControllerFactory.getControllerFor(user);
+            
             this.dispose();
-            user.displayMenu();
+            controller.displayMenu();
+            
         } catch (AuthenticationManager.UserNotFoundException e) {
             JOptionPane.showMessageDialog(null, "Error: Username not found!", "Login Failed", JOptionPane.ERROR_MESSAGE);
         } catch (AuthenticationManager.IncorrectPasswordException e) {

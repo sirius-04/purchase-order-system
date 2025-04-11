@@ -3,20 +3,21 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package controllers;
-import models.User;
+import models.users.SalesManager;
+import views.SalesManagerDashboard;
 
 /**
  *
  * @author Chan Yong Liang
  */
-public class Admin extends User {
-    public Admin(String userId, String username, String password) {
-        super(userId, username, password);
-    }
-
-    @Override
-    public void displayMenu() {
+public class SalesManagerController extends BaseController {
+    public SalesManagerController(SalesManager sm) {
+        super(sm);
     }
     
-    // role based functions here
+    @Override
+    public void displayMenu() {
+        SalesManagerDashboard dashboard = new SalesManagerDashboard();
+        dashboard.setVisible(true);
+    }
 }

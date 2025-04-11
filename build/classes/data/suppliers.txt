@@ -1,1 +1,1 @@
-supplierID,name,contactNum
+supplierID,name,contactNum,email

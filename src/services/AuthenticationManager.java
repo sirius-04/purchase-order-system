@@ -1,11 +1,11 @@
 package services;
 
-import controllers.InventoryManager;
-import models.User;
-import controllers.Admin;
-import controllers.FinanceManager;
-import controllers.PurchaseManager;
-import controllers.SalesManager;
+import models.users.InventoryManager;
+import models.users.User;
+import models.users.Admin;
+import models.users.FinanceManager;
+import models.users.PurchaseManager;
+import models.users.SalesManager;
 
 /**
  *
