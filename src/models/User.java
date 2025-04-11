@@ -52,7 +52,7 @@ public abstract class User {
     }
     
     // each user role will implement this
-    public abstract void displayMenu(User user);
+    public abstract void displayMenu();
     
     @Override
     public String toString() {

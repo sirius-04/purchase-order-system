@@ -1,2 +1,2 @@
 1001,SalesManager,sirius,123
-
+1002,InventoryManager,abc,123

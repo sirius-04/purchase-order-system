@@ -125,13 +125,15 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_usernameTextFieldActionPerformed
 
     private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
-        AuthenticationManager am = new AuthenticationManager();
+        AuthenticationManager auth = new AuthenticationManager();
         String enteredUsername = usernameTextField.getText();
         String enteredPassword = passwordTextField.getText();
 
         try {
-            User user = am.login(enteredUsername, enteredPassword);
-            user.displayMenu(user);
+            // polymorphism
+            User user = auth.login(enteredUsername, enteredPassword);
+            this.dispose();
+            user.displayMenu();
         } catch (AuthenticationManager.UserNotFoundException e) {
             JOptionPane.showMessageDialog(null, "Error: Username not found!", "Login Failed", JOptionPane.ERROR_MESSAGE);
         } catch (AuthenticationManager.IncorrectPasswordException e) {

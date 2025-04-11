@@ -15,7 +15,7 @@ public class PurchaseManager extends User {
     }
     
     @Override
-    public void displayMenu(User user) {
+    public void displayMenu() {
 
     }
     
