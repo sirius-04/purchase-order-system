@@ -17,16 +17,24 @@ import java.util.Map;
  * @author Chan Yong Liang
  */
 public class FileManager {
-    private static final Map<String, String> file_map = Map.of(
-        "users", "src/data/users.txt",
-        "items", "src/data/items.txt",
-        "approvals", "src/data/approvals.txt",
-        "payments", "src/data/payments.txt",
-        "purchase_orders", "src/data/purchase_orders.txt",
-        "purchase_requisitions", "src/data/purchase_requisition.txt",
-        "suppliers", "src/data/suppliers.txt"
+
+    private static final Map<String, String> file_map = Map.ofEntries(
+            Map.entry("users", "src/data/users.txt"),
+            Map.entry("items", "src/data/items.txt"),
+            Map.entry("approvals", "src/data/approvals.txt"),
+            Map.entry("payments", "src/data/payments.txt"),
+            Map.entry("purchase_orders", "src/data/purchase_orders.txt"),
+            Map.entry("purchase_requisitions", "src/data/purchase_requisition.txt"),
+            Map.entry("suppliers", "src/data/suppliers.txt"),
+            Map.entry("usersId", "src/data/last_ids/users_last_id.txt"),
+            Map.entry("itemsId", "src/data/last_ids/items_last_id.txt"),
+            Map.entry("paymentsId", "src/data/last_ids/payments_last_id.txt"),
+            Map.entry("purchase_ordersId", "src/data/last_ids/po_last_id.txt"),
+            Map.entry("purchase_requisitionsId", "src/data/last_ids/pr_last_id.txt"),
+            Map.entry("salesId", "src/data/last_ids/sales_last_id.txt"),
+            Map.entry("suppliersId", "src/data/last_ids/suppliers_last_id.txt")
     );
-    
+
     // retrieve file path by passing file name
     public static String getFilePath(String fileName) {
         if (!file_map.containsKey(fileName)) {
@@ -35,7 +43,6 @@ public class FileManager {
         return file_map.get(fileName);
     }
 
-    
     // append file
     public void writeFile(String fileName, String row) {
         String filePath = FileManager.getFilePath(fileName);
@@ -49,27 +56,25 @@ public class FileManager {
         }
     }
 
-
     // read file and store inside arraylist
     // need split the row yourself after reading
     public String[] readFile(String fileName) {
-       String filePath = FileManager.getFilePath(fileName);
+        String filePath = FileManager.getFilePath(fileName);
 
-       if (!Files.exists(Paths.get(filePath))) {
-           System.err.println("File not found: " + filePath);
-           return new String[0];
-       }
+        if (!Files.exists(Paths.get(filePath))) {
+            System.err.println("File not found: " + filePath);
+            return new String[0];
+        }
 
-       try {
-           List<String> lines = Files.readAllLines(Paths.get(filePath));
-           return lines.toArray(new String[0]);
-       } catch (IOException e) {
-           System.err.println("Error reading file: " + filePath);
-           e.printStackTrace();
-       }
-       return new String[0];
-   }
-
+        try {
+            List<String> lines = Files.readAllLines(Paths.get(filePath));
+            return lines.toArray(new String[0]);
+        } catch (IOException e) {
+            System.err.println("Error reading file: " + filePath);
+            e.printStackTrace();
+        }
+        return new String[0];
+    }
 
     // update a row in the file by passing the line num
     public void editFile(String fileName, int lineNumber, String updatedContent) {
@@ -94,7 +99,7 @@ public class FileManager {
             e.printStackTrace();
         }
     }
-    
+
     // remove a row
     public void removeRow(String fileName, int lineNumber) {
         String filePath = getFilePath(fileName);

@@ -1,1 +1,1 @@
-poID,amountPaid,datePaid,status(completed/not completed)
+paymentID,poID,amountPaid,datePaid,status(successed,failed)

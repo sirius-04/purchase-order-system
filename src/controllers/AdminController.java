@@ -3,21 +3,20 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package controllers;
-import models.User;
+
+import models.users.Admin;
 
 /**
  *
  * @author Chan Yong Liang
  */
-public class PurchaseManager extends User {
-    public PurchaseManager(String userId, String username, String password) {
-        super(userId, username, password);
+public class AdminController extends BaseController {
+    public AdminController(Admin adminUser) {
+        super(adminUser);
     }
-    
+
     @Override
     public void displayMenu() {
-
+        System.out.println("admin");
     }
-    
-    // role based function here
 }

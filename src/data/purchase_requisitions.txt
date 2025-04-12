@@ -1,1 +1,1 @@
-requisitionID,salesManagerID,itemID,quantity,requiredDate
+requisitionID,salesManagerID,itemID,quantity,requiredDate,status(pending/approved/rejected)
