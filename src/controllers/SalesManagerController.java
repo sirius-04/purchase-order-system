@@ -3,7 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package controllers;
+import models.Item;
 import models.users.SalesManager;
+import repository.ItemRepository;
+import services.IdGenerator;
 import views.SalesManagerDashboard;
 
 /**
@@ -11,6 +14,10 @@ import views.SalesManagerDashboard;
  * @author Chan Yong Liang
  */
 public class SalesManagerController extends BaseController {
+    ItemRepository itemRes = new ItemRepository();
+    IdGenerator idGen = new IdGenerator();
+    Item item1 = new Item(idGen.generateNewId(Item.class), "item4", 100, 5.00, "s001");
+    
     public SalesManagerController(SalesManager sm) {
         super(sm);
     }
@@ -19,5 +26,8 @@ public class SalesManagerController extends BaseController {
     public void displayMenu() {
         SalesManagerDashboard dashboard = new SalesManagerDashboard();
         dashboard.setVisible(true);
+        
+        
+        itemRes.save(item1);
     }
 }

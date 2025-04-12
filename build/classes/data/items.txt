@@ -1,1 +1,4 @@
-itemID,name,stockQuantity,price,supplierID
+i001,item1,50,12.50,s001
+i002,item2,70,20.00,s001
+i003,item3,10,100.00,s001
+i004,item4,100,5.00,s001
