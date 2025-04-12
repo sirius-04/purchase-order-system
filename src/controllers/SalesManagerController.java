@@ -16,7 +16,7 @@ import views.SalesManagerDashboard;
 public class SalesManagerController extends BaseController {
     ItemRepository itemRes = new ItemRepository();
     IdGenerator idGen = new IdGenerator();
-    Item item1 = new Item(idGen.generateNewId(Item.class), "item4", 100, 5.00, "s001");
+    Item item1 = new Item(idGen.generateNewId(Item.class), "item5", 80, 44.30, "s002");
     
     public SalesManagerController(SalesManager sm) {
         super(sm);
