@@ -1,20 +1,16 @@
 package services;
 
-import models.users.InventoryManager;
 import models.users.User;
-import models.users.Admin;
-import models.users.FinanceManager;
-import models.users.PurchaseManager;
-import models.users.SalesManager;
+import repository.UserRepository;
 
 /**
  *
  * @author Chan Yong Liang
  */
 public class AuthenticationManager {
-
-    static FileManager fm = new FileManager();
-    static String[] userList = fm.readFile("users");
+    
+    static UserRepository userRepo = new UserRepository();
+    static String[] userList = userRepo.getUserRows();
 
     // custom exceptions for different login errors
     public static class UserNotFoundException extends Exception {
@@ -47,7 +43,6 @@ public class AuthenticationManager {
             }
 
             String fetchedUserId = row[0];
-            String fetchedRole = row[1];
             String fetchedUsername = row[2];
             String fetchedPassword = row[3];
 
@@ -57,15 +52,10 @@ public class AuthenticationManager {
                 if (!fetchedPassword.equals(password)) {
                     throw new IncorrectPasswordException("Invalid password for user: " + username);
                 }
+                
+                User user = userRepo.find(fetchedUserId);
 
-                return switch (fetchedRole) {
-                    case "SalesManager" -> new SalesManager(fetchedUserId, fetchedUsername, fetchedPassword);
-                    case "PurchaseManager" -> new PurchaseManager(fetchedUserId, fetchedUsername, fetchedPassword);
-                    case "FinanceManager" -> new FinanceManager(fetchedUserId, fetchedUsername, fetchedPassword);
-                    case "InventoryManager" -> new InventoryManager(fetchedUserId, fetchedUsername, fetchedPassword);
-                    case "Admin" -> new Admin(fetchedUserId, fetchedUsername, fetchedPassword);
-                    default -> throw new InvalidRoleException("Invalid role detected for user: " + username);
-                };
+                return user;
             }
         }
 

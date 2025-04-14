@@ -28,6 +28,6 @@ public class SalesManagerController extends BaseController {
         dashboard.setVisible(true);
         
         
-        itemRes.save(item1);
+//        itemRes.save(item1);
     }
 }

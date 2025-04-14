@@ -16,20 +16,25 @@ import controllers.SalesManagerController;
  * @author Chan Yong Liang
  */
 public enum UserRole {
-    ADMIN(AdminController.class),
-    SALES_MANAGER(SalesManagerController.class),
-    FINANCE_MANAGER(FinanceManagerController.class),
-    INVENTORY_MANAGER(InventoryManagerController.class),
-    PURCHASE_MANAGER(PurchaseManagerController.class);
+    Admin(AdminController.class, Admin.class),
+    SalesManager(SalesManagerController.class, SalesManager.class),
+    FinanceManager(FinanceManagerController.class, FinanceManager.class),
+    InventoryManager(InventoryManagerController.class, InventoryManager.class),
+    PurchaseManager(PurchaseManagerController.class, PurchaseManager.class);
 
-    private Class<? extends BaseController> controllerClass;
+    private final Class<? extends BaseController> controllerClass;
+    private final Class<? extends User> modelClass;
 
-    UserRole(Class<? extends BaseController> controllerClass) {
+    UserRole(Class<? extends BaseController> controllerClass, Class<? extends User> modelClass) {
         this.controllerClass = controllerClass;
+        this.modelClass = modelClass;
     }
 
     public Class<? extends BaseController> getControllerClass() {
         return controllerClass;
     }
-}
 
+    public Class<? extends User> getModelClass() {
+        return modelClass;
+    }
+}

@@ -3,7 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package models.users;
-import views.SalesManagerDashboard;
 
 /**
  *
@@ -11,8 +10,8 @@ import views.SalesManagerDashboard;
  */
 public class SalesManager extends User {
 
-    public SalesManager(String userId, String username, String password) {
-        super(userId, username, password);
+    public SalesManager(String userId, UserRole userRole, String username, String password) {
+        super(userId, userRole.SalesManager, username, password);
     }
 
     public String getUserId() {
@@ -25,6 +24,14 @@ public class SalesManager extends User {
 
     public String getUsername() {
         return username;
+    }
+
+    public UserRole getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(UserRole userRole) {
+        this.userRole = userRole;
     }
 
     public void setUsername(String username) {

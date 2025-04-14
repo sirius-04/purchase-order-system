@@ -9,12 +9,20 @@ package models.users;
  * @author Chan Yong Liang
  */
 public class PurchaseManager extends User {
-    public PurchaseManager(String userId, String username, String password) {
-        super(userId, username, password);
+    public PurchaseManager(String userId, UserRole userRole, String username, String password) {
+        super(userId, userRole.PurchaseManager, username, password);
     }
 
     public String getUserId() {
         return userId;
+    }
+
+    public UserRole getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(UserRole userRole) {
+        this.userRole = userRole;
     }
 
     public void setUserId(String userId) {

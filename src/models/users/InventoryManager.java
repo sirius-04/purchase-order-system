@@ -5,8 +5,8 @@ package models.users;
  * @author Chan Yong Liang
  */
 public class InventoryManager extends User {
-    public InventoryManager(String userId, String username, String password) {
-        super(userId, username, password);
+    public InventoryManager(String userId, UserRole userRole, String username, String password) {
+        super(userId, userRole.InventoryManager, username, password);
     }
 
     public String getUserId() {
@@ -15,6 +15,14 @@ public class InventoryManager extends User {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public UserRole getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(UserRole userRole) {
+        this.userRole = userRole;
     }
 
     public String getUsername() {
