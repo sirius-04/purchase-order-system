@@ -76,13 +76,29 @@ public abstract class BaseRepository<T extends Identifiable> {
         return instances;
     }
 
-    protected String[] getRows() {
+    public String[] getRows() {
         return fm.readFile(fileName);
     }
 
-    protected abstract String formatToRow(T instance);
+    public int findRowById(String targetInstanceId) {
+        int currentRow = 1;
 
-    protected abstract int findRowById(String targetInstanceId);
+        String[] instanceRow = getRows();
+
+        for (String rowData : instanceRow) {
+            String[] columns = rowData.split(",");
+
+            if (columns.length > 0 && columns[0].trim().equals(targetInstanceId)) {
+                return currentRow;
+            }
+
+            currentRow++;
+        }
+
+        throw new IllegalArgumentException("Instance row not found: " + targetInstanceId);
+    };
+
+    protected abstract String formatToRow(T instance);
 
     protected abstract T parseRow(String[] columns);
 }

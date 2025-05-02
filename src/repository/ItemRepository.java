@@ -28,25 +28,6 @@ public class ItemRepository extends BaseRepository<Item> {
     }
 
     @Override
-    protected int findRowById(String targetItemId) {
-        int currentRow = 1;
-
-        String[] itemRow = getRows();
-
-        for (String rowData : itemRow) {
-            String[] columns = rowData.split(",");
-
-            if (columns.length > 0 && columns[0].trim().equals(targetItemId)) {
-                return currentRow;
-            }
-
-            currentRow++;
-        }
-
-        throw new IllegalArgumentException("Item row not found: " + targetItemId);
-    }
-
-    @Override
     protected Item parseRow(String[] columns) {
         String itemId = columns[0].trim();
         String itemName = columns[1].trim();
