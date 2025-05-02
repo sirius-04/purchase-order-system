@@ -8,7 +8,7 @@ package models;
  *
  * @author Chan Yong Liang
  */
-public class Item {
+public class Item implements Identifiable {
     private String itemId;
     private String name;
     private int stockQuantity;
@@ -21,6 +21,10 @@ public class Item {
         this.stockQuantity = stockQuantity;
         this.price = price;
         this.supplierId = supplierId;
+    }
+    
+    public String getId() {
+        return itemId;
     }
 
     public String getItemId() {
