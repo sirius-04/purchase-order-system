@@ -7,69 +7,43 @@ package repository;
 import java.lang.reflect.Constructor;
 import models.users.User;
 import models.users.UserRole;
-import services.FileManager;
 
 /**
  *
  * @author Chan Yong Liang
  */
-public class UserRepository {
+public class UserRepository extends BaseRepository<User> {
 
-    private final String fileName = "users";
-    FileManager fm = new FileManager();
-
-    public void save(User user) {
-        String row = formatUserToRow(user);
-        
-        fm.writeFile(fileName, row);
-    }
-    
-    public void update(User updatedUser) {
-        //
+    public UserRepository() {
+        super("users.txt", "%s,%s,%s,%s");
     }
 
-    public User find(String targetUserId) {
-        String[] userRow = getUserRows();
+    @Override
+    protected User parseRow(String[] columns) {
+        String userId = columns[0].trim();
+        String roleName = columns[1].trim();
+        String username = columns[2].trim();
+        String password = columns[3].trim();
 
-        for (String rowData : userRow) {
-            String[] columns = rowData.split(",");
+        UserRole role = UserRole.valueOf(roleName);
 
-            if (columns.length > 0 && columns[0].trim().equals(targetUserId)) {
-                String userId = columns[0].trim();
-                String roleName = columns[1].trim();
-                String username = columns[2].trim();
-                String password = columns[3].trim();
+        try {
+            Constructor<? extends User> constructor = role.getModelClass()
+                    .getConstructor(String.class, String.class, String.class, String.class);
 
-                try {
-                    UserRole role = UserRole.valueOf(roleName);
-
-                    Constructor<? extends User> constructor = role.getModelClass().getConstructor(String.class, String.class, String.class);
-
-                    return constructor.newInstance(userId, username, password);
-
-                } catch (Exception e) {
-                    throw new RuntimeException("Failed to create user instance for role: " + roleName, e);
-                }
-            }
+            return constructor.newInstance(userId, roleName, username, password);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to instantiate user of role: " + roleName, e);
         }
-
-        throw new IllegalArgumentException("User not found: " + targetUserId);
     }
 
-    public String[] getUserRows() {
-        return fm.readFile(fileName);
-    }
-
-    private String formatUserToRow(User user) {
-        String rowFormat = "%s,%s,%s,%s";
-
-        String formattedRow = String.format(rowFormat,
+    @Override
+    protected String formatToRow(User user) {
+        return String.format(rowFormat,
                 user.getUserId(),
                 user.getUserRole(),
                 user.getUsername(),
                 user.getPassword()
         );
-
-        return formattedRow;
     }
 }

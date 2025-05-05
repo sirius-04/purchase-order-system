@@ -1,5 +1,6 @@
 package services;
 
+import java.util.List;
 import models.users.User;
 import repository.UserRepository;
 
@@ -10,7 +11,7 @@ import repository.UserRepository;
 public class AuthenticationManager {
     
     static UserRepository userRepo = new UserRepository();
-    static String[] userList = userRepo.getUserRows();
+    static List<User> userList = userRepo.getAll();
 
     // custom exceptions for different login errors
     public static class UserNotFoundException extends Exception {
@@ -34,17 +35,10 @@ public class AuthenticationManager {
     public static User login(String username, String password) throws UserNotFoundException, IncorrectPasswordException, InvalidRoleException {
         boolean usernameExists = false;
 
-        for (String eachUser : userList) {
-            String[] row = eachUser.split(",");
-
-            // skip invalid rows
-            if (row.length < 4) {
-                continue;
-            }
-
-            String fetchedUserId = row[0];
-            String fetchedUsername = row[2];
-            String fetchedPassword = row[3];
+        for (User eachUser : userList) {
+            String fetchedUserId = eachUser.getUserId();
+            String fetchedUsername = eachUser.getUsername();
+            String fetchedPassword = eachUser.getPassword();
 
             if (fetchedUsername.equals(username)) {
                 usernameExists = true;

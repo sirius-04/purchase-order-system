@@ -4,12 +4,14 @@
  */
 package models.users;
 
+import models.Identifiable;
+
 /**
  *
  * @author Chan Yong Liang
  */
 
-public abstract class User {
+public abstract class User implements Identifiable {
     protected String userId;
     protected UserRole userRole;
     protected String username;
@@ -20,6 +22,11 @@ public abstract class User {
         this.userRole = userRole;
         this.username = username;
         this.password = password;
+    }
+    
+    @Override
+    public String getId() {
+        return userId;
     }
 
     public UserRole getUserRole() {

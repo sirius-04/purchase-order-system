@@ -23,6 +23,7 @@ public class Item implements Identifiable {
         this.supplierId = supplierId;
     }
     
+    @Override
     public String getId() {
         return itemId;
     }
