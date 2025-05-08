@@ -14,7 +14,8 @@ public class Payment implements Identifiable {
     public enum Status {
         successed,
         failed
-    }
+    };
+    
     private String paymentId;
     private String purchaseOrderId;
     private double amountPaid;
@@ -22,7 +23,7 @@ public class Payment implements Identifiable {
     private Status status;
 
     // constructor
-    public Payment(String paymentId, String purchaseOrderId, double amountPaid, String datePaid, String status) {
+    public Payment(String paymentId, String purchaseOrderId, double amountPaid, String datePaid, Status status) {
         this.paymentId = paymentId;
         this.purchaseOrderId = purchaseOrderId;
         this.amountPaid = amountPaid;
@@ -69,11 +70,11 @@ public class Payment implements Identifiable {
         this.datePaid = datePaid;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 }
