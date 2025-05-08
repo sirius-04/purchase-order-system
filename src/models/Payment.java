@@ -10,11 +10,16 @@ package models;
  */
 public class Payment implements Identifiable {
     // fields: paymentID,poID,amountPaid,datePaid,status(successed,failed)
+    
+    public enum Status {
+        successed,
+        failed
+    }
     private String paymentId;
     private String purchaseOrderId;
     private double amountPaid;
     private String datePaid;
-    private String status;
+    private Status status;
 
     // constructor
     public Payment(String paymentId, String purchaseOrderId, double amountPaid, String datePaid, String status) {
