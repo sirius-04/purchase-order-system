@@ -8,6 +8,68 @@ package models;
  *
  * @author Chan Yong Liang
  */
-public class Sales {
+public class Sales implements Identifiable{
+    // field: saleID,itemID,quantity,date,totalAmount
     
+    private String salesId;
+    private String itemId;
+    private int quantity;
+    private String date;
+    private int totalAmount;
+    
+    // constructor
+    public Sales(String salesId, String itemId, int quantity, String date, int totalAmount) {
+        this.salesId = salesId;
+        this.itemId = itemId;
+        this.quantity = quantity;
+        this.date = date;
+        this.totalAmount = totalAmount;
+    }
+    
+    // override interface
+    @Override
+    public String getId() {
+        return salesId;
+    }
+
+    // Getters & Setters
+    public String getSalesId() {
+        return salesId;
+    }
+
+    public void setSalesId(String salesId) {
+        this.salesId = salesId;
+    }
+
+    public String getItemId() {
+        return itemId;
+    }
+
+    public void setItemId(String itemId) {
+        this.itemId = itemId;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public int getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(int totalAmount) {
+        this.totalAmount = totalAmount;
+    }
 }
