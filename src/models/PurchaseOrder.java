@@ -21,17 +21,19 @@ public class PurchaseOrder implements Identifiable {
     private String purchaseManagerId;
     private int quantity;
     private double price;
+    private String date;
     private Status status;
     
     // constructor
     public PurchaseOrder(String purchaseOrderId, String itemId, String purchaseRequisitionId,
-                         String purchaseManagerId, int quantity, double price, Status status) {
+                         String purchaseManagerId, int quantity, double price, String date, Status status) {
         this.purchaseOrderId = purchaseOrderId;
         this.itemId = itemId;
         this.purchaseRequisitionId = purchaseRequisitionId;
         this.purchaseManagerId = purchaseManagerId;
         this.quantity = quantity;
         this.price = price;
+        this.date = date;
         this.status = status;
     }
     
@@ -76,6 +78,14 @@ public class PurchaseOrder implements Identifiable {
 
     public int getQuantity() {
         return quantity;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public void setQuantity(int quantity) {

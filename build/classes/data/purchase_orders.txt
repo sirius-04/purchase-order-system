@@ -1,1 +1,1 @@
-poID,itemID,prID,purchaseManagerID,quantity,price,status(pending/fulfilled)
+poID,itemID,prID,purchaseManagerID,quantity,price,generatedDate,status(pending/fulfilled)

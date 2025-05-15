@@ -21,17 +21,27 @@ public class PurchaseRequisition implements Identifiable {
     private String salesManagerId;
     private String itemId;
     private int quantity;
+    private String generatedDate;
     private String requiredDate;
     private Status status;
     
     // constructor
-    public PurchaseRequisition(String requisitionId, String salesManagerId, String itemId, int quantity, String requiredDate, Status status) {
+    public PurchaseRequisition(String requisitionId, String salesManagerId, String itemId, int quantity, String generatedDate, String requiredDate, Status status) {
         this.requisitionId = requisitionId;
         this.salesManagerId = salesManagerId;
         this.itemId = itemId;
         this.quantity = quantity;
+        this.generatedDate = generatedDate;
         this.requiredDate = requiredDate;
         this.status = status;
+    }
+
+    public String getGeneratedDate() {
+        return generatedDate;
+    }
+
+    public void setGeneratedDate(String generatedDate) {
+        this.generatedDate = generatedDate;
     }
     
     // override interface

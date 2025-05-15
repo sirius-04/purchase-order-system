@@ -13,7 +13,7 @@ import models.PurchaseOrder;
 public class PurchaseOrdersRepository extends BaseRepository<PurchaseOrder>  {
     
     public PurchaseOrdersRepository() {
-        super("purchase_orders.txt", "%s,%s,%s,%s,%d,%.2f,%s");
+        super("purchase_orders.txt", "%s,%s,%s,%s,%d,%.2f,%s,%s");
     }
     
      @Override
@@ -25,6 +25,7 @@ public class PurchaseOrdersRepository extends BaseRepository<PurchaseOrder>  {
                 purchaseOrder.getPurchaseManagerId(),
                 purchaseOrder.getQuantity(),
                 purchaseOrder.getPrice(),
+                purchaseOrder.getDate(),
                 purchaseOrder.getStatus()
         );
     }
@@ -37,8 +38,9 @@ public class PurchaseOrdersRepository extends BaseRepository<PurchaseOrder>  {
         String purchaseManagerId = columns[3].trim();
         int quantity = Integer.parseInt(columns[4].trim());
         double price = Double.parseDouble(columns[5].trim());
-        PurchaseOrder.Status status = PurchaseOrder.Status.valueOf(columns[6].trim());
+        String date = columns[6].trim();
+        PurchaseOrder.Status status = PurchaseOrder.Status.valueOf(columns[7].trim());
 
-        return new PurchaseOrder(purchaseOrderId, itemId, purchaseRequisitionId, purchaseManagerId, quantity, price, status);
+        return new PurchaseOrder(purchaseOrderId, itemId, purchaseRequisitionId, purchaseManagerId, quantity, price, date, status);
     }
 }

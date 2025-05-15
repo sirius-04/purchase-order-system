@@ -12,7 +12,7 @@ import models.PurchaseRequisition;
 public class PurchaseRequisitionRepository extends BaseRepository<PurchaseRequisition>{
     
      public PurchaseRequisitionRepository() {
-        super("purchase_requisitions.txt", "%s,%s,%s,%d,%s,%s");
+        super("purchase_requisitions.txt", "%s,%s,%s,%d,%s,%s,%s");
     }
     
      @Override
@@ -22,6 +22,7 @@ public class PurchaseRequisitionRepository extends BaseRepository<PurchaseRequis
                 purchaseRequisition.getSalesManagerId(),
                 purchaseRequisition.getItemId(),
                 purchaseRequisition.getQuantity(),
+                purchaseRequisition.getGeneratedDate(),
                 purchaseRequisition.getRequiredDate(),
                 purchaseRequisition.getStatus()
         );
@@ -33,10 +34,11 @@ public class PurchaseRequisitionRepository extends BaseRepository<PurchaseRequis
         String salesManagerId = columns[1].trim();
         String itemId = columns[2].trim();
         int quantity = Integer.parseInt(columns[3].trim());
-        String requiredDate = columns[4].trim();
-        PurchaseRequisition.Status status = PurchaseRequisition.Status.valueOf(columns[5].trim());
+        String generatedDate = columns[4].trim();
+        String requiredDate = columns[5].trim();
+        PurchaseRequisition.Status status = PurchaseRequisition.Status.valueOf(columns[6].trim());
 
-        return new PurchaseRequisition(requisitionId, salesManagerId, itemId, quantity, requiredDate, status);
+        return new PurchaseRequisition(requisitionId, salesManagerId, itemId, quantity, generatedDate, requiredDate, status);
     }
     
 }
