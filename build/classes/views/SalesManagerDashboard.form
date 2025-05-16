@@ -23,10 +23,9 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="1" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Component id="tabbedPaneCustom1" max="32767" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -76,7 +75,7 @@
                               <Component id="jScrollPane1" min="-2" pref="920" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace pref="51" max="32767" attributes="0"/>
+                      <EmptySpace pref="57" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -197,7 +196,7 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <EmptySpace pref="51" max="32767" attributes="0"/>
+                      <EmptySpace pref="57" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="1" attributes="0">
                           <Group type="102" attributes="0">
                               <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
@@ -299,7 +298,7 @@
                               </Group>
                           </Group>
                       </Group>
-                      <EmptySpace pref="52" max="32767" attributes="0"/>
+                      <EmptySpace pref="58" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -383,7 +382,7 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace pref="51" max="32767" attributes="0"/>
+                      <EmptySpace pref="57" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jLabel10" min="-2" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="1" attributes="0">
@@ -438,13 +437,14 @@
                 <Component class="javax.swing.JTable" name="jTable2">
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                      <Table columnCount="7" rowCount="4">
+                      <Table columnCount="8" rowCount="4">
                         <Column editable="true" title="Requisition ID" type="java.lang.Object"/>
                         <Column editable="true" title="Item ID" type="java.lang.Object"/>
                         <Column editable="true" title="Item Name" type="java.lang.Object"/>
                         <Column editable="true" title="Quantity" type="java.lang.Object"/>
                         <Column editable="true" title="Raised Date" type="java.lang.Object"/>
                         <Column editable="true" title="Required Date" type="java.lang.Object"/>
+                        <Column editable="true" title="Supplier ID" type="java.lang.Object"/>
                         <Column editable="true" title="Sales Manager" type="java.lang.Object"/>
                       </Table>
                     </Property>
@@ -489,8 +489,8 @@
                         <Column editable="true" title="Quantity" type="java.lang.Object"/>
                         <Column editable="true" title="Raised Date" type="java.lang.Object"/>
                         <Column editable="true" title="Required Date" type="java.lang.Object"/>
+                        <Column editable="true" title="Supplier ID" type="java.lang.Object"/>
                         <Column editable="true" title="Sales Manager" type="java.lang.Object"/>
-                        <Column editable="true" title="Status" type="java.lang.Object"/>
                       </Table>
                     </Property>
                   </Properties>
@@ -507,8 +507,8 @@
         <Container class="javax.swing.JPanel" name="jPanel3">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Purchase Order">
-                <Property name="tabTitle" type="java.lang.String" value="Purchase Order"/>
+              <JTabbedPaneConstraints tabName="Purchase Orders">
+                <Property name="tabTitle" type="java.lang.String" value="Purchase Orders"/>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>
@@ -529,7 +529,7 @@
                               <Component id="jScrollPane3" min="-2" pref="920" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace pref="56" max="32767" attributes="0"/>
+                      <EmptySpace pref="62" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -541,9 +541,9 @@
                           <Component id="jLabel11" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jTextField7" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="jScrollPane3" min="-2" pref="600" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
