@@ -22,7 +22,7 @@ public class IdGenerator {
     private static final Map<Class<?>, IdMeta> idMetaMap = Map.of(
             Item.class, new IdMeta("i", 3, "itemsId"),
             User.class, new IdMeta("u", 3, "usersId"),
-            Supplier.class, new IdMeta("s", 3, "supplierId"),
+            Supplier.class, new IdMeta("su", 3, "supplierId"),
             Payment.class, new IdMeta("p", 3, "paymentsId"),
             PurchaseOrder.class, new IdMeta("s", 3, "purchase_ordersId"),
             PurchaseRequisition.class, new IdMeta("s", 3, "purchase_requisitionsId"),

@@ -1,1 +1,2 @@
-saleID,itemID,quantity,date,totalAmount
+s001,i001,1,2025-05-19,13:56:29,20.00
+s002,i004,5,2025-05-19,17:43:32,45.00

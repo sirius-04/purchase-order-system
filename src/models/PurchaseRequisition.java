@@ -10,13 +10,13 @@ package models;
  */
 public class PurchaseRequisition implements Identifiable {
     // field: requisitionID,salesManagerID,itemID,quantity,requiredDate,status(pending/approved/rejected)
-    
+
     public enum Status {
         pending,
         approved,
         rejected
     }
-    
+
     private String requisitionId;
     private String salesManagerId;
     private String itemId;
@@ -24,7 +24,7 @@ public class PurchaseRequisition implements Identifiable {
     private String generatedDate;
     private String requiredDate;
     private Status status;
-    
+
     // constructor
     public PurchaseRequisition(String requisitionId, String salesManagerId, String itemId, int quantity, String generatedDate, String requiredDate, Status status) {
         this.requisitionId = requisitionId;
@@ -36,14 +36,6 @@ public class PurchaseRequisition implements Identifiable {
         this.status = status;
     }
 
-    public String getGeneratedDate() {
-        return generatedDate;
-    }
-
-    public void setGeneratedDate(String generatedDate) {
-        this.generatedDate = generatedDate;
-    }
-    
     // override interface
     @Override
     public String getId() {
@@ -81,6 +73,14 @@ public class PurchaseRequisition implements Identifiable {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public String getGeneratedDate() {
+        return generatedDate;
+    }
+
+    public void setGeneratedDate(String generatedDate) {
+        this.generatedDate = generatedDate;
     }
 
     public String getRequiredDate() {

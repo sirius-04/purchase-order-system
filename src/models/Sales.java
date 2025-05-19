@@ -8,21 +8,23 @@ package models;
  *
  * @author Chan Yong Liang
  */
-public class Sales implements Identifiable{
+public class Sales implements Identifiable {
     // field: saleID,itemID,quantity,date,totalAmount
     
     private String salesId;
     private String itemId;
     private int quantity;
     private String date;
+    private String time;
     private int totalAmount;
     
     // constructor
-    public Sales(String salesId, String itemId, int quantity, String date, int totalAmount) {
+    public Sales(String salesId, String itemId, int quantity, String date, String time, int totalAmount) {
         this.salesId = salesId;
         this.itemId = itemId;
         this.quantity = quantity;
         this.date = date;
+        this.time = time;
         this.totalAmount = totalAmount;
     }
     
@@ -59,6 +61,14 @@ public class Sales implements Identifiable{
 
     public String getDate() {
         return date;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 
     public void setDate(String date) {

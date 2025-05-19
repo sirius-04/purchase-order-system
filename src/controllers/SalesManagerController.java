@@ -7,7 +7,7 @@ import models.Item;
 import models.users.SalesManager;
 import repository.ItemRepository;
 import services.IdGenerator;
-import views.SalesManagerDashboard;
+//import views.SalesManagerDashboard;
 
 /**
  *
@@ -16,7 +16,7 @@ import views.SalesManagerDashboard;
 public class SalesManagerController extends BaseController {
     ItemRepository itemRes = new ItemRepository();
     IdGenerator idGen = new IdGenerator();
-    Item item1 = new Item(idGen.generateNewId(Item.class), "item5", 80, 44.30, "s002");
+//    Item item1 = new Item(idGen.generateNewId(Item.class), "item5", 80, 44.30, "s002");
     
     public SalesManagerController(SalesManager sm) {
         super(sm);
@@ -24,8 +24,8 @@ public class SalesManagerController extends BaseController {
     
     @Override
     public void displayMenu() {
-        SalesManagerDashboard dashboard = new SalesManagerDashboard();
-        dashboard.setVisible(true);
+//        SalesManagerDashboard dashboard = new SalesManagerDashboard();
+//        dashboard.setVisible(true);
         
         
 //        itemRes.save(item1);

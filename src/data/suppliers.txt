@@ -1,1 +1,2 @@
-supplierID,name,contactNum,email
+su001,supplier1,01232331,supp1@mail.com
+su002,supplier2,01535325,supp2@mail.com

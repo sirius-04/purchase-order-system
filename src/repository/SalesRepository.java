@@ -13,7 +13,7 @@ import models.Sales;
 public class SalesRepository extends BaseRepository<Sales> {
     
      public SalesRepository() {
-        super("sales.txt", "%s,%s,%d,%s,%d");
+        super("sales.txt", "%s,%s,%d,%s,%s,%d");
     }
     
      @Override
@@ -23,6 +23,7 @@ public class SalesRepository extends BaseRepository<Sales> {
                 sales.getItemId(),
                 sales.getQuantity(),
                 sales.getDate(),
+                sales.getTime(),
                 sales.getTotalAmount()
         );
     }
@@ -33,8 +34,9 @@ public class SalesRepository extends BaseRepository<Sales> {
         String itemId = columns[1].trim();
         int quantity = Integer.parseInt(columns[2].trim());
         String date = columns[3].trim();
-        int totalAmount = Integer.parseInt(columns[4].trim());
+        String time = columns[4].trim();
+        int totalAmount = Integer.parseInt(columns[5].trim());
 
-        return new Sales(salesId, itemId, quantity, date, totalAmount);
+        return new Sales(salesId, itemId, quantity, date, time, totalAmount);
     }
 }

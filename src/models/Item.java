@@ -9,20 +9,30 @@ package models;
  * @author Chan Yong Liang
  */
 public class Item implements Identifiable {
+
+    public enum Status {
+        onSale,
+        notOnSale
+    };
+
     private String itemId;
     private String name;
     private int stockQuantity;
     private double price;
+    private double sellPrice;
     private String supplierId;
+    private Status status;
 
-    public Item(String itemId, String name, int stockQuantity, double price, String supplierId) {
+    public Item(String itemId, String name, int stockQuantity, double price, double sellPrice, String supplierId, Status status) {
         this.itemId = itemId;
         this.name = name;
         this.stockQuantity = stockQuantity;
         this.price = price;
+        this.sellPrice = sellPrice;
         this.supplierId = supplierId;
+        this.status = status;
     }
-    
+
     @Override
     public String getId() {
         return itemId;
@@ -66,5 +76,21 @@ public class Item implements Identifiable {
 
     public void setSupplierId(String supplierId) {
         this.supplierId = supplierId;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public double getSellPrice() {
+        return sellPrice;
+    }
+
+    public void setSellPrice(double sellPrice) {
+        this.sellPrice = sellPrice;
     }
 }

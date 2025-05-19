@@ -13,7 +13,7 @@ import models.Item;
 public class ItemRepository extends BaseRepository<Item> {
 
     public ItemRepository() {
-        super("item.txt", "%s,%s,%d,%.2f,%s");
+        super("item.txt", "%s,%s,%d,%d,%.2f,%s,%s");
     }
 
     @Override
@@ -23,7 +23,9 @@ public class ItemRepository extends BaseRepository<Item> {
                 item.getName(),
                 item.getStockQuantity(),
                 item.getPrice(),
-                item.getSupplierId()
+                item.getSellPrice(),
+                item.getSupplierId(),
+                item.getStatus()
         );
     }
 
@@ -33,8 +35,10 @@ public class ItemRepository extends BaseRepository<Item> {
         String itemName = columns[1].trim();
         int stockNumber = Integer.parseInt(columns[2].trim());
         double price = Double.parseDouble(columns[3].trim());
-        String supplierId = columns[4].trim();
+        double sellPrice = Double.parseDouble(columns[4].trim());
+        String supplierId = columns[5].trim();
+        Item.Status status = Item.Status.valueOf(columns[6].trim());
 
-        return new Item(itemId, itemName, stockNumber, price, supplierId);
+        return new Item(itemId, itemName, stockNumber, price, sellPrice, supplierId, status);
     }
 }
