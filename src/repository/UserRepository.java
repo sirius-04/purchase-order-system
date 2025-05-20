@@ -15,7 +15,7 @@ import models.users.UserRole;
 public class UserRepository extends BaseRepository<User> {
 
     public UserRepository() {
-        super("users.txt", "%s,%s,%s,%s");
+        super("users", "%s,%s,%s,%s");
     }
 
     @Override
@@ -29,9 +29,9 @@ public class UserRepository extends BaseRepository<User> {
 
         try {
             Constructor<? extends User> constructor = role.getModelClass()
-                    .getConstructor(String.class, String.class, String.class, String.class);
+                    .getConstructor(String.class, UserRole.class, String.class, String.class);
 
-            return constructor.newInstance(userId, roleName, username, password);
+            return constructor.newInstance(userId, role, username, password);
         } catch (Exception e) {
             throw new RuntimeException("Failed to instantiate user of role: " + roleName, e);
         }

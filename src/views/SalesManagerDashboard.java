@@ -1,5 +1,6 @@
 package views;
 
+import javax.swing.JTable;
 import models.users.SalesManager;
 
 /*
@@ -443,6 +444,14 @@ public class SalesManagerDashboard extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    public JTable getjTable5() {
+        return jTable5;
+    }
+
+    public void setjTable5(JTable jTable5) {
+        this.jTable5 = jTable5;
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable TableItemNotSale;
     private javax.swing.JTable TableItemOnSale;

@@ -4,19 +4,34 @@
  */
 package controllers;
 
+import javax.swing.JFrame;
 import models.users.InventoryManager;
+import views.InventoryManagerDashboard;
 
 /**
  *
  * @author Chan Yong Liang
  */
 public class InventoryManagerController extends BaseController {
+    private InventoryManagerDashboard dashboard;
+    
     public InventoryManagerController(InventoryManager user) {
         super(user);
     }
 
     @Override
-    public void displayMenu() {
-        System.out.println("inventory manager");
+    protected JFrame createView() {
+        dashboard = new InventoryManagerDashboard();
+        return dashboard;
     }
+
+    @Override
+    protected void loadInitialData() {
+    }
+
+    @Override
+    protected void setupCustomListeners() {
+    }
+
+
 }

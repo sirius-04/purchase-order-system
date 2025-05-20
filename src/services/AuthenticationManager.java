@@ -32,7 +32,7 @@ public class AuthenticationManager {
         }
     }
 
-    public static User login(String username, String password) throws UserNotFoundException, IncorrectPasswordException, InvalidRoleException {
+    public static User authorize(String username, String password) throws UserNotFoundException, IncorrectPasswordException, InvalidRoleException {
         boolean usernameExists = false;
 
         for (User eachUser : userList) {

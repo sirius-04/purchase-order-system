@@ -8,11 +8,9 @@ package views;
  *
  * @author Chan Yong Liang
  */
-import controllers.BaseController;
-import controllers.factory.ControllerFactory;
-import javax.swing.JOptionPane;
-import models.users.User;
-import services.AuthenticationManager;
+import controllers.MainController;
+import javax.swing.JButton;
+import javax.swing.JTextField;
 
 public class Main extends javax.swing.JFrame {
 
@@ -117,7 +115,7 @@ public class Main extends javax.swing.JFrame {
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Main().setVisible(true);
+                new MainController().start();
             }
         });
     }
@@ -127,29 +125,21 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_usernameTextFieldActionPerformed
 
     private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
-        AuthenticationManager auth = new AuthenticationManager();
-        String enteredUsername = usernameTextField.getText();
-        String enteredPassword = passwordTextField.getText();
 
-        try {
-            User user = auth.login(enteredUsername, enteredPassword);
-            BaseController controller = ControllerFactory.getControllerFor(user);
-            
-            this.dispose();
-            controller.displayMenu();
-            
-        } catch (AuthenticationManager.UserNotFoundException e) {
-            JOptionPane.showMessageDialog(null, "Error: Username not found!", "Login Failed", JOptionPane.ERROR_MESSAGE);
-        } catch (AuthenticationManager.IncorrectPasswordException e) {
-            JOptionPane.showMessageDialog(null, "Error: Incorrect password!", "Login Failed", JOptionPane.ERROR_MESSAGE);
-        } catch (AuthenticationManager.InvalidRoleException e) {
-            JOptionPane.showMessageDialog(null, "Error: Invalid user role!", "Login Failed", JOptionPane.ERROR_MESSAGE);
-        }
-        
-        // empty the text field after submit
-        usernameTextField.setText("");
-        passwordTextField.setText("");
     }//GEN-LAST:event_submitButtonActionPerformed
+
+    
+    public JTextField getUsernameTextField() {
+        return usernameTextField;
+    }
+    
+    public JTextField getPasswordTextField() {
+        return passwordTextField;
+    }
+
+    public JButton getSubmitButton() {
+        return submitButton;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel loginLabel;

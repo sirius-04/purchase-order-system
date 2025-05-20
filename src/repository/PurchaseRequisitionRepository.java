@@ -12,7 +12,7 @@ import models.PurchaseRequisition;
 public class PurchaseRequisitionRepository extends BaseRepository<PurchaseRequisition>{
     
      public PurchaseRequisitionRepository() {
-        super("purchase_requisitions.txt", "%s,%s,%s,%d,%s,%s,%s");
+        super("purchase_requisitions", "%s,%s,%s,%d,%s,%s,%s");
     }
     
      @Override

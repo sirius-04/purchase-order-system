@@ -4,19 +4,35 @@
  */
 package controllers;
 
+import javax.swing.JFrame;
 import models.users.Admin;
+import views.AdminDashboard;
 
 /**
  *
  * @author Chan Yong Liang
  */
 public class AdminController extends BaseController {
+    
+    private AdminDashboard dashboard;
+    
     public AdminController(Admin adminUser) {
         super(adminUser);
     }
 
     @Override
-    public void displayMenu() {
-        System.out.println("admin");
+    protected JFrame createView() {
+        dashboard = new AdminDashboard();
+        return dashboard;
     }
+
+    @Override
+    protected void loadInitialData() {
+        
+    }
+
+    @Override
+    protected void setupCustomListeners() {
+    }
+    
 }

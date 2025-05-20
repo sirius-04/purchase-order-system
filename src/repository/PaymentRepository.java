@@ -14,7 +14,7 @@ import models.Payment;
 public class PaymentRepository extends BaseRepository<Payment> {
     
     public PaymentRepository() {
-        super("payments.txt", "%s,%s,%.2f,%s,%s");
+        super("payments", "%s,%s,%.2f,%s,%s");
     }
     
      @Override

@@ -13,7 +13,7 @@ import models.Supplier;
 public class SupplierRepository extends BaseRepository<Supplier>{
     
      public SupplierRepository() {
-        super("suppliers.txt", "%s,%s,%s,%s");
+        super("suppliers", "%s,%s,%s,%s");
     }
     
      @Override

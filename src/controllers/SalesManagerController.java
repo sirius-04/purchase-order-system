@@ -3,31 +3,37 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package controllers;
-import models.Item;
+
+import javax.swing.JFrame;
+import javax.swing.JTable;
 import models.users.SalesManager;
-import repository.ItemRepository;
-import services.IdGenerator;
-//import views.SalesManagerDashboard;
+import views.SalesManagerDashboard;
 
 /**
  *
  * @author Chan Yong Liang
  */
 public class SalesManagerController extends BaseController {
-    ItemRepository itemRes = new ItemRepository();
-    IdGenerator idGen = new IdGenerator();
-//    Item item1 = new Item(idGen.generateNewId(Item.class), "item5", 80, 44.30, "s002");
     
-    public SalesManagerController(SalesManager sm) {
-        super(sm);
+     private SalesManagerDashboard dashboard;
+
+    public SalesManagerController(SalesManager salesManagerUser) {
+        super(salesManagerUser);
+    }
+
+    @Override
+    protected JFrame createView() {
+        dashboard = new SalesManagerDashboard();
+        return dashboard;
     }
     
     @Override
-    public void displayMenu() {
-//        SalesManagerDashboard dashboard = new SalesManagerDashboard();
-//        dashboard.setVisible(true);
+    protected void loadInitialData() {
+        JTable dailySalesTable = dashboard.getjTable5();
+    }
+    
+    @Override
+    protected void setupCustomListeners() {
         
-        
-//        itemRes.save(item1);
     }
 }
