@@ -458,13 +458,35 @@ public class SalesManagerDashboard extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_addRequisitionButtonActionPerformed
 
-    public JTable getjTable5() {
-        return jTable5;
+    public JTable getHistoricalRequisitionTable() {
+        return historicalRequisitionTable;
     }
 
-    public void setjTable5(JTable jTable5) {
-        this.jTable5 = jTable5;
+    public JTable getItemNotOnSaleTable() {
+        return itemNotOnSaleTable;
     }
+
+    public JTable getItemOnSaleTable() {
+        return itemOnSaleTable;
+    }
+
+    public JTable getOrderTable() {
+        return orderTable;
+    }
+
+    public JTable getPendingRequisitionTable() {
+        return pendingRequisitionTable;
+    }
+
+    public JTable getSalesTable() {
+        return salesTable;
+    }
+
+    public JTable getSupplierTable() {
+        return supplierTable;
+    }
+
+    
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addItemButton;

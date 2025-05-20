@@ -13,7 +13,7 @@ import models.Sales;
 public class SalesRepository extends BaseRepository<Sales> {
     
      public SalesRepository() {
-        super("sales", "%s,%s,%d,%s,%s,%d");
+        super("sales", "%s,%s,%d,%s,%s,%.2f");
     }
     
      @Override
@@ -35,7 +35,7 @@ public class SalesRepository extends BaseRepository<Sales> {
         int quantity = Integer.parseInt(columns[2].trim());
         String date = columns[3].trim();
         String time = columns[4].trim();
-        int totalAmount = Integer.parseInt(columns[5].trim());
+        Double totalAmount = Double.valueOf(columns[5].trim());
 
         return new Sales(salesId, itemId, quantity, date, time, totalAmount);
     }

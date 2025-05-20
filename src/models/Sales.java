@@ -16,10 +16,10 @@ public class Sales implements Identifiable {
     private int quantity;
     private String date;
     private String time;
-    private int totalAmount;
+    private double totalAmount;
     
     // constructor
-    public Sales(String salesId, String itemId, int quantity, String date, String time, int totalAmount) {
+    public Sales(String salesId, String itemId, int quantity, String date, String time, double totalAmount) {
         this.salesId = salesId;
         this.itemId = itemId;
         this.quantity = quantity;
@@ -75,7 +75,7 @@ public class Sales implements Identifiable {
         this.date = date;
     }
 
-    public int getTotalAmount() {
+    public double getTotalAmount() {
         return totalAmount;
     }
 
