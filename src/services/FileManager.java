@@ -79,6 +79,8 @@ public class FileManager {
 
     // update a row in the file by passing the line num
     public void editFile(String fileName, int lineNumber, String updatedContent) {
+        lineNumber -= 1;
+
         String filePath = FileManager.getFilePath(fileName);
 
         try {
@@ -89,12 +91,14 @@ public class FileManager {
                 return;
             }
 
-            if (lineNumber >= 0 && lineNumber < lines.size()) {
+            if (lineNumber >= 0 && lineNumber < lines.size() + 1) {
                 lines.set(lineNumber, updatedContent);
                 Files.write(Paths.get(filePath), lines);
             } else {
-                System.out.println("Line number out of range.");
+                System.out.println("Line number: " + lineNumber + " out of range. Line size: " + lines.size());
+
             }
+
         } catch (IOException e) {
             System.err.println("Error editing file: " + filePath);
             e.printStackTrace();
@@ -103,6 +107,7 @@ public class FileManager {
 
     // remove a row
     public void removeRow(String fileName, int lineNumber) {
+        lineNumber -= 1;
         String filePath = getFilePath(fileName);
         try {
             List<String> lines = Files.readAllLines(Paths.get(filePath));
