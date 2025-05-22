@@ -4,7 +4,10 @@
  */
 package controllers;
 
+import helpers.PaymentTableHelper;
 import javax.swing.JFrame;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 import models.users.FinanceManager;
 import views.FinanceManagerDashboard;
 
@@ -14,6 +17,8 @@ import views.FinanceManagerDashboard;
  */
 public class FinanceManagerController extends BaseController {
     private FinanceManagerDashboard dashboard;
+    
+    private JTable paymentTable;
     
     public FinanceManagerController(FinanceManager user) {
         super(user);
@@ -27,6 +32,9 @@ public class FinanceManagerController extends BaseController {
 
     @Override
     protected void loadInitialData() {
+        paymentTable = dashboard.getPaymentTable();
+        DefaultTableModel orderModel = (DefaultTableModel) paymentTable.getModel();
+        PaymentTableHelper.populatePayment(orderModel);
     }
 
     @Override
