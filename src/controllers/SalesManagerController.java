@@ -6,6 +6,7 @@ package controllers;
 
 import helpers.BaseTableHelper;
 import helpers.DailySalesTableHelper;
+import helpers.PurchaseOrderTableHelper;
 import helpers.SupplierTableHelper;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,6 +29,9 @@ public class SalesManagerController extends BaseController {
     //  Daily Sales
     private JTable dailySalesTable;
     
+    // Purchase Order
+    private JTable purchaseOrderTable;
+    
     //Suppliers
     private JTable supplierTable;
 
@@ -45,11 +49,15 @@ public class SalesManagerController extends BaseController {
     protected void loadInitialData() {
         dailySalesTable = dashboard.getSalesTable();
         DefaultTableModel model = (DefaultTableModel) dailySalesTable.getModel();
-        JLabel totalAmountText = dashboard.getTotalAmount();
-
         DailySalesTableHelper.populateTodaySales(model);
 
+        purchaseOrderTable = dashboard.getOrderTable();
+        DefaultTableModel orderModel = (DefaultTableModel) purchaseOrderTable.getModel();
+        PurchaseOrderTableHelper.populatePurchaseOrder(orderModel);
+
+        JLabel totalAmountText = dashboard.getTotalAmount();
         totalAmountText.setText(DailySalesTableHelper.calculateColumnTotal(dailySalesTable, 6));
+//        totalAmountText.setText(PurchaseOrderTableHelper.calculateColumnTotal(purchaseOrderTable, 7));
         
         // Supplier
         supplierTable = dashboard.getSupplierTable();
