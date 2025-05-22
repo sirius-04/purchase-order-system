@@ -4,8 +4,8 @@
  */
 package controllers;
 
-import helpers.BaseTableHelper;
 import helpers.DailySalesTableHelper;
+import helpers.ItemTableHelper;
 import helpers.PurchaseOrderTableHelper;
 import helpers.SupplierTableHelper;
 import java.awt.event.ActionEvent;
@@ -25,6 +25,10 @@ import views.SalesManagerDashboard;
 public class SalesManagerController extends BaseController {
 
     private SalesManagerDashboard dashboard;
+    
+    // item tables
+    private JTable itemOnSaleTable;
+    private JTable itemNotOnSaleTable;
     
     //  Daily Sales
     private JTable dailySalesTable;
@@ -47,6 +51,17 @@ public class SalesManagerController extends BaseController {
 
     @Override
     protected void loadInitialData() {
+        itemOnSaleTable = dashboard.getItemOnSaleTable();
+        itemNotOnSaleTable = dashboard.getItemNotOnSaleTable();
+        
+        // item on sale table population
+        DefaultTableModel itemOnSaleTableModel = (DefaultTableModel) itemOnSaleTable.getModel();
+        ItemTableHelper.populateItemOnSale(itemOnSaleTableModel);
+
+        // item not on sale table population
+        DefaultTableModel itemNotOnSaleTableModel = (DefaultTableModel) itemNotOnSaleTable.getModel();
+        ItemTableHelper.populateItemNotOnSale(itemNotOnSaleTableModel);
+        
         dailySalesTable = dashboard.getSalesTable();
         DefaultTableModel model = (DefaultTableModel) dailySalesTable.getModel();
         DailySalesTableHelper.populateTodaySales(model);

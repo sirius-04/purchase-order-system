@@ -24,8 +24,8 @@ public class IdGenerator {
             User.class, new IdMeta("u", 3, "usersId"),
             Supplier.class, new IdMeta("su", 3, "supplierId"),
             Payment.class, new IdMeta("p", 3, "paymentsId"),
-            PurchaseOrder.class, new IdMeta("s", 3, "purchase_ordersId"),
-            PurchaseRequisition.class, new IdMeta("s", 3, "purchase_requisitionsId"),
+            PurchaseOrder.class, new IdMeta("po", 3, "purchase_ordersId"),
+            PurchaseRequisition.class, new IdMeta("pr", 3, "purchase_requisitionsId"),
             Sales.class, new IdMeta("s", 3, "salesId")
     );
 

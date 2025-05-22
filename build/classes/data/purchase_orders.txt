@@ -1,1 +1,1 @@
-poID,itemID,prID,purchaseManagerID,quantity,price,generatedDate,status(pending/fulfilled)
+po001,i001,pr001,u004,20,250.00,2025-05-22,pending
