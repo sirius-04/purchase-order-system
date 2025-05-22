@@ -4,10 +4,18 @@
  */
 package controllers;
 
+<<<<<<< Updated upstream
 import dtos.DailySalesTableRow;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+=======
+import helpers.DailySalesTableHelper;
+import helpers.ItemTableHelper;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
+>>>>>>> Stashed changes
 import javax.swing.JFrame;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -26,6 +34,8 @@ import views.SalesManagerDashboard;
 public class SalesManagerController extends BaseController {
 
     private SalesManagerDashboard dashboard;
+    private JTable itemOnSaleTable;
+    private JTable itemNotOnSaleTable;
     private JTable dailySalesTable;
 
     public SalesManagerController(SalesManager salesManagerUser) {
@@ -40,7 +50,10 @@ public class SalesManagerController extends BaseController {
 
     @Override
     protected void loadInitialData() {
+        itemOnSaleTable = dashboard.getItemOnSaleTable();
+        itemNotOnSaleTable = dashboard.getItemNotOnSaleTable();
         dailySalesTable = dashboard.getSalesTable();
+<<<<<<< Updated upstream
         DefaultTableModel model = (DefaultTableModel) dailySalesTable.getModel();
 
         SalesRepository salesRepo = new SalesRepository();
@@ -73,10 +86,35 @@ public class SalesManagerController extends BaseController {
         }
 
         TableManager.populateTable(model, rows, true);
+=======
+
+        // item on sale table population
+        DefaultTableModel itemOnSaleTableModel = (DefaultTableModel) itemOnSaleTable.getModel();
+        ItemTableHelper.populateItemOnSale(itemOnSaleTableModel);
+
+        // item not on sale table population
+        DefaultTableModel itemNotOnSaleTableModel = (DefaultTableModel) itemNotOnSaleTable.getModel();
+        ItemTableHelper.populateItemNotOnSale(itemNotOnSaleTableModel);
+
+        // daily sales table population
+        DefaultTableModel dailySalesTableModel = (DefaultTableModel) dailySalesTable.getModel();
+        JLabel totalAmountText = dashboard.getTotalAmount();
+
+        DailySalesTableHelper.populateTodaySales(dailySalesTableModel);
+        totalAmountText.setText(DailySalesTableHelper.calculateColumnTotal(dailySalesTable, 6));
+>>>>>>> Stashed changes
     }
 
     @Override
     protected void setupCustomListeners() {
 
+<<<<<<< Updated upstream
+=======
+        addSalesButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+>>>>>>> Stashed changes
     }
 }
