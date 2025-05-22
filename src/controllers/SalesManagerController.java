@@ -4,19 +4,16 @@
  */
 package controllers;
 
-import dtos.DailySalesTableRow;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import helpers.BaseTableHelper;
+import helpers.DailySalesTableHelper;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import models.Item;
-import models.Sales;
 import models.users.SalesManager;
-import repository.ItemRepository;
-import repository.SalesRepository;
-import services.TableManager;
 import views.SalesManagerDashboard;
 
 /**
@@ -42,41 +39,21 @@ public class SalesManagerController extends BaseController {
     protected void loadInitialData() {
         dailySalesTable = dashboard.getSalesTable();
         DefaultTableModel model = (DefaultTableModel) dailySalesTable.getModel();
+        JLabel totalAmountText = dashboard.getTotalAmount();
 
-        SalesRepository salesRepo = new SalesRepository();
-        ItemRepository itemRepo = new ItemRepository();
+        DailySalesTableHelper.populateTodaySales(model);
 
-        String today = LocalDate.now().toString(); 
-
-        List<Sales> todaysSales = salesRepo.getAll().stream()
-                .filter(sale -> today.equals(sale.getDate()))
-                .toList();
-
-        List<DailySalesTableRow> rows = new ArrayList<>();
-        for (Sales sale : todaysSales) {
-            try {
-                Item item = itemRepo.find(sale.getItemId());
-
-                DailySalesTableRow row = new DailySalesTableRow(
-                        sale.getTime(),
-                        sale.getSalesId(),
-                        sale.getItemId(),
-                        item.getName(),
-                        sale.getQuantity(),
-                        item.getPrice(),
-                        sale.getTotalAmount()
-                );
-                rows.add(row);
-            } catch (Exception e) {
-                System.err.println("Item not found for ID: " + sale.getItemId());
-            }
-        }
-
-        TableManager.populateTable(model, rows, true);
+        totalAmountText.setText(DailySalesTableHelper.calculateColumnTotal(dailySalesTable, 6));
     }
 
     @Override
     protected void setupCustomListeners() {
+        JButton addSalesButton = dashboard.getAddSalesButton();
 
+        addSalesButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                
+            }
+        });
     }
 }

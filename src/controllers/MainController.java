@@ -49,7 +49,7 @@ public class MainController extends BaseController {
 
     @Override
     protected void setupCustomListeners() {
-         submitButton.addActionListener(new ActionListener() {
+        submitButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 login();
             }
