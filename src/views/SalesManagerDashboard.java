@@ -1,6 +1,9 @@
 package views;
 
+import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import models.users.SalesManager;
 
 /*
@@ -84,7 +87,8 @@ public class SalesManagerDashboard extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         salesSearchInput = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
-        totalSalesInput = new javax.swing.JTextField();
+        jLabel13 = new javax.swing.JLabel();
+        totalAmount = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         pendingRequisitionTable = new javax.swing.JTable();
@@ -253,48 +257,65 @@ public class SalesManagerDashboard extends javax.swing.JFrame {
         jScrollPane5.setViewportView(salesTable);
 
         addSalesButton.setText("Add New");
+        addSalesButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addSalesButtonActionPerformed(evt);
+            }
+        });
 
         jLabel7.setText("Search:");
 
+        salesSearchInput.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                salesSearchInputActionPerformed(evt);
+            }
+        });
+
         jLabel8.setText("Total Amount:");
+
+        jLabel13.setText("Daily Sales");
+
+        totalAmount.setText("total-amount");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                .addGap(58, 58, 58)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel7)
+                        .addComponent(addSalesButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel8)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(salesSearchInput, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel5Layout.createSequentialGroup()
-                        .addGap(58, 58, 58)
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 920, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addComponent(addSalesButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel8)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(totalSalesInput, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addComponent(totalAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jPanel5Layout.createSequentialGroup()
+                            .addComponent(jLabel13)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel7)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(salesSearchInput, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 920, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(58, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addContainerGap(18, Short.MAX_VALUE)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(salesSearchInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel7)
+                        .addComponent(salesSearchInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel13, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 560, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(17, 17, 17)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(addSalesButton)
                     .addComponent(jLabel8)
-                    .addComponent(totalSalesInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(totalAmount))
                 .addGap(50, 50, 50))
         );
 
@@ -458,6 +479,14 @@ public class SalesManagerDashboard extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_addRequisitionButtonActionPerformed
 
+    private void salesSearchInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salesSearchInputActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_salesSearchInputActionPerformed
+
+    private void addSalesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addSalesButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_addSalesButtonActionPerformed
+
     public JTable getHistoricalRequisitionTable() {
         return historicalRequisitionTable;
     }
@@ -486,6 +515,30 @@ public class SalesManagerDashboard extends javax.swing.JFrame {
         return supplierTable;
     }
 
+    public JButton getAddRequisitionButton() {
+        return addRequisitionButton;
+    }
+
+    public JButton getAddSupplierButton() {
+        return addSupplierButton;
+    }
+
+    public JLabel getTotalAmount() {
+        return totalAmount;
+    }
+
+    public JButton getAddItemButton() {
+        return addItemButton;
+    }
+
+    public JButton getAddSalesButton() {
+        return addSalesButton;
+    }
+
+    public JTextField getHistoricalRequisitionSearch() {
+        return historicalRequisitionSearch;
+    }
+
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -503,6 +556,7 @@ public class SalesManagerDashboard extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -532,6 +586,6 @@ public class SalesManagerDashboard extends javax.swing.JFrame {
     private javax.swing.JTable salesTable;
     private javax.swing.JTextField supplierSearchInput;
     private javax.swing.JTable supplierTable;
-    private javax.swing.JTextField totalSalesInput;
+    private javax.swing.JLabel totalAmount;
     // End of variables declaration//GEN-END:variables
 }

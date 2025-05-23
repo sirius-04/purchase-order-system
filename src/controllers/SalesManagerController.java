@@ -4,19 +4,18 @@
  */
 package controllers;
 
-import dtos.DailySalesTableRow;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import helpers.DailySalesTableHelper;
+import helpers.ItemTableHelper;
+import helpers.PurchaseOrderTableHelper;
+import helpers.SupplierTableHelper;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import models.Item;
-import models.Sales;
 import models.users.SalesManager;
-import repository.ItemRepository;
-import repository.SalesRepository;
-import services.TableManager;
 import views.SalesManagerDashboard;
 
 /**
@@ -26,7 +25,19 @@ import views.SalesManagerDashboard;
 public class SalesManagerController extends BaseController {
 
     private SalesManagerDashboard dashboard;
+
+    // item tables
+    private JTable itemOnSaleTable;
+    private JTable itemNotOnSaleTable;
+
+    //  Daily Sales
     private JTable dailySalesTable;
+
+    // Purchase Order
+    private JTable purchaseOrderTable;
+
+    //Suppliers
+    private JTable supplierTable;
 
     public SalesManagerController(SalesManager salesManagerUser) {
         super(salesManagerUser);
@@ -40,43 +51,49 @@ public class SalesManagerController extends BaseController {
 
     @Override
     protected void loadInitialData() {
+        itemOnSaleTable = dashboard.getItemOnSaleTable();
+        itemNotOnSaleTable = dashboard.getItemNotOnSaleTable();
+
+        // item on sale table population
+        DefaultTableModel itemOnSaleTableModel = (DefaultTableModel) itemOnSaleTable.getModel();
+        ItemTableHelper.populateItemOnSale(itemOnSaleTableModel);
+
+        // item not on sale table population
+        DefaultTableModel itemNotOnSaleTableModel = (DefaultTableModel) itemNotOnSaleTable.getModel();
+        ItemTableHelper.populateItemNotOnSale(itemNotOnSaleTableModel);
+
         dailySalesTable = dashboard.getSalesTable();
         DefaultTableModel model = (DefaultTableModel) dailySalesTable.getModel();
+        DailySalesTableHelper.populateTodaySales(model);
 
-        SalesRepository salesRepo = new SalesRepository();
-        ItemRepository itemRepo = new ItemRepository();
+        purchaseOrderTable = dashboard.getOrderTable();
+        DefaultTableModel orderModel = (DefaultTableModel) purchaseOrderTable.getModel();
+        PurchaseOrderTableHelper.populatePurchaseOrder(orderModel);
 
-        String today = LocalDate.now().toString(); 
+        JLabel totalAmountText = dashboard.getTotalAmount();
+        totalAmountText.setText(DailySalesTableHelper.calculateColumnTotal(dailySalesTable, 6));
 
-        List<Sales> todaysSales = salesRepo.getAll().stream()
-                .filter(sale -> today.equals(sale.getDate()))
-                .toList();
+        // Supplier
+        supplierTable = dashboard.getSupplierTable();
+        DefaultTableModel supplierModel = (DefaultTableModel) supplierTable.getModel();
+        SupplierTableHelper.populateSupplier(supplierModel);
 
-        List<DailySalesTableRow> rows = new ArrayList<>();
-        for (Sales sale : todaysSales) {
-            try {
-                Item item = itemRepo.find(sale.getItemId());
-
-                DailySalesTableRow row = new DailySalesTableRow(
-                        sale.getTime(),
-                        sale.getSalesId(),
-                        sale.getItemId(),
-                        item.getName(),
-                        sale.getQuantity(),
-                        item.getPrice(),
-                        sale.getTotalAmount()
-                );
-                rows.add(row);
-            } catch (Exception e) {
-                System.err.println("Item not found for ID: " + sale.getItemId());
-            }
-        }
-
-        TableManager.populateTable(model, rows, true);
     }
 
     @Override
     protected void setupCustomListeners() {
-
+        addSale();
     }
+
+    private void addSale() {
+        JButton addSalesButton = dashboard.getAddSalesButton();
+
+        addSalesButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                
+            }
+        });
+    }
+    
+    
 }

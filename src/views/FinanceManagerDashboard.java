@@ -4,6 +4,8 @@
  */
 package views;
 
+import javax.swing.JTable;
+
 /**
  *
  * @author ngoh
@@ -342,6 +344,10 @@ public class FinanceManagerDashboard extends javax.swing.JFrame {
                 new FinanceManagerDashboard().setVisible(true);
             }
         });
+    }
+    
+    public JTable getPaymentTable() {
+        return supplierPaymentTable;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
