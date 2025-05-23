@@ -93,4 +93,9 @@ public class Item implements Identifiable {
     public void setSellPrice(double sellPrice) {
         this.sellPrice = sellPrice;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

@@ -41,7 +41,7 @@ public class DailySalesTableHelper extends BaseTableHelper {
                         sale.getItemId(),
                         item.getName(),
                         sale.getQuantity(),
-                        item.getPrice(),
+                        item.getSellPrice(),
                         sale.getTotalAmount()
                 );
                 rows.add(row);
@@ -55,6 +55,7 @@ public class DailySalesTableHelper extends BaseTableHelper {
             model.addRow(new Object[]{"No sales yet", "", "", "", "", "", ""});
         } else {
             TableManager.populateTable(model, rows, true);
+            
         }
     }
 }
