@@ -8,6 +8,7 @@ import helpers.BaseTableHelper;
 import helpers.DailySalesTableHelper;
 import helpers.PurchaseOrderTableHelper;
 import helpers.SupplierTableHelper;
+import helpers.PurchaseRequisitionsTableHelper;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
@@ -32,6 +33,10 @@ public class SalesManagerController extends BaseController {
     // Purchase Order
     private JTable purchaseOrderTable;
     
+    //Purchase Requisitions
+    private JTable historicalRequisitionTable;
+    private JTable pendingRequisitionTable;
+    
     //Suppliers
     private JTable supplierTable;
 
@@ -51,9 +56,15 @@ public class SalesManagerController extends BaseController {
         DefaultTableModel model = (DefaultTableModel) dailySalesTable.getModel();
         DailySalesTableHelper.populateTodaySales(model);
 
-        purchaseOrderTable = dashboard.getOrderTable();
-        DefaultTableModel orderModel = (DefaultTableModel) purchaseOrderTable.getModel();
-        PurchaseOrderTableHelper.populatePurchaseOrder(orderModel);
+//        purchaseOrderTable = dashboard.getOrderTable();
+//        DefaultTableModel orderModel = (DefaultTableModel) purchaseOrderTable.getModel();
+//        PurchaseOrderTableHelper.populatePurchaseOrder(orderModel);
+
+        historicalRequisitionTable = dashboard.getHistoricalRequisitionTable();
+        pendingRequisitionTable = dashboard.getPendingRequisitionTable();
+        DefaultTableModel pendingModel = (DefaultTableModel) pendingRequisitionTable.getModel();
+        DefaultTableModel historicalModel = (DefaultTableModel) historicalRequisitionTable.getModel();
+        PurchaseRequisitionsTableHelper.populateAllRequisitions(pendingModel, historicalModel);
 
         JLabel totalAmountText = dashboard.getTotalAmount();
         totalAmountText.setText(DailySalesTableHelper.calculateColumnTotal(dailySalesTable, 6));

@@ -1,1 +1,2 @@
-requisitionID,salesManagerID,itemID,quantity,generatedDate,requiredDate,status(pending/approved/rejected)
+1,1001,i001,1,2024,2024,pending
+2,1001,i001,1,2024,2024,rejected
