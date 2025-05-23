@@ -10,10 +10,8 @@ import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import models.PurchaseRequisition;
 import repository.PurchaseRequisitionRepository;
-import services.TableManager;
 import models.Item;
 import repository.ItemRepository;
-import repository.SalesRepository;
 import repository.UserRepository;
 /**
  *
