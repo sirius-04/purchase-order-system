@@ -29,7 +29,7 @@ public class MainController extends BaseController {
     public MainController(User user) {
         super(user);
     }
-    
+
     public MainController() {
         this(null);
     }
@@ -49,35 +49,35 @@ public class MainController extends BaseController {
 
     @Override
     protected void setupCustomListeners() {
-        submitButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                login();
-            }
-        });
+        login();
     }
 
     private void login() {
-        AuthenticationManager auth = new AuthenticationManager();
-        String enteredUsername = usernameTextField.getText();
-        String enteredPassword = passwordTextField.getText();
+        submitButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                AuthenticationManager auth = new AuthenticationManager();
+                String enteredUsername = usernameTextField.getText();
+                String enteredPassword = passwordTextField.getText();
 
-        try {
-            User user = auth.authorize(enteredUsername, enteredPassword);
-            BaseController controller = ControllerFactory.getControllerFor(user);
+                try {
+                    User user = auth.authorize(enteredUsername, enteredPassword);
+                    BaseController controller = ControllerFactory.getControllerFor(user);
 
-            view.dispose();
-            controller.start();
+                    view.dispose();
+                    controller.start();
 
-        } catch (AuthenticationManager.UserNotFoundException e) {
-            JOptionPane.showMessageDialog(null, "Error: Username not found!", "Login Failed", JOptionPane.ERROR_MESSAGE);
-        } catch (AuthenticationManager.IncorrectPasswordException e) {
-            JOptionPane.showMessageDialog(null, "Error: Incorrect password!", "Login Failed", JOptionPane.ERROR_MESSAGE);
-        } catch (AuthenticationManager.InvalidRoleException e) {
-            JOptionPane.showMessageDialog(null, "Error: Invalid user role!", "Login Failed", JOptionPane.ERROR_MESSAGE);
-        }
+                } catch (AuthenticationManager.UserNotFoundException ex) {
+                    JOptionPane.showMessageDialog(null, "Error: Username not found!", "Login Failed", JOptionPane.ERROR_MESSAGE);
+                } catch (AuthenticationManager.IncorrectPasswordException ex) {
+                    JOptionPane.showMessageDialog(null, "Error: Incorrect password!", "Login Failed", JOptionPane.ERROR_MESSAGE);
+                } catch (AuthenticationManager.InvalidRoleException ex) {
+                    JOptionPane.showMessageDialog(null, "Error: Invalid user role!", "Login Failed", JOptionPane.ERROR_MESSAGE);
+                }
 
-        // empty the text field after submit
-        usernameTextField.setText("");
-        passwordTextField.setText("");
+                // empty the text field after submit
+                usernameTextField.setText("");
+                passwordTextField.setText("");
+            }
+        });
     }
 }

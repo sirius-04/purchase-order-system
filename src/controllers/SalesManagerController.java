@@ -25,17 +25,17 @@ import views.SalesManagerDashboard;
 public class SalesManagerController extends BaseController {
 
     private SalesManagerDashboard dashboard;
-    
+
     // item tables
     private JTable itemOnSaleTable;
     private JTable itemNotOnSaleTable;
-    
+
     //  Daily Sales
     private JTable dailySalesTable;
-    
+
     // Purchase Order
     private JTable purchaseOrderTable;
-    
+
     //Suppliers
     private JTable supplierTable;
 
@@ -53,7 +53,7 @@ public class SalesManagerController extends BaseController {
     protected void loadInitialData() {
         itemOnSaleTable = dashboard.getItemOnSaleTable();
         itemNotOnSaleTable = dashboard.getItemNotOnSaleTable();
-        
+
         // item on sale table population
         DefaultTableModel itemOnSaleTableModel = (DefaultTableModel) itemOnSaleTable.getModel();
         ItemTableHelper.populateItemOnSale(itemOnSaleTableModel);
@@ -61,7 +61,7 @@ public class SalesManagerController extends BaseController {
         // item not on sale table population
         DefaultTableModel itemNotOnSaleTableModel = (DefaultTableModel) itemNotOnSaleTable.getModel();
         ItemTableHelper.populateItemNotOnSale(itemNotOnSaleTableModel);
-        
+
         dailySalesTable = dashboard.getSalesTable();
         DefaultTableModel model = (DefaultTableModel) dailySalesTable.getModel();
         DailySalesTableHelper.populateTodaySales(model);
@@ -72,17 +72,20 @@ public class SalesManagerController extends BaseController {
 
         JLabel totalAmountText = dashboard.getTotalAmount();
         totalAmountText.setText(DailySalesTableHelper.calculateColumnTotal(dailySalesTable, 6));
-//        totalAmountText.setText(PurchaseOrderTableHelper.calculateColumnTotal(purchaseOrderTable, 7));
-        
+
         // Supplier
         supplierTable = dashboard.getSupplierTable();
         DefaultTableModel supplierModel = (DefaultTableModel) supplierTable.getModel();
         SupplierTableHelper.populateSupplier(supplierModel);
-        
+
     }
 
     @Override
     protected void setupCustomListeners() {
+        addSale();
+    }
+
+    private void addSale() {
         JButton addSalesButton = dashboard.getAddSalesButton();
 
         addSalesButton.addActionListener(new ActionListener() {
@@ -91,4 +94,6 @@ public class SalesManagerController extends BaseController {
             }
         });
     }
+    
+    
 }
