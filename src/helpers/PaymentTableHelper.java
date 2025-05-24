@@ -12,7 +12,7 @@ import models.Payment;
 import models.Supplier;
 import repository.PaymentRepository;
 import repository.SupplierRepository;
-import services.TableManager;
+import utils.TableManager;
 
 /**
  *

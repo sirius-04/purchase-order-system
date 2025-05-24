@@ -13,7 +13,7 @@ import models.Sales;
 import models.Item;
 import repository.ItemRepository;
 import repository.SalesRepository;
-import services.TableManager;
+import utils.TableManager;
 import javax.swing.table.DefaultTableModel;
 import java.time.LocalDate;
 import java.util.ArrayList;

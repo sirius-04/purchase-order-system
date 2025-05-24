@@ -16,7 +16,7 @@ import models.Item;
 import models.Supplier;
 import repository.ItemRepository;
 import repository.SupplierRepository;
-import services.TableManager;
+import utils.TableManager;
 
 /**
  *

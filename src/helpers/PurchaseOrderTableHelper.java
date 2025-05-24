@@ -12,7 +12,7 @@ import models.Item;
 import models.PurchaseOrder;
 import repository.ItemRepository;
 import repository.PurchaseOrdersRepository;
-import services.TableManager;
+import utils.TableManager;
 
 /**
  *

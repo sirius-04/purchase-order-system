@@ -11,7 +11,7 @@ package helpers;
 import dtos.SupplierTableRow;
 import models.Supplier;
 import repository.SupplierRepository;
-import services.TableManager;
+import utils.TableManager;
 
 import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;

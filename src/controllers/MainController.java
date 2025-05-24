@@ -12,7 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import models.users.User;
-import services.AuthenticationManager;
+import utils.AuthenticationManager;
 import views.Main;
 
 /**

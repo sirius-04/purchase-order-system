@@ -6,8 +6,8 @@ import models.Sales;
 import models.users.SalesManager;
 import repository.ItemRepository;
 import repository.SalesRepository;
-import services.DateTimeService;
-import services.IdGenerator;
+import utils.DateTimeService;
+import utils.IdGenerator;
 import views.SalesManagerDashboard;
 
 import javax.swing.*;
