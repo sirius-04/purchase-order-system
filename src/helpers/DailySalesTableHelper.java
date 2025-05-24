@@ -21,6 +21,7 @@ import javax.swing.JTable;
 import utils.DateTimeService;
 
 public class DailySalesTableHelper extends BaseTableHelper {
+    private static final TableManager<DailySalesTableRow> tableManager = new TableManager<>();
 
     public static void populateTodaySales(JTable table) {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
@@ -57,7 +58,7 @@ public class DailySalesTableHelper extends BaseTableHelper {
             model.setRowCount(0);
             model.addRow(new Object[]{"No sales yet", "", "", "", "", "", ""});
         } else {
-            TableManager.populateTable(model, rows, true);
+            tableManager.populateTable(model, rows, true);
             
         }
     }

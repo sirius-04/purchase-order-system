@@ -20,6 +20,8 @@ import utils.TableManager;
  * @author ngoh
  */
 public class PaymentTableHelper extends BaseTableHelper {
+    private static final TableManager<PaymentTableRow> tableManager = new TableManager<>();
+    
     public static void populatePayment(JTable table) {  
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         
@@ -49,7 +51,7 @@ public class PaymentTableHelper extends BaseTableHelper {
             model.setRowCount(0);
             model.addRow(new Object[]{"No payment yet", "", "", "", "", "", ""});
         } else {
-            TableManager.populateTable(model, rows, true);
+            tableManager.populateTable(model, rows, true);
         }
     }
 }

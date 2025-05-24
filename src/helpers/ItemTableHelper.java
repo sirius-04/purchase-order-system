@@ -24,6 +24,7 @@ import utils.TableManager;
  * @author Chan Yong Liang
  */
 public class ItemTableHelper extends BaseTableHelper {
+    private static final TableManager<ItemTableRow> tableManager = new TableManager<>();
 
     public static void populateItemOnSale(JTable table) {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
@@ -57,7 +58,7 @@ public class ItemTableHelper extends BaseTableHelper {
             model.setRowCount(0);
             model.addRow(new Object[]{"No item on sale", "", "", "", ""});
         } else {
-            TableManager.populateTable(model, rows, true);
+            tableManager.populateTable(model, rows, true);
         }
 
     }
@@ -94,7 +95,7 @@ public class ItemTableHelper extends BaseTableHelper {
             model.setRowCount(0);
             model.addRow(new Object[]{"No item", "", "", "", ""});
         } else {
-            TableManager.populateTable(model, rows, true);
+            tableManager.populateTable(model, rows, true);
         }
 
     }

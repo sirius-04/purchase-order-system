@@ -20,6 +20,8 @@ import utils.TableManager;
  * @author ngoh
  */
 public class PurchaseOrderTableHelper extends BaseTableHelper {
+    private static final TableManager<PurchaseOrderTableRow> tableManager = new TableManager<>();
+    
     public static void populatePurchaseOrder(JTable table) {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         
@@ -50,7 +52,7 @@ public class PurchaseOrderTableHelper extends BaseTableHelper {
             model.setRowCount(0);
             model.addRow(new Object[]{"No purchase order yet", "", "", "", "", "", ""});
         } else {
-            TableManager.populateTable(model, rows, true);
+            tableManager.populateTable(model, rows, true);
         }
     }
 }

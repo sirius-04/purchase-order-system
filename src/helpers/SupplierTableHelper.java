@@ -19,7 +19,9 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 public class SupplierTableHelper {
-    
+        private static final TableManager<SupplierTableRow> tableManager = new TableManager<>();
+                
+                
     public static void populateSupplier(JTable table) {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         
@@ -48,7 +50,7 @@ public class SupplierTableHelper {
             model.setRowCount(0);
             model.addRow(new Object[]{"No supplier yet", "", "", "", ""});
         } else {
-            TableManager.populateTable(model, rows, true);
+            tableManager.populateTable(model, rows, true);
         }
     }
 }
