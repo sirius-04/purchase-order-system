@@ -13,13 +13,16 @@ import models.Supplier;
 import repository.SupplierRepository;
 import utils.TableManager;
 
-import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 public class SupplierTableHelper {
     
-    public static void populateSupplier(DefaultTableModel model) {
+    public static void populateSupplier(JTable table) {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        
         SupplierRepository supplierRepo = new SupplierRepository();
 
 

@@ -7,6 +7,7 @@ package helpers;
 import dtos.PurchaseRequisitionTableRow;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import models.PurchaseRequisition;
 import repository.PurchaseRequisitionRepository;
@@ -19,7 +20,11 @@ import repository.UserRepository;
  */
 public class PurchaseRequisitionsTableHelper {
 
-    public static void populateAllRequisitions(DefaultTableModel pendingModel, DefaultTableModel historicalModel) {
+    public static void populateAllRequisitions(JTable pendingTable, JTable historicalTable) {
+        DefaultTableModel pendingModel = (DefaultTableModel) pendingTable.getModel();
+        
+        DefaultTableModel historicalModel = (DefaultTableModel) historicalTable.getModel();
+        
         PurchaseRequisitionRepository prRepo = new PurchaseRequisitionRepository();
         ItemRepository itemRepo = new ItemRepository();
         UserRepository smRepo = new UserRepository(); 

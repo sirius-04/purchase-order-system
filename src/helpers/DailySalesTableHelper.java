@@ -15,17 +15,20 @@ import repository.ItemRepository;
 import repository.SalesRepository;
 import utils.TableManager;
 import javax.swing.table.DefaultTableModel;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JTable;
+import utils.DateTimeService;
 
 public class DailySalesTableHelper extends BaseTableHelper {
 
-    public static void populateTodaySales(DefaultTableModel model) {
+    public static void populateTodaySales(JTable table) {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        
         SalesRepository salesRepo = new SalesRepository();
         ItemRepository itemRepo = new ItemRepository();
 
-        String today = LocalDate.now().toString();
+        String today = DateTimeService.getCurrentDate();
 
         List<Sales> todaysSales = salesRepo.getAll().stream()
                 .filter(sale -> today.equals(sale.getDate()))

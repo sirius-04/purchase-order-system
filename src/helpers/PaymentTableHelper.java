@@ -7,6 +7,7 @@ package helpers;
 import dtos.PaymentTableRow;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import models.Payment;
 import models.Supplier;
@@ -19,7 +20,9 @@ import utils.TableManager;
  * @author ngoh
  */
 public class PaymentTableHelper extends BaseTableHelper {
-    public static void populatePayment(DefaultTableModel model) {        
+    public static void populatePayment(JTable table) {  
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        
         PaymentRepository paymentRepo = new PaymentRepository();
         SupplierRepository supplierRepo = new SupplierRepository();
 

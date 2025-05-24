@@ -7,6 +7,7 @@ package helpers;
 import dtos.PurchaseOrderTableRow;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import models.Item;
 import models.PurchaseOrder;
@@ -19,7 +20,9 @@ import utils.TableManager;
  * @author ngoh
  */
 public class PurchaseOrderTableHelper extends BaseTableHelper {
-    public static void populatePurchaseOrder(DefaultTableModel model) {
+    public static void populatePurchaseOrder(JTable table) {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        
         PurchaseOrdersRepository orderRepo = new PurchaseOrdersRepository();
         ItemRepository itemRepo = new ItemRepository();
 

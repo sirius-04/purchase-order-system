@@ -33,8 +33,7 @@ public class FinanceManagerController extends BaseController {
     @Override
     protected void loadInitialData() {
         paymentTable = dashboard.getPaymentTable();
-        DefaultTableModel orderModel = (DefaultTableModel) paymentTable.getModel();
-        PaymentTableHelper.populatePayment(orderModel);
+        PaymentTableHelper.populatePayment(paymentTable);
     }
 
     @Override

@@ -11,6 +11,7 @@ package helpers;
 import dtos.ItemTableRow;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import models.Item;
 import models.Supplier;
@@ -24,7 +25,9 @@ import utils.TableManager;
  */
 public class ItemTableHelper extends BaseTableHelper {
 
-    public static void populateItemOnSale(DefaultTableModel model) {
+    public static void populateItemOnSale(JTable table) {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        
         ItemRepository itemRepo = new ItemRepository();
         SupplierRepository supplierRepo = new SupplierRepository();
 
@@ -59,7 +62,9 @@ public class ItemTableHelper extends BaseTableHelper {
 
     }
 
-    public static void populateItemNotOnSale(DefaultTableModel model) {
+    public static void populateItemNotOnSale(JTable table) {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        
         ItemRepository itemRepo = new ItemRepository();
         SupplierRepository supplierRepo = new SupplierRepository();
 
