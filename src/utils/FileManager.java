@@ -27,6 +27,7 @@ public class FileManager {
             Map.entry("purchase_requisitions", "src/data/purchase_requisitions.txt"),
             Map.entry("sales", "src/data/sales.txt"),
             Map.entry("suppliers", "src/data/suppliers.txt"),
+            Map.entry("item_supplier", "src/data/item_supplier.txt"),
             Map.entry("usersId", "src/data/last_ids/users_last_id.txt"),
             Map.entry("itemsId", "src/data/last_ids/items_last_id.txt"),
             Map.entry("paymentsId", "src/data/last_ids/payments_last_id.txt"),

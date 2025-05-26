@@ -4,7 +4,6 @@
  */
 package services;
 
-import helpers.DailySalesTableHelper;
 import java.awt.Component;
 import java.util.List;
 import javax.swing.BoxLayout;
@@ -13,12 +12,12 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
-import javax.swing.JTable;
 import javax.swing.SpinnerNumberModel;
 import models.Item;
 import models.Sales;
 import repository.ItemRepository;
 import repository.SalesRepository;
+import tables.DailySalesTableModel;
 import utils.DateTimeService;
 import utils.IdGenerator;
 
@@ -30,12 +29,11 @@ public class SalesService {
 
     private final IdGenerator idGenerator = new IdGenerator();
     private final SalesRepository salesRepo = new SalesRepository();
+    private final ItemRepository itemRepo = new ItemRepository();
 
-    public boolean addSale(Component parent, JTable dailySalesTable) {
+    public boolean addSale(Component parent) {
 
-        ItemRepository itemRepo = new ItemRepository();
-        List<Item> itemOnSaleList = itemRepo.getAll()
-                .stream()
+        List<Item> itemOnSaleList = itemRepo.getAll().stream()
                 .filter(item -> item.getStatus() == Item.Status.onSale)
                 .toList();
 
@@ -61,10 +59,16 @@ public class SalesService {
             String currentDate = DateTimeService.getCurrentDate();
             String currentTime = DateTimeService.getCurrentTime();
 
-            Sales newSale = new Sales(generatedSaleId, selectedItem.getItemId(), quantity, currentDate, currentTime, totalAmount);
+            Sales newSale = new Sales(
+                    generatedSaleId,
+                    selectedItem.getItemId(),
+                    quantity,
+                    currentDate,
+                    currentTime,
+                    totalAmount
+            );
+
             salesRepo.save(newSale);
-            
-            DailySalesTableHelper.populateTodaySales(dailySalesTable);
 
             JOptionPane.showMessageDialog(parent, "Sale recorded successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
             return true;
@@ -74,19 +78,11 @@ public class SalesService {
     }
 
     public double calculateTodaySalesTotal() {
-        
         String today = DateTimeService.getCurrentDate();
-        
-        List<Sales> todaySales = salesRepo.getAll().stream()
+
+        return salesRepo.getAll().stream()
                 .filter(sale -> today.equals(sale.getDate()))
-                .toList();
-        return todaySales.stream()
                 .mapToDouble(Sales::getTotalAmount)
                 .sum();
-    }
-
-    public void updateTotalSaleAmountLabel(JLabel label) {
-        double total = calculateTodaySalesTotal();
-        label.setText(String.format("%.2f", total));
     }
 }
