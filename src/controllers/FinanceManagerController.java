@@ -4,11 +4,15 @@
  */
 package controllers;
 
+import helpers.ItemTableHelper;
 import helpers.PaymentTableHelper;
+import helpers.PurchaseOrderTableHelper;
+import helpers.PurchaseRequisitionsTableHelper;
 import javax.swing.JFrame;
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
+import models.PurchaseOrder;
 import models.users.FinanceManager;
+import services.PurchaseOrderService;
 import views.FinanceManagerDashboard;
 
 /**
@@ -18,7 +22,11 @@ import views.FinanceManagerDashboard;
 public class FinanceManagerController extends BaseController {
     private FinanceManagerDashboard dashboard;
     
+    private JTable purchaseOrderTable;
+    private JTable itemTable;
     private JTable paymentTable;
+    private JTable historicalRequisitionTable;
+    private JTable pendingRequisitionTable;
     
     public FinanceManagerController(FinanceManager user) {
         super(user);
@@ -32,11 +40,43 @@ public class FinanceManagerController extends BaseController {
 
     @Override
     protected void loadInitialData() {
-        paymentTable = dashboard.getPaymentTable();
-        PaymentTableHelper.populatePayment(paymentTable);
+        populateAllTables();
     }
 
     @Override
     protected void setupCustomListeners() {
+        PurchaseOrderService service = new PurchaseOrderService();
+        service.addApprovalListener(dashboard, purchaseOrderTable);
     }
+    
+    private void populateAllTables() {
+        populatePurchaseOrderTables();
+        populateInventoryTables();
+        populatePaymentTables();
+        populateRequisitionTables();
+    }
+    
+    private void populatePurchaseOrderTables() {
+        purchaseOrderTable = dashboard.getOrderTable();
+        PurchaseOrderTableHelper.populatePurchaseOrder(purchaseOrderTable, PurchaseOrder.Status.pending);
+    }
+    
+    private void populateInventoryTables() {
+        itemTable = dashboard.getInventoryTable();
+        ItemTableHelper.populateItemOnSale(itemTable);
+        ItemTableHelper.populateItemNotOnSale(itemTable);
+    }
+    
+    private void populatePaymentTables() {
+        paymentTable = dashboard.getPaymentTable();
+        PaymentTableHelper.populatePayment(paymentTable);
+    }
+    
+    private void populateRequisitionTables() {
+        historicalRequisitionTable = dashboard.getHistoricalRequisitionTable();
+        pendingRequisitionTable = dashboard.getPendingRequisitionTable();
+        
+        PurchaseRequisitionsTableHelper.populateAllRequisitions(historicalRequisitionTable, pendingRequisitionTable);
+    }
+
 }

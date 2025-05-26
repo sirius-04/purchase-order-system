@@ -12,6 +12,7 @@ import javax.swing.table.DefaultTableModel;
 import models.Payment;
 import models.Supplier;
 import repository.PaymentRepository;
+import repository.PurchaseOrdersRepository;
 import repository.SupplierRepository;
 import utils.TableManager;
 
@@ -27,12 +28,16 @@ public class PaymentTableHelper extends BaseTableHelper {
         
         PaymentRepository paymentRepo = new PaymentRepository();
         SupplierRepository supplierRepo = new SupplierRepository();
+        PurchaseOrdersRepository purchaseOrderRepo = new PurchaseOrdersRepository();
 
         List<Payment> payment = paymentRepo.getAll();
         List<PaymentTableRow> rows = new ArrayList<>();
         for (Payment pay: payment) {
             try {
-                Supplier supplier = supplierRepo.find(pay.getPaymentId());
+                var purchaseOrder = purchaseOrderRepo.find(pay.getPurchaseOrderId());
+                String supplierId = purchaseOrder.getSupplierId();
+                Supplier supplier = supplierRepo.find(supplierId);
+                
                 PaymentTableRow row = new PaymentTableRow(
                        supplier.getSupplierId(),
                        supplier.getName(),
