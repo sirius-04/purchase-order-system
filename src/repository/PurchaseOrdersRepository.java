@@ -13,7 +13,7 @@ import models.PurchaseOrder;
 public class PurchaseOrdersRepository extends BaseRepository<PurchaseOrder>  {
     
     public PurchaseOrdersRepository() {
-        super("purchase_orders", "%s,%s,%s,%s,%d,%.2f,%s,%s");
+        super("purchase_orders", "%s,%s,%s,%s,%d,%.2f,%s,%s,%s");
     }
     
      @Override

@@ -1,6 +1,5 @@
 package controllers;
 
-import helpers.*;
 import models.users.SalesManager;
 import views.SalesManagerDashboard;
 
@@ -8,13 +7,21 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import services.SalesService;
+import tables.DailySalesTableModel;
+import tables.ItemNotOnSaleTableModel;
+import tables.ItemOnSaleTableModel;
 
 public class SalesManagerController extends BaseController {
 
     private SalesManagerDashboard dashboard;
     private SalesService salesService = new SalesService();
 
-    // Tables
+    // table models
+    ItemOnSaleTableModel itemOnSaleTableModel = new ItemOnSaleTableModel();
+    ItemNotOnSaleTableModel itemNotOnSaleTableModel = new ItemNotOnSaleTableModel();
+    DailySalesTableModel saleTableModel = new DailySalesTableModel();
+    
+    // tables
     private JTable itemOnSaleTable;
     private JTable itemNotOnSaleTable;
     private JTable dailySalesTable;
@@ -35,64 +42,43 @@ public class SalesManagerController extends BaseController {
 
     @Override
     protected void loadInitialData() {
-        populateAllTables();
+        loadTables();
         updateTotalSaleAmount();
     }
 
     @Override
     protected void setupCustomListeners() {
-        setupAddSaleListener();
+        addSaleButtonListener();
     }
-
-    private void populateAllTables() {
-        populateItemTables();
-        populateSalesTable();
-        populatePurchaseOrderTable();
-        populateRequisitionTables();
-        populateSupplierTable();
-    }
-
-    private void populateItemTables() {
-        itemOnSaleTable = dashboard.getItemOnSaleTable();
-        itemNotOnSaleTable = dashboard.getItemNotOnSaleTable();
-        ItemTableHelper.populateItemOnSale(itemOnSaleTable);
-        ItemTableHelper.populateItemNotOnSale(itemNotOnSaleTable);
-    }
-
-    private void populateSalesTable() {
-        dailySalesTable = dashboard.getSalesTable();
-        DailySalesTableHelper.populateTodaySales(dailySalesTable);
-    }
-
-    private void populatePurchaseOrderTable() {
-        purchaseOrderTable = dashboard.getOrderTable();
-        PurchaseOrderTableHelper.populatePurchaseOrder(purchaseOrderTable, null);
-    }
-
-    private void populateRequisitionTables() {
-        historicalRequisitionTable = dashboard.getHistoricalRequisitionTable();
-        pendingRequisitionTable = dashboard.getPendingRequisitionTable();
-        
-        PurchaseRequisitionsTableHelper.populateAllRequisitions(historicalRequisitionTable, pendingRequisitionTable);
-    }
-
-    private void populateSupplierTable() {
-        supplierTable = dashboard.getSupplierTable();
-        SupplierTableHelper.populateSupplier(supplierTable);
-    }
-
-    private void setupAddSaleListener() {
+    private void addSaleButtonListener() {
         JButton addSalesButton = dashboard.getAddSalesButton();
+        
         addSalesButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                salesService.addSale(dashboard, dashboard.getSalesTable());
+                salesService.addSale(dashboard);
+                
+                saleTableModel.refresh();
                 updateTotalSaleAmount();
             }
         });
     }
     
+    private void loadTables() {
+        // item tables
+        itemOnSaleTable = dashboard.getItemOnSaleTable();
+        itemNotOnSaleTable = dashboard.getItemNotOnSaleTable();
+        itemOnSaleTable.setModel(itemOnSaleTableModel);
+        itemNotOnSaleTable.setModel(itemNotOnSaleTableModel);
+        
+        // load daily sales table
+        dailySalesTable = dashboard.getSalesTable();
+        dailySalesTable.setModel(saleTableModel);
+    }
+    
     private void updateTotalSaleAmount() {
         JLabel totalAmountText = dashboard.getTotalAmount();
-        salesService.updateTotalSaleAmountLabel(totalAmountText);
+        Double totalSale = salesService.calculateTodaySalesTotal();
+        
+        totalAmountText.setText(Double.toString(totalSale));
     }
 }

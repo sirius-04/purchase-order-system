@@ -4,14 +4,15 @@
  */
 package controllers;
 
-import helpers.PaymentTableHelper;
-import helpers.PurchaseOrderTableHelper;
-import helpers.PurchaseRequisitionsTableHelper;
 import javax.swing.JFrame;
 import javax.swing.JTable;
-import models.PurchaseOrder;
 import models.users.FinanceManager;
 import services.PurchaseOrderService;
+import tables.HistoricalPurchaseRequisitionTableModel;
+import tables.InventoryTableModel;
+import tables.PaymentTableModel;
+import tables.PendingPurchaseRequisitionTableModel;
+import tables.PurchaseOrderTableModel;
 import views.FinanceManagerDashboard;
 
 /**
@@ -19,8 +20,17 @@ import views.FinanceManagerDashboard;
  * @author Chan Yong Liang
  */
 public class FinanceManagerController extends BaseController {
+
     private FinanceManagerDashboard dashboard;
-    
+    private PurchaseOrderService poService = new PurchaseOrderService();
+
+    // table models
+    PaymentTableModel paymentTableModel = new PaymentTableModel();
+    PurchaseOrderTableModel purchaseOrderTableModel = new PurchaseOrderTableModel();
+    PendingPurchaseRequisitionTableModel pendingRequisitionTableModel = new PendingPurchaseRequisitionTableModel();
+    HistoricalPurchaseRequisitionTableModel historicalRequisitionTableModel = new HistoricalPurchaseRequisitionTableModel();
+    InventoryTableModel inventoryTableModel = new InventoryTableModel();
+
     private JTable purchaseOrderTable;
     private JTable inventoryTable;
     private JTable paymentTable;
@@ -29,7 +39,7 @@ public class FinanceManagerController extends BaseController {
     
     public FinanceManagerController(FinanceManager user) {
         super(user);
-    } 
+    }
 
     @Override
     protected JFrame createView() {
@@ -39,51 +49,38 @@ public class FinanceManagerController extends BaseController {
 
     @Override
     protected void loadInitialData() {
-        populateAllTables();
+        loadTables();
     }
 
     @Override
     protected void setupCustomListeners() {
-        PurchaseOrderService service = new PurchaseOrderService();
-        service.addApprovalListener(dashboard, purchaseOrderTable, this::refreshInventoryTable);
-        service.verifyUpdateListener(dashboard, inventoryTable);
-    }
-    
-    public void refreshInventoryTable() {
-        populateInventoryTables();
-}
-    
-    private void populateAllTables() {
-        populatePurchaseOrderTables();
-        populateInventoryTables();
-        populatePaymentTables();
-        populateRequisitionTables();
-    }
-    
-    private void populatePurchaseOrderTables() {
-        purchaseOrderTable = dashboard.getOrderTable();
-        PurchaseOrderTableHelper.populatePurchaseOrder(purchaseOrderTable, PurchaseOrder.Status.pending);
-    }
-    
-    private void populateInventoryTables() {
-//        inventoryTable = dashboard.getInventoryTable();
-//        ItemTableHelper.populateItemOnSale(inventoryTable);
-//        ItemTableHelper.populateItemNotOnSale(inventoryTable);
-        inventoryTable = dashboard.getInventoryTable();
-        PurchaseOrderTableHelper.populatePurchaseOrder(inventoryTable, PurchaseOrder.Status.fullfilled);
-          
-    }
-    
-    private void populatePaymentTables() {
-        paymentTable = dashboard.getPaymentTable();
-        PaymentTableHelper.populatePayment(paymentTable);
-    }
-    
-    private void populateRequisitionTables() {
-        historicalRequisitionTable = dashboard.getHistoricalRequisitionTable();
-        pendingRequisitionTable = dashboard.getPendingRequisitionTable();
+        approvePOListener();
+        poService.verifyUpdateListener(dashboard, inventoryTable);
         
-        PurchaseRequisitionsTableHelper.populateAllRequisitions(historicalRequisitionTable, pendingRequisitionTable);
     }
 
+    private void loadTables() {
+        // po table
+        purchaseOrderTable = dashboard.getOrderTable();
+        purchaseOrderTable.setModel(purchaseOrderTableModel);
+
+        // payment table
+        paymentTable = dashboard.getPaymentTable();
+        paymentTable.setModel(paymentTableModel);
+
+        // pr tables
+        pendingRequisitionTable = dashboard.getPendingRequisitionTable();
+        pendingRequisitionTable.setModel(pendingRequisitionTableModel);
+        historicalRequisitionTable = dashboard.getHistoricalRequisitionTable();
+        historicalRequisitionTable.setModel(historicalRequisitionTableModel);
+        
+        // inventory table
+        inventoryTable = dashboard.getInventoryTable();
+        inventoryTable.setModel(inventoryTableModel);
+    }
+    
+    private void approvePOListener() {
+        poService.addApprovalListener(dashboard, purchaseOrderTable);
+        purchaseOrderTableModel.refresh();
+    }
 }

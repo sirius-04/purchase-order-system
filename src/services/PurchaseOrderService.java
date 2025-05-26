@@ -4,88 +4,76 @@
  */
 package services;
 
-import helpers.PurchaseOrderTableHelper;
 import java.awt.Component;
+import java.util.List;
 import javax.swing.JTable;
+import models.PurchaseOrder;
+import models.Supplier;
+import repository.ItemRepository;
+import repository.ItemSupplierRepository;
 import repository.PurchaseOrdersRepository;
-import utils.FileManager;
-import utils.IdGenerator;
+import repository.SupplierRepository;
+import tables.InventoryTableModel;
+import tables.PurchaseOrderTableModel;
 
 /**
  *
  * @author ngoh
  */
 public class PurchaseOrderService {
-    private final IdGenerator idGenerator = new IdGenerator();
+
     private final PurchaseOrdersRepository purchaseOrderRepo = new PurchaseOrdersRepository();
-    private final FileManager fileManager = new FileManager();
-    
+    private final SupplierRepository supplierRepo = new SupplierRepository();
+    private final ItemRepository itemRepo = new ItemRepository();
+    private final ItemSupplierRepository itemSupplierRepo = new ItemSupplierRepository();
+
     private int getColumnIndex(JTable table, String columnName) {
-    for (int i = 0; i < table.getColumnCount(); i++) {
-        if (table.getColumnName(i).equalsIgnoreCase(columnName)) {
-            return i;
-        }
-    }
-    return -1;
-}
-    
-    public boolean approvePo(String poId, String newQuantity, String newSupplier) {
-        String[] lines = fileManager.readFile("purchase_orders");
-        
-        for (int i = 0; i < lines.length; i++) {
-            String line = lines[i];
-            String[] parts = line.split(",");
-            
-            if (parts[0].equals(poId)) {
-                parts[4] = newQuantity;
-                parts[7] = "fullfilled";
-                parts[8] = newSupplier;
-                String updatedLine = String.join(",", parts);
-                
-                fileManager.editFile("purchase_orders", i + 1, updatedLine);
-                return true;
+        for (int i = 0; i < table.getColumnCount(); i++) {
+            if (table.getColumnName(i).equalsIgnoreCase(columnName)) {
+                return i;
             }
         }
-        return false;
-     }
-     
-    private String[] getSuppliers() {
-        String[] lines = fileManager.readFile("suppliers");
-        String[] supplierOptions = new String[lines.length];
+        return -1;
+    }
 
-        for (int i = 0; i < lines.length; i++) {
-            String[] parts = lines[i].split(",");
-            supplierOptions[i] = parts[0];
+    private String[] getSuppliers(String itemId) {
+        List<Supplier> supplierList = itemSupplierRepo.getItemSupplier(itemId);
+        String[] supplierOptions = new String[supplierList.size()];
+
+        for (int i = 0; i < supplierList.size(); i++) {
+            supplierOptions[i] = supplierList.get(i).getSupplierId();
         }
 
         return supplierOptions;
     }
 
-    
-   public void addApprovalListener(Component parent, JTable purchaseOrderTable, Runnable refreshInventoryTableCallback) {
-    purchaseOrderTable.addMouseListener(new java.awt.event.MouseAdapter() {
-        @Override
-        public void mouseClicked(java.awt.event.MouseEvent evt) {
-            int row = purchaseOrderTable.getSelectedRow();
-            if (row != -1) {
-                showApprovalDialog(parent, purchaseOrderTable, row, refreshInventoryTableCallback);
+    public void addApprovalListener(Component parent, JTable purchaseOrderTable) {
+        purchaseOrderTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int row = purchaseOrderTable.getSelectedRow();
+                if (row != -1) {
+                    showApprovalDialog(parent, purchaseOrderTable, row);
                 }
             }
         });
     }
 
-    private void showApprovalDialog(Component parent, JTable table, int row, Runnable refreshCallback) {
-        String poId = table.getValueAt(row, getColumnIndex(table, "Purchase Order ID")).toString();
-        String currentQuantity = table.getValueAt(row, getColumnIndex(table, "Quantity")).toString();
-        String currentSupplier = table.getValueAt(row, getColumnIndex(table, "Supplier ID")).toString();
+    private void showApprovalDialog(Component parent, JTable table, int selectedRow) {
+        PurchaseOrderTableModel model = (PurchaseOrderTableModel) table.getModel();
+        PurchaseOrder selectedPO = model.getPurchaseOrderAt(selectedRow);
+
+        String poId = selectedPO.getPurchaseOrderId();
+        int currentQuantity = selectedPO.getQuantity();
+        Supplier currentSupplier = supplierRepo.find(selectedPO.getSupplierId());
 
         javax.swing.JPanel panel = new javax.swing.JPanel(new java.awt.GridLayout(2, 2, 5, 5));
         javax.swing.JTextField quantityField = new javax.swing.JTextField(currentQuantity);
 
-        String[] supplierOptions = getSuppliers();
+        String[] supplierOptions = getSuppliers(selectedPO.getItemId());
         javax.swing.JComboBox<String> supplierCombo = new javax.swing.JComboBox<>(supplierOptions);
         for (int i = 0; i < supplierOptions.length; i++) {
-            if (supplierOptions[i].contains(currentSupplier)) {
+            if (supplierOptions[i].contains(currentSupplier.getName())) {
                 supplierCombo.setSelectedIndex(i);
                 break;
             }
@@ -121,65 +109,71 @@ public class PurchaseOrderService {
             );
 
             if (confirm == javax.swing.JOptionPane.YES_OPTION) {
-                boolean success = approvePo(poId, newQuantity, newSupplierId);
+                int updatedQuantity = Integer.parseInt(newQuantity);
 
-                if (success) {
-                    javax.swing.JOptionPane.showMessageDialog(parent, "Approved successfully!", "Success", javax.swing.JOptionPane.INFORMATION_MESSAGE);
-                    ((javax.swing.table.DefaultTableModel) table.getModel()).removeRow(row);
-                    refreshCallback.run();
-                } else {
-                    javax.swing.JOptionPane.showMessageDialog(parent, "Failed to approve. Please try again.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
-                }
+                double newPrice = updatedQuantity * itemRepo.find(selectedPO.getItemId()).getPrice();
+
+                PurchaseOrder updatedPO = new PurchaseOrder(selectedPO.getPurchaseOrderId(), selectedPO.getItemId(), selectedPO.getPurchaseRequisitionId(), selectedPO.getPurchaseManagerId(), Integer.parseInt(newQuantity), newPrice, selectedPO.getDate(), PurchaseOrder.Status.fullfilled, newSupplierId);
+
+                purchaseOrderRepo.update(updatedPO);
+
+                javax.swing.JOptionPane.showMessageDialog(parent, "Approved successfully!", "Success", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+
+                model.refresh();
+
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(parent, "Failed to approve. Please try again.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
             }
         }
     }
 
-
     public void verifyUpdateListener(Component parent, JTable inventoryTable) {
-    inventoryTable.addMouseListener(new java.awt.event.MouseAdapter() {
-        @Override
-        public void mouseClicked(java.awt.event.MouseEvent evt) {
-            int row = inventoryTable.getSelectedRow();
-            if (row != -1) {
-                int option = javax.swing.JOptionPane.showConfirmDialog(
-                        parent,
-                        "Do you want to verify this inventory update?",
-                        "Verify update inventory",
-                        javax.swing.JOptionPane.YES_NO_OPTION
-                );
+        inventoryTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int row = inventoryTable.getSelectedRow();
+                if (row != -1) {
+                    InventoryTableModel model = (InventoryTableModel) inventoryTable.getModel();
+                    PurchaseOrder selectedPO = model.getPurchaseOrderAt(row);
 
-                if (option == javax.swing.JOptionPane.YES_OPTION) {
-                    String poId = inventoryTable.getValueAt(row, getColumnIndex(inventoryTable, "Purchase Order ID")).toString();
-                    boolean success = verifyInventoryUpdate(poId);
+                    int option = javax.swing.JOptionPane.showConfirmDialog(
+                            parent,
+                            "Do you want to verify this inventory update?",
+                            "Verify update inventory",
+                            javax.swing.JOptionPane.YES_NO_OPTION
+                    );
 
-                    if (success) {
-                        javax.swing.JOptionPane.showMessageDialog(
-                                parent,
-                                "Verify successfully!",
-                                "Success",
-                                javax.swing.JOptionPane.INFORMATION_MESSAGE
-                        );
+                    if (option == javax.swing.JOptionPane.YES_OPTION) {
+                        String poId = selectedPO.getPurchaseOrderId();
+                        boolean success = verifyInventoryUpdate(poId);
 
-                        PurchaseOrderTableHelper.populatePurchaseOrder(inventoryTable, models.PurchaseOrder.Status.fullfilled);
-                    
-                    } else {
-                        javax.swing.JOptionPane.showMessageDialog(
-                                parent,
-                                "Failed to verify. Please try again.",
-                                "Error",
-                                javax.swing.JOptionPane.ERROR_MESSAGE
-                        );
+                        if (success) {
+                            javax.swing.JOptionPane.showMessageDialog(
+                                    parent,
+                                    "Verify successfully!",
+                                    "Success",
+                                    javax.swing.JOptionPane.INFORMATION_MESSAGE
+                            );
+
+                        } else {
+                            javax.swing.JOptionPane.showMessageDialog(
+                                    parent,
+                                    "Failed to verify. Please try again.",
+                                    "Error",
+                                    javax.swing.JOptionPane.ERROR_MESSAGE
+                            );
+                        }
                     }
                 }
             }
-        }
-    });
-}
+        });
+    }
+
     public boolean verifyInventoryUpdate(String poId) {
         return true;
     }
-    
-    public boolean processPayment (Component parent, JTable paymentTable) {
+
+    public boolean processPayment(Component parent, JTable paymentTable) {
         return true;
     }
 }
