@@ -12,6 +12,7 @@ import java.util.ArrayList;
 /**
  *
  * @author Chan Yong Liang
+ * @param <T>
  */
 public class TableManager<T extends TableConvertible> {
     private List<T> backingList = new ArrayList<>();
