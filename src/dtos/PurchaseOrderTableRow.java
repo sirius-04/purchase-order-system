@@ -18,8 +18,10 @@ public class PurchaseOrderTableRow implements TableConvertible  {
     private double price;
     private String purchaseManagerId;
     private PurchaseOrder.Status status;
+    private String supplierId;
 
-    public PurchaseOrderTableRow(String purchaseOrderId, String itemId, String itemName, int quantity, double price, String purchaseManagerId, PurchaseOrder.Status status) {
+    public PurchaseOrderTableRow(String purchaseOrderId, String itemId, String itemName, int quantity, 
+                                 double price, String purchaseManagerId, PurchaseOrder.Status status, String supplierId) {
         this.purchaseOrderId = purchaseOrderId;
         this.itemId = itemId;
         this.itemName = itemName;
@@ -27,12 +29,13 @@ public class PurchaseOrderTableRow implements TableConvertible  {
         this.price = price;
         this.purchaseManagerId = purchaseManagerId;
         this.status = status;
+        this.supplierId = supplierId;
     }
 
     @Override
     public Object[] toTableRow() {
         return new Object[]{
-            purchaseOrderId, itemId, itemName, quantity, price, purchaseManagerId, status
+            purchaseOrderId, itemId, itemName, quantity, price, purchaseManagerId, status, supplierId
         };
     }
 }

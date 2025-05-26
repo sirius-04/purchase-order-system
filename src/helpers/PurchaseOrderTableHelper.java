@@ -43,7 +43,8 @@ public class PurchaseOrderTableHelper extends BaseTableHelper {
                         po.getQuantity(),
                         po.getPrice(),
                         po.getPurchaseManagerId(),
-                        po.getStatus()
+                        po.getStatus(),
+                        po.getSupplierId()
                 );
                 rows.add(row);
                 }
