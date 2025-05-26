@@ -66,7 +66,7 @@ public class SalesManagerController extends BaseController {
 
     private void populatePurchaseOrderTable() {
         purchaseOrderTable = dashboard.getOrderTable();
-        PurchaseOrderTableHelper.populatePurchaseOrder(purchaseOrderTable);
+        PurchaseOrderTableHelper.populatePurchaseOrder(purchaseOrderTable, null);
     }
 
     private void populateRequisitionTables() {

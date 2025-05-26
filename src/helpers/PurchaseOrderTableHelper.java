@@ -11,6 +11,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import models.Item;
 import models.PurchaseOrder;
+import models.PurchaseOrder.Status;
 import repository.ItemRepository;
 import repository.PurchaseOrdersRepository;
 import utils.TableManager;
@@ -22,7 +23,7 @@ import utils.TableManager;
 public class PurchaseOrderTableHelper extends BaseTableHelper {
     private static final TableManager<PurchaseOrderTableRow> tableManager = new TableManager<>();
     
-    public static void populatePurchaseOrder(JTable table) {
+    public static void populatePurchaseOrder(JTable table, Status status) {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         
         PurchaseOrdersRepository orderRepo = new PurchaseOrdersRepository();
@@ -33,6 +34,8 @@ public class PurchaseOrderTableHelper extends BaseTableHelper {
         for (PurchaseOrder po: purchaseOrders) {
             try {
                 Item item = itemRepo.find(po.getItemId());
+                
+                if (status == null | status == po.getStatus()) {
                 PurchaseOrderTableRow row = new PurchaseOrderTableRow(
                         po.getPurchaseOrderId(),
                         po.getItemId(),
@@ -43,6 +46,7 @@ public class PurchaseOrderTableHelper extends BaseTableHelper {
                         po.getStatus()
                 );
                 rows.add(row);
+                }
             } catch (Exception e) {
                 System.err.println("Purchase Order not found: " + po.getItemId());
             }
