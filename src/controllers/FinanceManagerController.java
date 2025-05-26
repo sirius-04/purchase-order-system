@@ -4,7 +4,6 @@
  */
 package controllers;
 
-import helpers.ItemTableHelper;
 import helpers.PaymentTableHelper;
 import helpers.PurchaseOrderTableHelper;
 import helpers.PurchaseRequisitionsTableHelper;
@@ -23,7 +22,7 @@ public class FinanceManagerController extends BaseController {
     private FinanceManagerDashboard dashboard;
     
     private JTable purchaseOrderTable;
-    private JTable itemTable;
+    private JTable inventoryTable;
     private JTable paymentTable;
     private JTable historicalRequisitionTable;
     private JTable pendingRequisitionTable;
@@ -46,8 +45,13 @@ public class FinanceManagerController extends BaseController {
     @Override
     protected void setupCustomListeners() {
         PurchaseOrderService service = new PurchaseOrderService();
-        service.addApprovalListener(dashboard, purchaseOrderTable);
+        service.addApprovalListener(dashboard, purchaseOrderTable, this::refreshInventoryTable);
+        service.verifyUpdateListener(dashboard, inventoryTable);
     }
+    
+    public void refreshInventoryTable() {
+        populateInventoryTables();
+}
     
     private void populateAllTables() {
         populatePurchaseOrderTables();
@@ -62,9 +66,12 @@ public class FinanceManagerController extends BaseController {
     }
     
     private void populateInventoryTables() {
-        itemTable = dashboard.getInventoryTable();
-        ItemTableHelper.populateItemOnSale(itemTable);
-        ItemTableHelper.populateItemNotOnSale(itemTable);
+//        inventoryTable = dashboard.getInventoryTable();
+//        ItemTableHelper.populateItemOnSale(inventoryTable);
+//        ItemTableHelper.populateItemNotOnSale(inventoryTable);
+        inventoryTable = dashboard.getInventoryTable();
+        PurchaseOrderTableHelper.populatePurchaseOrder(inventoryTable, PurchaseOrder.Status.fullfilled);
+          
     }
     
     private void populatePaymentTables() {
