@@ -5,8 +5,11 @@
 package controllers;
 
 import javax.swing.JFrame;
+import javax.swing.JTable;
 import models.users.InventoryManager;
 import views.InventoryManagerDashboard;
+import tables.ItemTableModel;
+import tables.PurchaseOrderTableModel;
 
 /**
  *
@@ -14,6 +17,14 @@ import views.InventoryManagerDashboard;
  */
 public class InventoryManagerController extends BaseController {
     private InventoryManagerDashboard dashboard;
+    
+     // table models
+    ItemTableModel itemTableModel = new ItemTableModel();
+     PurchaseOrderTableModel purchaseOrderTableModel = new PurchaseOrderTableModel();
+
+    // tables
+    private JTable itemTable;
+    private JTable purchaseOrderTable;
     
     public InventoryManagerController(InventoryManager user) {
         super(user);
@@ -27,11 +38,21 @@ public class InventoryManagerController extends BaseController {
 
     @Override
     protected void loadInitialData() {
+        loadTables();
     }
 
     @Override
     protected void setupCustomListeners() {
     }
+    
+    private void loadTables() {
+        // item tables
+        itemTable = dashboard.getItemTable();
+        itemTable.setModel(itemTableModel);
+        
+        // po table
+        purchaseOrderTable = dashboard.getOrderTable();
+        purchaseOrderTable.setModel(purchaseOrderTableModel);
 
-
+    }
 }

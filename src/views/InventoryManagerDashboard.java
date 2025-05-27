@@ -8,6 +8,9 @@ package views;
  *
  * @author ngoh
  */
+
+import javax.swing.JTable;
+
 public class InventoryManagerDashboard extends javax.swing.JFrame {
 
     /**
@@ -92,13 +95,13 @@ public class InventoryManagerDashboard extends javax.swing.JFrame {
 
         orderTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Purchase Order ID", "Item ID", "Item Name", "Quantity", "Price", "Purchase Manager", "Status"
+                "Order ID", "Item ID", "Item Name", "Quantity", "Price", "Purchase Manager ID", "Status", "Supplier ID"
             }
         ));
         jScrollPane2.setViewportView(orderTable);
@@ -239,6 +242,13 @@ public class InventoryManagerDashboard extends javax.swing.JFrame {
                 new InventoryManagerDashboard().setVisible(true);
             }
         });
+    }
+    
+    public JTable getItemTable() {
+        return itemTable;
+    }
+    public JTable getOrderTable() {
+        return orderTable;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
