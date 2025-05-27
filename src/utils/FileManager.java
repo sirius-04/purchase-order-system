@@ -28,13 +28,15 @@ public class FileManager {
             Map.entry("sales", "src/data/sales.txt"),
             Map.entry("suppliers", "src/data/suppliers.txt"),
             Map.entry("item_supplier", "src/data/item_supplier.txt"),
+            Map.entry("inventory_update", "src/data/inventory_update.txt"),
             Map.entry("usersId", "src/data/last_ids/users_last_id.txt"),
             Map.entry("itemsId", "src/data/last_ids/items_last_id.txt"),
             Map.entry("paymentsId", "src/data/last_ids/payments_last_id.txt"),
             Map.entry("purchase_ordersId", "src/data/last_ids/po_last_id.txt"),
             Map.entry("purchase_requisitionsId", "src/data/last_ids/pr_last_id.txt"),
             Map.entry("salesId", "src/data/last_ids/sales_last_id.txt"),
-            Map.entry("suppliersId", "src/data/last_ids/suppliers_last_id.txt")
+            Map.entry("suppliersId", "src/data/last_ids/suppliers_last_id.txt"),
+            Map.entry("inventory_update_id", "src/data/last_ids/inventory_update_last_id.txt")
     );
 
     // retrieve file path by passing file name

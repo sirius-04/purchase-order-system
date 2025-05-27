@@ -6,6 +6,7 @@ package utils;
 
 import java.util.Map;
 import models.IdMeta;
+import models.InventoryUpdate;
 import models.Item;
 import models.Payment;
 import models.PurchaseOrder;
@@ -26,7 +27,8 @@ public class IdGenerator {
             Payment.class, new IdMeta("p", 3, "paymentsId"),
             PurchaseOrder.class, new IdMeta("po", 3, "purchase_ordersId"),
             PurchaseRequisition.class, new IdMeta("pr", 3, "purchase_requisitionsId"),
-            Sales.class, new IdMeta("s", 3, "salesId")
+            Sales.class, new IdMeta("s", 3, "salesId"),
+            InventoryUpdate.class, new IdMeta("iu", 3, "inventory_update_id")
     );
 
     FileManager fm = new FileManager();
