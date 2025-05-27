@@ -55,8 +55,8 @@ public class FinanceManagerController extends BaseController {
     @Override
     protected void setupCustomListeners() {
         approvePOListener();
-        poService.verifyUpdateListener(dashboard, inventoryTable);
-        
+        poService.verifyUpdateListener(dashboard, inventoryTable, paymentTable);
+        poService.processPayment(dashboard, paymentTable);
     }
 
     private void loadTables() {
@@ -80,7 +80,8 @@ public class FinanceManagerController extends BaseController {
     }
     
     private void approvePOListener() {
-        poService.addApprovalListener(dashboard, purchaseOrderTable);
+        poService.addApprovalListener(dashboard, purchaseOrderTable, inventoryTable);
         purchaseOrderTableModel.refresh();
+        inventoryTableModel.refresh();
     }
 }

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
 import models.Payment;
+import models.PurchaseOrder;
 import models.Supplier;
 import repository.PaymentRepository;
 import repository.PurchaseOrdersRepository;
@@ -24,8 +25,8 @@ public class PaymentTableModel extends AbstractTableModel {
         "Supplier Name",
         "Supplier Email",
         "Supplier Contact Number",
-        "Amount Paid",
-        "Payment Status"
+        "Balance",
+        "Payment Status",
     };
 
     private final PaymentRepository paymentRepo = new PaymentRepository();
@@ -39,7 +40,17 @@ public class PaymentTableModel extends AbstractTableModel {
     }
 
     public void refresh() {
-        payments = paymentRepo.getAll();
+        List<Payment> allPayments = paymentRepo.getAll();
+        List<Payment> verifiedPayment = new ArrayList<>();
+        
+        for (Payment payment: allPayments) {
+            var purchaseOrder = purchaseOrderRepo.find(payment.getPurchaseOrderId());
+            if (purchaseOrder != null && purchaseOrder.getStatus() == PurchaseOrder.Status.verified){
+                verifiedPayment.add(payment);
+            }
+        }
+        
+        this.payments = verifiedPayment;
         fireTableDataChanged();
     }
 

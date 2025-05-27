@@ -15,13 +15,15 @@ public class Supplier implements Identifiable {
     private String name;
     private String contactNum;
     private String email;
+    private String accountNum;
 
     // Constructor
-    public Supplier(String supplierId, String name, String contactNum, String email) {
+    public Supplier(String supplierId, String name, String contactNum, String email, String accountNum) {
         this.supplierId = supplierId;
         this.name = name;
         this.contactNum = contactNum;
         this.email = email;
+        this.accountNum = accountNum;
     }
     
     // override interface
@@ -61,5 +63,13 @@ public class Supplier implements Identifiable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+    
+    public String getAccountNum() {
+        return accountNum;
+    }
+
+    public void setAccountNum(String accountNum) {
+        this.accountNum = accountNum;
     }
 }
