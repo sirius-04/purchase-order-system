@@ -10,6 +10,9 @@ package views;
  */
 
 import javax.swing.JTable;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JTextField;
 
 public class InventoryManagerDashboard extends javax.swing.JFrame {
 
@@ -29,12 +32,16 @@ public class InventoryManagerDashboard extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
+        buttonGroup2 = new javax.swing.ButtonGroup();
+        buttonGroup3 = new javax.swing.ButtonGroup();
         reportPanel = new CustomPanel.TabbedPaneCustom();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         itemTable = new javax.swing.JTable();
         jLabel4 = new javax.swing.JLabel();
         itemSearchInput = new javax.swing.JTextField();
+        statusComboBox = new javax.swing.JComboBox<>();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         orderTable = new javax.swing.JTable();
@@ -51,32 +58,41 @@ public class InventoryManagerDashboard extends javax.swing.JFrame {
 
         itemTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Item ID", "Item Name", "Price", "Stock Quantity", "Supplier Name"
+                "Item ID", "Item Name", "Price", "Stock Quantity", "Supplier Name", "Item Status"
             }
         ));
         jScrollPane1.setViewportView(itemTable);
 
         jLabel4.setText("Search:");
 
+        itemSearchInput.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemSearchInputActionPerformed(evt);
+            }
+        });
+
+        statusComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "On Sale", "Not On Sale" }));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(813, 813, 813)
-                .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(itemSearchInput, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(55, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 950, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(63, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(statusComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel4)
+                        .addGap(18, 18, 18)
+                        .addComponent(itemSearchInput, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 950, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(55, 55, 55))
         );
         jPanel1Layout.setVerticalGroup(
@@ -85,7 +101,8 @@ public class InventoryManagerDashboard extends javax.swing.JFrame {
                 .addContainerGap(17, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(itemSearchInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
+                    .addComponent(jLabel4)
+                    .addComponent(statusComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 570, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(34, 34, 34))
@@ -209,6 +226,10 @@ public class InventoryManagerDashboard extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void itemSearchInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemSearchInputActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_itemSearchInputActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -243,15 +264,23 @@ public class InventoryManagerDashboard extends javax.swing.JFrame {
             }
         });
     }
-    
+ 
     public JTable getItemTable() {
         return itemTable;
     }
     public JTable getOrderTable() {
         return orderTable;
     }
-
+    public JComboBox<String> getStatusComboBox() {
+        return statusComboBox;
+    }
+    public JTextField getItemSearchInput() {
+        return itemSearchInput;
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.ButtonGroup buttonGroup2;
+    private javax.swing.ButtonGroup buttonGroup3;
     private javax.swing.JTextField itemSearchInput;
     private javax.swing.JTable itemTable;
     private javax.swing.JLabel jLabel4;
@@ -267,6 +296,7 @@ public class InventoryManagerDashboard extends javax.swing.JFrame {
     private javax.swing.JTextField orderSearchInput;
     private javax.swing.JTable orderTable;
     private CustomPanel.TabbedPaneCustom reportPanel;
+    private javax.swing.JComboBox<String> statusComboBox;
     private javax.swing.JTextField stockSearchInput;
     private javax.swing.JTable stockTable;
     // End of variables declaration//GEN-END:variables

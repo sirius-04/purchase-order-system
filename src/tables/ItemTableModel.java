@@ -18,6 +18,18 @@ import repository.ItemRepository;
 import repository.SupplierRepository;
 
 public class ItemTableModel extends AbstractTableModel  {
+    
+    // Status Selection Enum
+    public enum Status {
+        ALL,
+        ON_SALE,
+        NOT_ON_SALE
+    }
+
+    //  Default Selection = ALL
+    private Status status = Status.ALL;
+    
+    //   Column Names
     private final String[] columnNames = {
         "Item ID",
         "Item Name",
@@ -34,13 +46,49 @@ public class ItemTableModel extends AbstractTableModel  {
     public ItemTableModel() {
         refresh();
     }
+    
+    public void setStatus(Status status) {
+        this.status = status;
+        refresh();
+    }
 
     public void refresh() {
-        itemTable = itemRepo.getAll().stream().toList();
+        
+        //  Dynamically render based on the user SELECTION
+        switch (status) {
+            case ON_SALE:
+                itemTable = itemRepo.getAll().stream()
+                        .filter(item -> item.getStatus() == Item.Status.onSale)
+                        .toList();
+                break;
+            case NOT_ON_SALE:
+                itemTable = itemRepo.getAll().stream()
+                        .filter(item -> item.getStatus() == Item.Status.notOnSale)
+                        .toList();
+                break;
+            default:
+                itemTable = itemRepo.getAll().stream().toList();
+                break;
+        }
 
         fireTableDataChanged();
     }
 
+    public void searchByName(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            refresh(); // fallback to status-based filtering
+            return;
+        }
+
+        String keyword = name.trim().toLowerCase();
+
+        itemTable = itemRepo.getAll().stream()
+                .filter(item -> item.getName().toLowerCase().contains(keyword))
+                .toList();
+
+        fireTableDataChanged();
+    }
+    
     @Override
     public int getRowCount() {
         return itemTable.size();
