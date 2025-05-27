@@ -17,7 +17,6 @@ import models.Item;
 import models.Sales;
 import repository.ItemRepository;
 import repository.SalesRepository;
-import tables.DailySalesTableModel;
 import utils.DateTimeService;
 import utils.IdGenerator;
 
@@ -53,6 +52,16 @@ public class SalesService {
             Item selectedItem = (Item) comboBox.getSelectedItem();
             int quantity = (Integer) quantitySpinner.getValue();
 
+            if (quantity > selectedItem.getStockQuantity()) {
+                JOptionPane.showMessageDialog(
+                        parent,
+                        "Insufficient stock for the selected item.\nAvailable: " + selectedItem.getStockQuantity(),
+                        "Stock Warning",
+                        JOptionPane.WARNING_MESSAGE
+                );
+                return false;
+            }
+
             String generatedSaleId = idGenerator.generateNewId(Sales.class);
             double totalAmount = selectedItem.getSellPrice() * quantity;
 
@@ -68,7 +77,11 @@ public class SalesService {
                     totalAmount
             );
 
+            int updatedStockQuantity = selectedItem.getStockQuantity() - quantity;
+            selectedItem.setStockQuantity(updatedStockQuantity);
+
             salesRepo.save(newSale);
+            itemRepo.update(selectedItem);
 
             JOptionPane.showMessageDialog(parent, "Sale recorded successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
             return true;
