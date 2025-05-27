@@ -12,7 +12,8 @@ public class Payment implements Identifiable {
     
     public enum Status {
         successed,
-        failed
+        failed,
+        pending
     };
     
     private String paymentId;

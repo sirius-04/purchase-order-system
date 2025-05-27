@@ -149,13 +149,13 @@ public class FinanceManagerDashboard extends javax.swing.JFrame {
 
         supplierPaymentTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Supplier ID", "Supplier Name", "Email", "Contact Number", "Account Number", "Balance Due??", "Status"
+                "Supplier ID", "Supplier Name", "Email", "Contact Number", "Balance Due", "Status"
             }
         ));
         jScrollPane3.setViewportView(supplierPaymentTable);

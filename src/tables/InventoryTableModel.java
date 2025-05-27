@@ -43,7 +43,7 @@ public class InventoryTableModel extends AbstractTableModel {
         List<PurchaseOrder> filtered = new ArrayList<>();
 
         for (PurchaseOrder po : allOrders) {
-            if (po.getStatus() == PurchaseOrder.Status.fullfilled) {
+            if (po.getStatus() == PurchaseOrder.Status.fulfilled) {
                 filtered.add(po);
             }
         }
