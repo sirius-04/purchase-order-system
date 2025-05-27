@@ -82,9 +82,12 @@ public class ItemTableModel extends AbstractTableModel  {
 
         String keyword = name.trim().toLowerCase();
 
-        itemTable = itemRepo.getAll().stream()
-                .filter(item -> item.getName().toLowerCase().contains(keyword))
-                .toList();
+       itemTable = itemRepo.getAll().stream()
+            .filter(item -> 
+                item.getName().toLowerCase().contains(keyword) || 
+                String.valueOf(item.getId()).toLowerCase().contains(keyword)
+            )
+            .toList();
 
         fireTableDataChanged();
     }
