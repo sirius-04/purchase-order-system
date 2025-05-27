@@ -82,6 +82,7 @@ public class SalesManagerController extends BaseController {
                 salesService.addSale(dashboard);
 
                 refreshDailySalePanel();
+                refreshItemPanel();
             }
         });
     }
@@ -96,6 +97,7 @@ public class SalesManagerController extends BaseController {
                     if (selectedSale != null) {
                         salesService.displaySaleDetails(dashboard, selectedSale);
                         refreshDailySalePanel();
+                        refreshItemPanel();
                     }
                 }
             }
@@ -113,5 +115,10 @@ public class SalesManagerController extends BaseController {
         saleTableModel.refresh();
         itemSaleTableModel.refresh();
         updateTotalSaleAmount();
+    }
+    
+    private void refreshItemPanel() {
+        itemOnSaleTableModel.refresh();
+        itemNotOnSaleTableModel.refresh();
     }
 }

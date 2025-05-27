@@ -93,11 +93,38 @@ public class SalesService {
     public void editSale(Component parent, Sales sale) {
         System.out.println("edit sale");
     }
-    
-//    public void deleteSale() {
-//        
-//    }
-    
+
+    public void deleteSale(Component parent, Sales sale) {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.add(new JLabel("Confirm delete sale:"));
+        panel.add(new JLabel("Sales ID: " + sale.getSalesId()));
+        panel.add(new JLabel("Item ID: " + sale.getItemId()));
+        panel.add(new JLabel("Time: " + sale.getTime()));
+
+        int result = JOptionPane.showConfirmDialog(parent, panel, "Delete Sale", JOptionPane.OK_CANCEL_OPTION);
+
+        if (result == JOptionPane.OK_OPTION) {
+            int restoreStock = JOptionPane.showConfirmDialog(
+                    parent,
+                    "Do you want to restore the deducted stock quantity?",
+                    "Restore Stock",
+                    JOptionPane.YES_NO_OPTION
+            );
+
+            if (restoreStock == JOptionPane.YES_OPTION) {
+                Item item = itemRepo.find(sale.getItemId());
+                if (item != null) {
+                    item.setStockQuantity(item.getStockQuantity() + sale.getQuantity());
+                    itemRepo.update(item);
+                }
+            }
+
+            salesRepo.delete(sale);
+            JOptionPane.showMessageDialog(parent, "Sale deleted successfully.", "Deleted", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
     public void displaySaleDetails(Component parent, Sales sale) {
         Item item = itemRepo.find(sale.getItemId());
 
@@ -112,20 +139,22 @@ public class SalesService {
         panel.add(new JLabel("Time: " + sale.getTime()));
         panel.add(new JLabel(String.format("Total Amount: RM %.2f", sale.getTotalAmount())));
 
-        Object[] options = {"Edit", "Close"};
+        Object[] options = {"Edit", "Delete", "Close"};
         int result = JOptionPane.showOptionDialog(
                 parent,
                 panel,
                 "Sale Details",
-                JOptionPane.YES_NO_OPTION,
+                JOptionPane.DEFAULT_OPTION,
                 JOptionPane.PLAIN_MESSAGE,
                 null,
                 options,
-                options[1]
+                options[2]
         );
 
-        if (result == JOptionPane.YES_OPTION) {
+        if (result == 0) {
             editSale(parent, sale);
+        } else if (result == 1) {
+            deleteSale(parent, sale);
         }
     }
 
