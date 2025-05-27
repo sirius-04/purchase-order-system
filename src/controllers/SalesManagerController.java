@@ -20,7 +20,7 @@ public class SalesManagerController extends BaseController {
     ItemOnSaleTableModel itemOnSaleTableModel = new ItemOnSaleTableModel();
     ItemNotOnSaleTableModel itemNotOnSaleTableModel = new ItemNotOnSaleTableModel();
     DailySalesTableModel saleTableModel = new DailySalesTableModel();
-    
+
     // tables
     private JTable itemOnSaleTable;
     private JTable itemNotOnSaleTable;
@@ -69,7 +69,7 @@ public class SalesManagerController extends BaseController {
         itemNotOnSaleTable = dashboard.getItemNotOnSaleTable();
         itemOnSaleTable.setModel(itemOnSaleTableModel);
         itemNotOnSaleTable.setModel(itemNotOnSaleTableModel);
-        
+       
         // load daily sales table
         dailySalesTable = dashboard.getSalesTable();
         dailySalesTable.setModel(saleTableModel);
