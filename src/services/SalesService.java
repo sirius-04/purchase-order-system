@@ -90,6 +90,45 @@ public class SalesService {
         return false;
     }
 
+    public void editSale(Component parent, Sales sale) {
+        System.out.println("edit sale");
+    }
+    
+//    public void deleteSale() {
+//        
+//    }
+    
+    public void displaySaleDetails(Component parent, Sales sale) {
+        Item item = itemRepo.find(sale.getItemId());
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+        panel.add(new JLabel("Sale ID: " + sale.getSalesId()));
+        panel.add(new JLabel("Item ID: " + sale.getItemId()));
+        panel.add(new JLabel("Item Name: " + (item != null ? item.getName() : "Unknown")));
+        panel.add(new JLabel("Quantity: " + sale.getQuantity()));
+        panel.add(new JLabel("Date: " + sale.getDate()));
+        panel.add(new JLabel("Time: " + sale.getTime()));
+        panel.add(new JLabel(String.format("Total Amount: RM %.2f", sale.getTotalAmount())));
+
+        Object[] options = {"Edit", "Close"};
+        int result = JOptionPane.showOptionDialog(
+                parent,
+                panel,
+                "Sale Details",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                options,
+                options[1]
+        );
+
+        if (result == JOptionPane.YES_OPTION) {
+            editSale(parent, sale);
+        }
+    }
+
     public double calculateTodaySalesTotal() {
         String today = DateTimeService.getCurrentDate();
 

@@ -6,6 +6,9 @@ import views.SalesManagerDashboard;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import models.Sales;
 import services.SalesService;
 import tables.DailySalesTableModel;
 import tables.ItemNotOnSaleTableModel;
@@ -52,6 +55,7 @@ public class SalesManagerController extends BaseController {
     @Override
     protected void setupCustomListeners() {
         addSaleButtonListener();
+        addSaleTableListener();
     }
 
     private void loadTables() {
@@ -70,13 +74,6 @@ public class SalesManagerController extends BaseController {
         itemSaleTable.setModel(itemSaleTableModel);
     }
 
-    private void updateTotalSaleAmount() {
-        JLabel totalAmountText = dashboard.getTotalAmount();
-        Double totalSale = salesService.calculateTodaySalesTotal();
-
-        totalAmountText.setText(Double.toString(totalSale));
-    }
-
     private void addSaleButtonListener() {
         JButton addSalesButton = dashboard.getAddSalesButton();
 
@@ -84,10 +81,37 @@ public class SalesManagerController extends BaseController {
             public void actionPerformed(ActionEvent e) {
                 salesService.addSale(dashboard);
 
-                saleTableModel.refresh();
-                itemSaleTableModel.refresh();
-                updateTotalSaleAmount();
+                refreshDailySalePanel();
             }
         });
+    }
+
+    private void addSaleTableListener() {
+        dailySalesTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent evt) {
+                int row = dailySalesTable.getSelectedRow();
+                if (row != -1) {
+                    Sales selectedSale = saleTableModel.getSalesAt(row);
+                    if (selectedSale != null) {
+                        salesService.displaySaleDetails(dashboard, selectedSale);
+                        refreshDailySalePanel();
+                    }
+                }
+            }
+        });
+    }
+
+    private void updateTotalSaleAmount() {
+        JLabel totalAmountText = dashboard.getTotalAmount();
+        Double totalSale = salesService.calculateTodaySalesTotal();
+
+        totalAmountText.setText(Double.toString(totalSale));
+    }
+
+    private void refreshDailySalePanel() {
+        saleTableModel.refresh();
+        itemSaleTableModel.refresh();
+        updateTotalSaleAmount();
     }
 }
