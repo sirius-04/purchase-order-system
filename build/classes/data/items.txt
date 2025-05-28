@@ -5,3 +5,4 @@ i004,item4,100,5.00,9.00,su001,onSale
 i005,item5,69,44.30,90.00,su002,onSale
 i006,item9,100,20.50,40.00,su002,onSale
 i007,item8,150,2.00,5.00,su001,onSale
+i008,item11,110,8.00,20.00,su003,notOnSale

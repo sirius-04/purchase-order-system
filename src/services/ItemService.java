@@ -39,9 +39,6 @@ public class ItemService {
         JTextField priceField = new JTextField();
         JTextField sellPriceField = new JTextField();
 
-        String[] supplierOptions = getSupplierOptions();
-        JComboBox<String> supplierCombo = new JComboBox<>(supplierOptions);
-
         JPanel itemPanel = new JPanel();
         itemPanel.setLayout(new BoxLayout(itemPanel, BoxLayout.Y_AXIS));
         itemPanel.add(new JLabel("Enter item details:"));
@@ -53,71 +50,120 @@ public class ItemService {
         itemPanel.add(priceField);
         itemPanel.add(new JLabel("Selling Price:"));
         itemPanel.add(sellPriceField);
-        itemPanel.add(new JLabel("Select Supplier ID:"));
-        itemPanel.add(supplierCombo);
 
-        Object[] itemOptions = {"Next", "Cancel"};
-        int itemResult = JOptionPane.showOptionDialog(
+        int itemResult = JOptionPane.showConfirmDialog(
                 parent,
                 itemPanel,
-                "New Item",
+                "New Item - Step 1",
+                JOptionPane.OK_CANCEL_OPTION
+        );
+
+        if (itemResult != JOptionPane.OK_OPTION) {
+            return;
+        }
+
+        String enteredName = nameField.getText().trim();
+        int enteredQuantity = (Integer) stockSpinner.getValue();
+        double enteredPrice, enteredSellPrice;
+        try {
+            enteredPrice = Double.parseDouble(priceField.getText().trim());
+            enteredSellPrice = Double.parseDouble(sellPriceField.getText().trim());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(parent, "Price and selling price must be valid numbers.", "Input Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String[] supplierOptions = getSupplierOptions();
+        JComboBox<String> supplierCombo = new JComboBox<>(supplierOptions);
+
+        Object[] supplierOptionsButtons = {"Confirm", "Select New Supplier", "Cancel"};
+        JPanel supplierPanel = new JPanel();
+        supplierPanel.setLayout(new BoxLayout(supplierPanel, BoxLayout.Y_AXIS));
+        supplierPanel.add(new JLabel("Select Supplier ID:"));
+        supplierPanel.add(supplierCombo);
+
+        int supplierChoice = JOptionPane.showOptionDialog(
+                parent,
+                supplierPanel,
+                "New Item - Step 2",
                 JOptionPane.DEFAULT_OPTION,
                 JOptionPane.PLAIN_MESSAGE,
                 null,
-                itemOptions,
-                itemOptions[0]
+                supplierOptionsButtons,
+                supplierOptionsButtons[0]
         );
 
-        if (itemResult == 0) {
-            try {
-                String enteredName = nameField.getText().trim();
-                int enteredQuantity = (Integer) stockSpinner.getValue();
-                double enteredPrice = Double.parseDouble(priceField.getText().trim());
-                double enteredSellPrice = Double.parseDouble(sellPriceField.getText().trim());
-                Supplier selectedSupplier = supplierRepo.find((String) supplierCombo.getSelectedItem());
+        Supplier selectedSupplier = null;
 
-                if (enteredName.isEmpty() || selectedSupplier == null) {
-                    throw new IllegalArgumentException("Name and supplier must be provided.");
-                }
+        if (supplierChoice == 2 || supplierChoice == JOptionPane.CLOSED_OPTION) {
+            return;
+        } else if (supplierChoice == 1) {
+            JTextField sNameField = new JTextField();
+            JTextField sContactField = new JTextField();
+            JTextField sEmailField = new JTextField();
+            JTextField sBankField = new JTextField();
 
-                // Prompt user for item status
-                Object[] statusOptions = {"On Sale", "Not On Sale"};
-                int statusResult = JOptionPane.showOptionDialog(
-                        parent,
-                        "Should this item be marked as on sale?",
-                        "Item Status",
-                        JOptionPane.YES_NO_OPTION,
-                        JOptionPane.QUESTION_MESSAGE,
-                        null,
-                        statusOptions,
-                        statusOptions[1]
-                );
+            JPanel newSupplierPanel = new JPanel();
+            newSupplierPanel.setLayout(new BoxLayout(newSupplierPanel, BoxLayout.Y_AXIS));
+            newSupplierPanel.add(new JLabel("Supplier Name:"));
+            newSupplierPanel.add(sNameField);
+            newSupplierPanel.add(new JLabel("Contact Number:"));
+            newSupplierPanel.add(sContactField);
+            newSupplierPanel.add(new JLabel("Email:"));
+            newSupplierPanel.add(sEmailField);
+            newSupplierPanel.add(new JLabel("Bank Account Number:"));
+            newSupplierPanel.add(sBankField);
 
-                Item.Status status = (statusResult == 0) ? Item.Status.onSale : Item.Status.notOnSale;
+            int newSupplierResult = JOptionPane.showConfirmDialog(
+                    parent,
+                    newSupplierPanel,
+                    "Create New Supplier",
+                    JOptionPane.OK_CANCEL_OPTION
+            );
 
-                String generatedItemId = idGenerator.generateNewId(Item.class);
-                Item newItem = new Item(
-                        generatedItemId,
-                        enteredName,
-                        enteredQuantity,
-                        enteredPrice,
-                        enteredSellPrice,
-                        selectedSupplier.getSupplierId(),
-                        status
-                );
-                
-                ItemSupplier itemSupplier = new ItemSupplier(generatedItemId, selectedSupplier.getSupplierId());
-
-                itemRepo.save(newItem);
-                itemSupplierRepo.save(itemSupplier);
-
-                JOptionPane.showMessageDialog(parent, "Item added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(parent, "Price and selling price must be valid numbers.", "Input Error", JOptionPane.ERROR_MESSAGE);
-            } catch (IllegalArgumentException e) {
-                JOptionPane.showMessageDialog(parent, e.getMessage(), "Input Error", JOptionPane.ERROR_MESSAGE);
+            if (newSupplierResult != JOptionPane.OK_OPTION) {
+                return;
             }
+
+            String supplierName = sNameField.getText().trim();
+            String contact = sContactField.getText().trim();
+            String email = sEmailField.getText().trim();
+            String bankAccount = sBankField.getText().trim();
+
+            if (supplierName.isEmpty() || contact.isEmpty() || email.isEmpty() || bankAccount.isEmpty()) {
+                JOptionPane.showMessageDialog(parent, "All supplier fields must be filled.", "Input Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            String newSupplierId = idGenerator.generateNewId(Supplier.class);
+            selectedSupplier = new Supplier(newSupplierId, supplierName, contact, email, bankAccount);
+            supplierRepo.save(selectedSupplier);
+        } else {
+            selectedSupplier = supplierRepo.find((String) supplierCombo.getSelectedItem());
         }
+
+        Object[] statusOptions = {"On Sale", "Not On Sale"};
+        int statusResult = JOptionPane.showOptionDialog(
+                parent,
+                "Should this item be marked as on sale?",
+                "Item Status",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                statusOptions,
+                statusOptions[1]
+        );
+
+        Item.Status status = (statusResult == 0) ? Item.Status.onSale : Item.Status.notOnSale;
+        
+        String generatedItemId = idGenerator.generateNewId(Item.class);
+        Item newItem = new Item(generatedItemId, enteredName, enteredQuantity, enteredPrice, enteredSellPrice, selectedSupplier.getSupplierId(), status);
+        itemRepo.save(newItem);
+
+        ItemSupplier itemSupplier = new ItemSupplier(generatedItemId, selectedSupplier.getSupplierId());
+        itemSupplierRepo.save(itemSupplier);
+
+        JOptionPane.showMessageDialog(parent, "Item and Supplier saved successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private String[] getSupplierOptions() {
