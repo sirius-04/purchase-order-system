@@ -13,7 +13,7 @@ public class PurchaseOrder implements Identifiable {
     // fields: poID,itemID,prID,purchaseManagerID,quantity,price,status(pending/fulfilled)
     public enum Status {
         pending,
-        fullfilled
+        fulfilled
     }
 
     private String purchaseOrderId;
@@ -24,10 +24,11 @@ public class PurchaseOrder implements Identifiable {
     private double price;
     private String date;
     private Status status;
+    private String supplierId;
 
     // constructor
     public PurchaseOrder(String purchaseOrderId, String itemId, String purchaseRequisitionId,
-            String purchaseManagerId, int quantity, double price, String date, Status status) {
+            String purchaseManagerId, int quantity, double price, String date, Status status, String supplierId) {
         this.purchaseOrderId = purchaseOrderId;
         this.itemId = itemId;
         this.purchaseRequisitionId = purchaseRequisitionId;
@@ -36,6 +37,7 @@ public class PurchaseOrder implements Identifiable {
         this.price = price;
         this.date = date;
         this.status = status;
+        this.supplierId = supplierId;
     }
 
     // override interface
@@ -107,5 +109,9 @@ public class PurchaseOrder implements Identifiable {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+    
+    public String getSupplierId() {
+        return supplierId;
     }
 }

@@ -13,7 +13,7 @@ import models.Supplier;
 public class SupplierRepository extends BaseRepository<Supplier>{
     
      public SupplierRepository() {
-        super("suppliers", "%s,%s,%s,%s");
+        super("suppliers", "%s,%s,%s,%s,%s");
     }
     
      @Override
@@ -22,7 +22,8 @@ public class SupplierRepository extends BaseRepository<Supplier>{
                 supplier.getSupplierId(),
                 supplier.getName(),
                 supplier.getContactNum(),
-                supplier.getEmail()
+                supplier.getEmail(),
+                supplier.getAccountNum()
         );
     }
 
@@ -32,8 +33,9 @@ public class SupplierRepository extends BaseRepository<Supplier>{
         String name = columns[1].trim();
         String contactNum = columns[2].trim();
         String email = columns[3].trim();
+        String accountNum = columns[4].trim();
 
-        return new Supplier(supplierId, name, contactNum, email);
+        return new Supplier(supplierId, name, contactNum, email, accountNum);
     }
     
 }
