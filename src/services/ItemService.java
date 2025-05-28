@@ -32,6 +32,7 @@ public class ItemService {
     private SupplierRepository supplierRepo = new SupplierRepository();
     private ItemRepository itemRepo = new ItemRepository();
     private IdGenerator idGenerator = new IdGenerator();
+    private SupplierService supplierService = new SupplierService();
 
     public void addItem(Component parent) {
         JTextField nameField = new JTextField(20);
@@ -98,46 +99,10 @@ public class ItemService {
         if (supplierChoice == 2 || supplierChoice == JOptionPane.CLOSED_OPTION) {
             return;
         } else if (supplierChoice == 1) {
-            JTextField sNameField = new JTextField();
-            JTextField sContactField = new JTextField();
-            JTextField sEmailField = new JTextField();
-            JTextField sBankField = new JTextField();
-
-            JPanel newSupplierPanel = new JPanel();
-            newSupplierPanel.setLayout(new BoxLayout(newSupplierPanel, BoxLayout.Y_AXIS));
-            newSupplierPanel.add(new JLabel("Supplier Name:"));
-            newSupplierPanel.add(sNameField);
-            newSupplierPanel.add(new JLabel("Contact Number:"));
-            newSupplierPanel.add(sContactField);
-            newSupplierPanel.add(new JLabel("Email:"));
-            newSupplierPanel.add(sEmailField);
-            newSupplierPanel.add(new JLabel("Bank Account Number:"));
-            newSupplierPanel.add(sBankField);
-
-            int newSupplierResult = JOptionPane.showConfirmDialog(
-                    parent,
-                    newSupplierPanel,
-                    "Create New Supplier",
-                    JOptionPane.OK_CANCEL_OPTION
-            );
-
-            if (newSupplierResult != JOptionPane.OK_OPTION) {
+            selectedSupplier = supplierService.addSupplier(parent);
+            if (selectedSupplier == null) {
                 return;
             }
-
-            String supplierName = sNameField.getText().trim();
-            String contact = sContactField.getText().trim();
-            String email = sEmailField.getText().trim();
-            String bankAccount = sBankField.getText().trim();
-
-            if (supplierName.isEmpty() || contact.isEmpty() || email.isEmpty() || bankAccount.isEmpty()) {
-                JOptionPane.showMessageDialog(parent, "All supplier fields must be filled.", "Input Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            String newSupplierId = idGenerator.generateNewId(Supplier.class);
-            selectedSupplier = new Supplier(newSupplierId, supplierName, contact, email, bankAccount);
-            supplierRepo.save(selectedSupplier);
         } else {
             selectedSupplier = supplierRepo.find((String) supplierCombo.getSelectedItem());
         }
@@ -155,7 +120,7 @@ public class ItemService {
         );
 
         Item.Status status = (statusResult == 0) ? Item.Status.onSale : Item.Status.notOnSale;
-        
+
         String generatedItemId = idGenerator.generateNewId(Item.class);
         Item newItem = new Item(generatedItemId, enteredName, enteredQuantity, enteredPrice, enteredSellPrice, selectedSupplier.getSupplierId(), status);
         itemRepo.save(newItem);
