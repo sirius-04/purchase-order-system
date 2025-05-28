@@ -14,6 +14,7 @@ import tables.PaymentTableModel;
 import tables.PendingPurchaseRequisitionTableModel;
 import tables.PurchaseOrderTableModel;
 import views.FinanceManagerDashboard;
+import models.PurchaseOrder;
 
 /**
  *
@@ -26,7 +27,7 @@ public class FinanceManagerController extends BaseController {
 
     // table models
     PaymentTableModel paymentTableModel = new PaymentTableModel();
-    PurchaseOrderTableModel purchaseOrderTableModel = new PurchaseOrderTableModel();
+    PurchaseOrderTableModel purchaseOrderTableModel = new PurchaseOrderTableModel(PurchaseOrder.Status.pending, true);
     PendingPurchaseRequisitionTableModel pendingRequisitionTableModel = new PendingPurchaseRequisitionTableModel();
     HistoricalPurchaseRequisitionTableModel historicalRequisitionTableModel = new HistoricalPurchaseRequisitionTableModel();
     InventoryTableModel inventoryTableModel = new InventoryTableModel();
