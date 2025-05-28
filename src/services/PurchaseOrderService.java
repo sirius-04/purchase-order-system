@@ -115,7 +115,7 @@ public class PurchaseOrderService {
                 PurchaseOrder updatedPO = new PurchaseOrder(po.getPurchaseOrderId(), po.getItemId(), 
                                                             po.getPurchaseRequisitionId(), po.getPurchaseManagerId(), 
                                                             Integer.parseInt(newQuantity), newPrice, po.getDate(), 
-                                                            PurchaseOrder.Status.approved, newSupplierId);
+                                                            PurchaseOrder.Status.fulfilled, newSupplierId);
 
                 purchaseOrderRepo.update(updatedPO);
 
