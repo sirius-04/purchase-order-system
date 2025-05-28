@@ -9,7 +9,7 @@ import javax.swing.JTable;
 import models.users.FinanceManager;
 import services.PurchaseOrderService;
 import tables.HistoricalPurchaseRequisitionTableModel;
-import tables.InventoryTableModel;
+import tables.InventoryUpdateTableModel;
 import tables.PaymentTableModel;
 import tables.PendingPurchaseRequisitionTableModel;
 import tables.PurchaseOrderTableModel;
@@ -30,7 +30,7 @@ public class FinanceManagerController extends BaseController {
     PurchaseOrderTableModel purchaseOrderTableModel = new PurchaseOrderTableModel(PurchaseOrder.Status.pending, true);
     PendingPurchaseRequisitionTableModel pendingRequisitionTableModel = new PendingPurchaseRequisitionTableModel();
     HistoricalPurchaseRequisitionTableModel historicalRequisitionTableModel = new HistoricalPurchaseRequisitionTableModel();
-    InventoryTableModel inventoryTableModel = new InventoryTableModel();
+    InventoryUpdateTableModel inventoryTableModel = new InventoryUpdateTableModel();
 
     private JTable purchaseOrderTable;
     private JTable inventoryTable;

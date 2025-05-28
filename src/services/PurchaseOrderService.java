@@ -15,7 +15,7 @@ import repository.ItemSupplierRepository;
 import repository.PaymentRepository;
 import repository.PurchaseOrdersRepository;
 import repository.SupplierRepository;
-import tables.InventoryTableModel;
+import tables.InventoryUpdateTableModel;
 import tables.PaymentTableModel;
 import tables.PurchaseOrderTableModel;
 import utils.IdGenerator;
@@ -75,7 +75,8 @@ public class PurchaseOrderService {
 
     private void showApprovalDialog(Component parent, JTable purchaseOrderTable, JTable inventoryTable, int selectedRow) {
         PurchaseOrderTableModel purchaseOrderModel = (PurchaseOrderTableModel) purchaseOrderTable.getModel();
-        InventoryTableModel inventoryModel = (InventoryTableModel) inventoryTable.getModel();
+        InventoryUpdateTableModel inventoryModel = (InventoryUpdateTableModel) inventoryTable.getModel();
+        
         PurchaseOrder selectedPO = purchaseOrderModel.getPurchaseOrderAt(selectedRow);
 
         String poId = selectedPO.getPurchaseOrderId();
@@ -148,45 +149,45 @@ public class PurchaseOrderService {
     }
 
     public void verifyUpdateListener(Component parent, JTable inventoryTable, JTable paymentTable) {
-        inventoryTable.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                int row = inventoryTable.getSelectedRow();
-                if (row != -1) {
-                    InventoryTableModel inventoryModel = (InventoryTableModel) inventoryTable.getModel();
-                    PaymentTableModel paymentModel = (PaymentTableModel) paymentTable.getModel();
-                    PurchaseOrder selectedPO = inventoryModel.getPurchaseOrderAt(row);
-
-                    int option = javax.swing.JOptionPane.showConfirmDialog(
-                            parent,
-                            "Do you want to verify this inventory update?",
-                            "Verify update inventory",
-                            javax.swing.JOptionPane.YES_NO_OPTION
-                    );
-
-                    if (option == javax.swing.JOptionPane.YES_OPTION) {
+//        inventoryTable.addMouseListener(new java.awt.event.MouseAdapter() {
+//            @Override
+//            public void mouseClicked(java.awt.event.MouseEvent evt) {
+//                int row = inventoryTable.getSelectedRow();
+//                if (row != -1) {
+//                    InventoryUpdateTableModel inventoryModel = (InventoryUpdateTableModel) inventoryTable.getModel();
+//                    PaymentTableModel paymentModel = (PaymentTableModel) paymentTable.getModel();
+//                    PurchaseOrder selectedPO = inventoryModel.getPurchaseOrderAt(row);
+//
+//                    int option = javax.swing.JOptionPane.showConfirmDialog(
+//                            parent,
+//                            "Do you want to verify this inventory update?",
+//                            "Verify update inventory",
+//                            javax.swing.JOptionPane.YES_NO_OPTION
+//                    );
+//
+//                    if (option == javax.swing.JOptionPane.YES_OPTION) {
               
-                        PurchaseOrder updatedPO = new PurchaseOrder(selectedPO.getPurchaseOrderId(), selectedPO.getItemId(), 
-                                                                    selectedPO.getPurchaseRequisitionId(), selectedPO.getPurchaseManagerId(), 
-                                                                    selectedPO.getQuantity(), selectedPO.getPrice(), selectedPO.getDate(), 
-                                                                    PurchaseOrder.Status.verified, selectedPO.getSupplierId());
+//                        PurchaseOrder updatedPO = new PurchaseOrder(selectedPO.getPurchaseOrderId(), selectedPO.getItemId(), 
+//                                                                    selectedPO.getPurchaseRequisitionId(), selectedPO.getPurchaseManagerId(), 
+//                                                                    selectedPO.getQuantity(), selectedPO.getPrice(), selectedPO.getDate(), 
+//                                                                    PurchaseOrder.Status.verified, selectedPO.getSupplierId());
 
-                        purchaseOrderRepo.update(updatedPO);
+//                        purchaseOrderRepo.update(updatedPO);
                         
                         //after verify create new payment
-                        createPaymentForPurchaseOrder(updatedPO);
+//                        createPaymentForPurchaseOrder(updatedPO);
 
-                        javax.swing.JOptionPane.showMessageDialog(parent, "Verify successfully!", "Success", javax.swing.JOptionPane.INFORMATION_MESSAGE);
-                            
-                        inventoryModel.refresh();
-                        paymentModel.refresh();
-
-                    } else {
-                        javax.swing.JOptionPane.showMessageDialog(parent, "Failed to verify. Please try again.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
-                    }
-                }
-            }
-        });
+//                        javax.swing.JOptionPane.showMessageDialog(parent, "Verify successfully!", "Success", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+//                            
+//                        inventoryModel.refresh();
+//                        paymentModel.refresh();
+//
+//                    } else {
+//                        javax.swing.JOptionPane.showMessageDialog(parent, "Failed to verify. Please try again.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+//                    }
+//                }
+//            }
+//        });
     }
 
 
