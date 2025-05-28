@@ -14,7 +14,7 @@ import repository.SupplierRepository;
  *
  * @author Chan Yong Liang
  */
-public class SupplierTableModel extends AbstractTableModel {
+public class SupplierTableModel extends AbstractTableModel implements SearchableTableModel {
 
     private final String[] columns = {
         "Supplier ID",
@@ -32,6 +32,26 @@ public class SupplierTableModel extends AbstractTableModel {
 
     public void refresh() {
         suppliers = supplierRepo.getAll();
+        fireTableDataChanged();
+    }
+    
+    @Override
+    public void filterByKeyword(String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            refresh();
+            return;
+        }
+        
+        String lowerKeyword = keyword.toLowerCase();
+
+        suppliers = supplierRepo.getAll().stream()
+                .filter(supplier -> supplier.getId().toLowerCase().contains(lowerKeyword)
+                || supplier.getEmail().toLowerCase().contains(lowerKeyword)
+                || supplier.getContactNum().toLowerCase().contains(lowerKeyword)
+                || supplier.getName().toLowerCase().contains(lowerKeyword)
+                )
+                .toList();
+        
         fireTableDataChanged();
     }
 

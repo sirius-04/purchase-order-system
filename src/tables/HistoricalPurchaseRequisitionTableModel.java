@@ -18,7 +18,7 @@ import repository.UserRepository;
  *
  * @author Chan Yong Liang
  */
-public class HistoricalPurchaseRequisitionTableModel extends AbstractTableModel {
+public class HistoricalPurchaseRequisitionTableModel extends AbstractTableModel implements SearchableTableModel {
 
     private final String[] columns = {
         "Requisition ID",
@@ -53,7 +53,45 @@ public class HistoricalPurchaseRequisitionTableModel extends AbstractTableModel 
 
         fireTableDataChanged();
     }
+    
+    @Override
+    public void filterByKeyword(String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            refresh();
+            return;
+        }
+        
+        String lowerKeyword = keyword.toLowerCase();
+        
 
+        historicalRequisitions = requisitionRepo.getAll().stream()
+            .filter(pr -> {
+                if (pr.getStatus() == PurchaseRequisition.Status.pending) return false;
+
+                // PR ID
+                boolean matchesRequisitionId = pr.getRequisitionId().toLowerCase().contains(lowerKeyword);
+
+                // Item ID
+                boolean matchesItemId = pr.getItemId().toLowerCase().contains(lowerKeyword);
+
+                Item item = itemRepo.find(pr.getItemId());
+
+                // Item Name
+                boolean matchesItemName = item != null && item.getName().toLowerCase().contains(lowerKeyword);
+
+                User sm = salesManagerRepo.find(pr.getSalesManagerId());
+
+                // Sales Manager Name
+                boolean matchesSalesManager = sm != null && sm.getUsername().toLowerCase().contains(lowerKeyword);
+
+                return matchesRequisitionId || matchesItemId || matchesItemName || matchesSalesManager;
+            })
+            .toList();
+
+
+        fireTableDataChanged();
+    }   
+           
     @Override
     public int getRowCount() {
         return historicalRequisitions.size();

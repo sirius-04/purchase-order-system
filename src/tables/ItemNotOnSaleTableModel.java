@@ -16,7 +16,7 @@ import repository.SupplierRepository;
  *
  * @author Chan Yong Liang
  */
-public class ItemNotOnSaleTableModel extends AbstractTableModel {
+public class ItemNotOnSaleTableModel extends AbstractTableModel implements SearchableTableModel {
 
     private final String[] columnNames = {
         "Item ID",
@@ -43,7 +43,25 @@ public class ItemNotOnSaleTableModel extends AbstractTableModel {
 
         fireTableDataChanged();
     }
+    
+    @Override
+    public void filterByKeyword(String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            refresh();
+            return;
+        }
 
+        String lowerKeyword = keyword.toLowerCase();
+
+        itemsNotOnSale = itemRepo.getAll().stream()
+            .filter(item -> item.getStatus() == Item.Status.notOnSale &&
+                    (item.getName().toLowerCase().contains(lowerKeyword) ||
+                     item.getItemId().toLowerCase().contains(lowerKeyword)))
+            .toList();
+
+        fireTableDataChanged();
+    }
+    
     @Override
     public int getRowCount() {
         return itemsNotOnSale.size();

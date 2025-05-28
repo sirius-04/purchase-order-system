@@ -17,13 +17,13 @@ import utils.DateTimeService;
  *
  * @author Chan Yong Liang
  */
-public class DailySalesTableModel extends AbstractTableModel {
+public class DailySalesTableModel extends AbstractTableModel implements SearchableTableModel {
 
     private final String[] columnNames = {
         "Time", "Sale ID", "Item ID", "Item Name", "Quantity", "Price Per Unit", "Amount"
     };
 
-    private final List<Sales> salesList = new ArrayList<>();
+    private  List<Sales> salesList = new ArrayList<>();
     private final ItemRepository itemRepo = new ItemRepository();
 
     public DailySalesTableModel() {
@@ -117,6 +117,29 @@ public class DailySalesTableModel extends AbstractTableModel {
 
     public void refresh() {
         loadData();
+        fireTableDataChanged();
+    }
+    
+    @Override
+    public void filterByKeyword(String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            refresh();
+            return;
+        }
+
+        SalesRepository salesRepo = new SalesRepository();
+        String today = DateTimeService.getCurrentDate();
+        
+        String lowerKeyword = keyword.toLowerCase();
+
+        List<Sales> todaysSales = salesRepo.getAll().stream()
+                .filter(sale -> today.equals(sale.getDate()) 
+                        && sale.getSalesId().toLowerCase().contains(lowerKeyword))
+                .toList();
+        
+        salesList.clear();
+        salesList.addAll(todaysSales);
+        
         fireTableDataChanged();
     }
 }
