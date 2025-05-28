@@ -12,6 +12,7 @@ package views;
 import javax.swing.JTable;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 public class InventoryManagerDashboard extends javax.swing.JFrame {
@@ -53,6 +54,7 @@ public class InventoryManagerDashboard extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         stockSearchInput = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
+        exportButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -199,15 +201,23 @@ public class InventoryManagerDashboard extends javax.swing.JFrame {
 
         reportPanel.addTab("Stocks", jPanel3);
 
+        exportButton.setText("Export");
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1068, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap(895, Short.MAX_VALUE)
+                .addComponent(exportButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(73, 73, 73))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 662, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap(622, Short.MAX_VALUE)
+                .addComponent(exportButton)
+                .addGap(17, 17, 17))
         );
 
         reportPanel.addTab("Stock Report", jPanel4);
@@ -277,10 +287,20 @@ public class InventoryManagerDashboard extends javax.swing.JFrame {
     public JTextField getItemSearchInput() {
         return itemSearchInput;
     }
+    
+    public JPanel getStockReportPanel() {
+        return jPanel4;
+    }
+    
+    public JButton getExportButton() {
+        return exportButton;
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.ButtonGroup buttonGroup3;
+    private javax.swing.JButton exportButton;
     private javax.swing.JTextField itemSearchInput;
     private javax.swing.JTable itemTable;
     private javax.swing.JLabel jLabel4;

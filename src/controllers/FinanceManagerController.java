@@ -9,6 +9,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.Map;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import models.InventoryUpdate;
@@ -25,6 +27,9 @@ import views.FinanceManagerDashboard;
 import models.PurchaseOrder;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import services.InventoryUpdateService;
+import services.PDFExportService;
+import services.PaymentService;
 
 /**
  *
@@ -34,6 +39,9 @@ public class FinanceManagerController extends BaseController {
 
     private FinanceManagerDashboard dashboard;
     private PurchaseOrderService poService = new PurchaseOrderService();
+    private PaymentService paymentService = new PaymentService();
+    private InventoryUpdateService inventoryUpdateService = new InventoryUpdateService();
+    private PDFExportService pdfExportService = new PDFExportService();
 
     // table models
     PaymentTableModel paymentTableModel = new PaymentTableModel();
@@ -41,12 +49,13 @@ public class FinanceManagerController extends BaseController {
     PendingPurchaseRequisitionTableModel pendingRequisitionTableModel = new PendingPurchaseRequisitionTableModel();
     HistoricalPurchaseRequisitionTableModel historicalRequisitionTableModel = new HistoricalPurchaseRequisitionTableModel();
     InventoryUpdateTableModel inventoryTableModel = new InventoryUpdateTableModel();
-
+    
     private JTable purchaseOrderTable;
     private JTable inventoryTable;
     private JTable paymentTable;
     private JTable historicalRequisitionTable;
     private JTable pendingRequisitionTable;
+    private JFreeChart dailyProfitChart;
     
     public FinanceManagerController(FinanceManager user) {
         super(user);
@@ -69,6 +78,7 @@ public class FinanceManagerController extends BaseController {
         approvePOListener();
         verifyUpdateListener();
         processPaymentListener();
+        exportListeners();
     }
 
     private void loadTables() {
@@ -119,7 +129,7 @@ public class FinanceManagerController extends BaseController {
                     PaymentTableModel paymentModel = (PaymentTableModel) paymentTable.getModel();
                     InventoryUpdate inventory = inventoryModel.getInventoryUpdateAt(row);
 
-                    poService.verifyUpdate(dashboard, inventory);
+                    inventoryUpdateService.verifyUpdate(dashboard, inventory);
                     inventoryModel.refresh();
                     paymentModel.refresh();
                     }
@@ -136,7 +146,7 @@ public class FinanceManagerController extends BaseController {
                     PaymentTableModel paymentModel = (PaymentTableModel) paymentTable.getModel();
                     Payment selectedPayment = paymentModel.getPaymentAt(row);
                     
-                poService.processPayment(dashboard, selectedPayment);
+                paymentService.processPayment(dashboard, selectedPayment);
                 paymentModel.refresh();
                 }
             }
@@ -146,7 +156,8 @@ public class FinanceManagerController extends BaseController {
     private void showDailyProfitChart() {
         ReportService reportService = new ReportService();
         Map<String, Double> dailyProfitMap = reportService.getDailyProfit();
-
+        
+        dailyProfitChart = reportService.createDailyProfitChart(dailyProfitMap);
         JFreeChart chart = reportService.createDailyProfitChart(dailyProfitMap);
 
         ChartPanel chartPanel = new ChartPanel(chart);
@@ -163,11 +174,23 @@ public class FinanceManagerController extends BaseController {
         gbc.fill = GridBagConstraints.NONE;
 
         wrapperPanel.add(chartPanel, gbc);
-
+        
+        JPanel noDataPanel = new JPanel();
+        noDataPanel.add(new JLabel("No profit data available for current month"));
         dashboard.getDailyProfitPanel().setLayout(new BorderLayout());
         dashboard.getDailyProfitPanel().add(wrapperPanel, BorderLayout.CENTER);
         dashboard.getDailyProfitPanel().revalidate();
         dashboard.getDailyProfitPanel().repaint();
+    }
+    
+    private void exportListeners() {
+        dashboard.getExportButton().addActionListener(e -> {
+            if (dailyProfitChart != null) {
+                pdfExportService.exportChartToPDF(dailyProfitChart, "Daily Profit Report");
+            } else {
+                JOptionPane.showMessageDialog(dashboard, "No daily profit chart available to export");
+            }
+        });
     }
 }
 
