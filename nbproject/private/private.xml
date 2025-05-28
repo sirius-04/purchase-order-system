@@ -3,7 +3,24 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/dede/Documents/APU/Degree%20Y1%20S1/Java%20(T)/JavaAssignment/purchase-order-system/src/repository/ItemRepository.java</file>
+            <file>file:/C:/Users/Chan%20Yong%20Liang/Documents/Study%20Files/Degree/Sem%201/Object%20Oriented%20Development%20with%20Java/Assignment/OWSB/src/controllers/FinanceManagerController.java</file>
+            <file>file:/C:/Users/Chan%20Yong%20Liang/Documents/Study%20Files/Degree/Sem%201/Object%20Oriented%20Development%20with%20Java/Assignment/OWSB/src/data/last_ids/sales_last_id.txt</file>
+            <file>file:/C:/Users/Chan%20Yong%20Liang/Documents/Study%20Files/Degree/Sem%201/Object%20Oriented%20Development%20with%20Java/Assignment/OWSB/src/tables/DailySalesTableModel.java</file>
+            <file>file:/C:/Users/Chan%20Yong%20Liang/Documents/Study%20Files/Degree/Sem%201/Object%20Oriented%20Development%20with%20Java/Assignment/OWSB/src/tables/PaymentTableModel.java</file>
+            <file>file:/C:/Users/Chan%20Yong%20Liang/Documents/Study%20Files/Degree/Sem%201/Object%20Oriented%20Development%20with%20Java/Assignment/OWSB/src/data/sales.txt</file>
+            <file>file:/C:/Users/Chan%20Yong%20Liang/Documents/Study%20Files/Degree/Sem%201/Object%20Oriented%20Development%20with%20Java/Assignment/OWSB/src/models/Sales.java</file>
+            <file>file:/C:/Users/Chan%20Yong%20Liang/Documents/Study%20Files/Degree/Sem%201/Object%20Oriented%20Development%20with%20Java/Assignment/OWSB/src/services/SalesService.java</file>
+            <file>file:/C:/Users/Chan%20Yong%20Liang/Documents/Study%20Files/Degree/Sem%201/Object%20Oriented%20Development%20with%20Java/Assignment/OWSB/src/tables/ItemNotOnSaleTableModel.java</file>
+            <file>file:/C:/Users/Chan%20Yong%20Liang/Documents/Study%20Files/Degree/Sem%201/Object%20Oriented%20Development%20with%20Java/Assignment/OWSB/src/tables/InventoryTableModel.java</file>
+            <file>file:/C:/Users/Chan%20Yong%20Liang/Documents/Study%20Files/Degree/Sem%201/Object%20Oriented%20Development%20with%20Java/Assignment/OWSB/src/tables/InventoryUpdateTableModel.java</file>
+            <file>file:/C:/Users/Chan%20Yong%20Liang/Documents/Study%20Files/Degree/Sem%201/Object%20Oriented%20Development%20with%20Java/Assignment/OWSB/src/controllers/AdminController.java</file>
+            <file>file:/C:/Users/Chan%20Yong%20Liang/Documents/Study%20Files/Degree/Sem%201/Object%20Oriented%20Development%20with%20Java/Assignment/OWSB/src/views/SalesManagerDashboard.java</file>
+            <file>file:/C:/Users/Chan%20Yong%20Liang/Documents/Study%20Files/Degree/Sem%201/Object%20Oriented%20Development%20with%20Java/Assignment/OWSB/src/services/PurchaseOrderService.java</file>
+            <file>file:/C:/Users/Chan%20Yong%20Liang/Documents/Study%20Files/Degree/Sem%201/Object%20Oriented%20Development%20with%20Java/Assignment/OWSB/src/repository/ItemRepository.java</file>
+            <file>file:/C:/Users/Chan%20Yong%20Liang/Documents/Study%20Files/Degree/Sem%201/Object%20Oriented%20Development%20with%20Java/Assignment/OWSB/src/tables/ItemOnSaleTableModel.java</file>
+            <file>file:/C:/Users/Chan%20Yong%20Liang/Documents/Study%20Files/Degree/Sem%201/Object%20Oriented%20Development%20with%20Java/Assignment/OWSB/src/controllers/BaseController.java</file>
+            <file>file:/C:/Users/Chan%20Yong%20Liang/Documents/Study%20Files/Degree/Sem%201/Object%20Oriented%20Development%20with%20Java/Assignment/OWSB/src/tables/ItemSaleTableModel.java</file>
+            <file>file:/C:/Users/Chan%20Yong%20Liang/Documents/Study%20Files/Degree/Sem%201/Object%20Oriented%20Development%20with%20Java/Assignment/OWSB/src/controllers/SalesManagerController.java</file>
         </group>
     </open-files>
 </project-private>

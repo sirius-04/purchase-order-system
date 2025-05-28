@@ -21,7 +21,8 @@ public class ItemOnSaleTableModel extends AbstractTableModel {
     private final String[] columnNames = {
         "Item ID",
         "Item Name",
-        "Price",
+        "Cost Price",
+        "Sell Price",
         "Stock Quantity",
         "Supplier Name"
     };
@@ -78,11 +79,14 @@ public class ItemOnSaleTableModel extends AbstractTableModel {
 
             case 2:
                 return item.getPrice();
-
+                
             case 3:
-                return item.getStockQuantity();
+                return item.getSellPrice();
 
             case 4:
+                return item.getStockQuantity();
+
+            case 5:
                 Supplier supplier = supplierRepo.find(item.getSupplierId());
                 return supplier != null ? supplier.getName() : "Unknown";
 
