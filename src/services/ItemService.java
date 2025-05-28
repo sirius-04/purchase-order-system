@@ -14,9 +14,12 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
+import models.Item;
 import models.Supplier;
+import repository.ItemRepository;
 import repository.ItemSupplierRepository;
 import repository.SupplierRepository;
+import utils.IdGenerator;
 
 /**
  *
@@ -26,12 +29,17 @@ public class ItemService {
 
     private ItemSupplierRepository itemSupplierRepo = new ItemSupplierRepository();
     private SupplierRepository supplierRepo = new SupplierRepository();
+    private ItemRepository itemRepo = new ItemRepository();
+    private IdGenerator idGenerator = new IdGenerator();
 
     public void addItem(Component parent) {
         JTextField nameField = new JTextField(20);
         JSpinner stockSpinner = new JSpinner(new SpinnerNumberModel(1, 0, 10000, 1));
         JTextField priceField = new JTextField();
         JTextField sellPriceField = new JTextField();
+
+        String[] supplierOptions = getSupplierOptions();
+        JComboBox<String> supplierCombo = new JComboBox<>(supplierOptions);
 
         JPanel itemPanel = new JPanel();
         itemPanel.setLayout(new BoxLayout(itemPanel, BoxLayout.Y_AXIS));
@@ -44,6 +52,8 @@ public class ItemService {
         itemPanel.add(priceField);
         itemPanel.add(new JLabel("Selling Price:"));
         itemPanel.add(sellPriceField);
+        itemPanel.add(new JLabel("Select Supplier ID:"));
+        itemPanel.add(supplierCombo);
 
         Object[] itemOptions = {"Next", "Cancel"};
         int itemResult = JOptionPane.showOptionDialog(
@@ -58,31 +68,50 @@ public class ItemService {
         );
 
         if (itemResult == 0) {
-            String[] supplierOptions = getSupplierOptions();
-            JComboBox<String> supplierCombo = new JComboBox<>(supplierOptions);
+            try {
+                String enteredName = nameField.getText().trim();
+                int enteredQuantity = (Integer) stockSpinner.getValue();
+                double enteredPrice = Double.parseDouble(priceField.getText().trim());
+                double enteredSellPrice = Double.parseDouble(sellPriceField.getText().trim());
+                Supplier selectedSupplier = supplierRepo.find((String) supplierCombo.getSelectedItem());
 
-            JPanel supplierPanel = new JPanel();
-            supplierPanel.setLayout(new BoxLayout(supplierPanel, BoxLayout.Y_AXIS));
-            supplierPanel.add(new JLabel("Select Supplier ID:"));
-            supplierPanel.add(supplierCombo);
+                if (enteredName.isEmpty() || selectedSupplier == null) {
+                    throw new IllegalArgumentException("Name and supplier must be provided.");
+                }
 
-            Object[] supplierPanelOptions = {"Confirm", "Add New Supplier", "Cancel"};
-            int supplierPanelResult = JOptionPane.showOptionDialog(
-                    parent,
-                    supplierPanel,
-                    "Select Supplier",
-                    JOptionPane.DEFAULT_OPTION,
-                    JOptionPane.PLAIN_MESSAGE,
-                    null,
-                    supplierPanelOptions,
-                    supplierPanelOptions[0]
-            );
+                // Prompt user for item status
+                Object[] statusOptions = {"On Sale", "Not On Sale"};
+                int statusResult = JOptionPane.showOptionDialog(
+                        parent,
+                        "Should this item be marked as on sale?",
+                        "Item Status",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,
+                        statusOptions,
+                        statusOptions[1]
+                );
 
-            if (supplierPanelResult == 0) {
-                // add new item
-            } else if (supplierPanelResult == 1) {
-                addNewSupplier();
-                // add new item
+                Item.Status status = (statusResult == 0) ? Item.Status.onSale : Item.Status.notOnSale;
+
+                String generatedItemId = idGenerator.generateNewId(Item.class);
+                Item newItem = new Item(
+                        generatedItemId,
+                        enteredName,
+                        enteredQuantity,
+                        enteredPrice,
+                        enteredSellPrice,
+                        selectedSupplier.getSupplierId(),
+                        status
+                );
+
+                itemRepo.save(newItem);
+
+                JOptionPane.showMessageDialog(parent, "Item added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(parent, "Price and selling price must be valid numbers.", "Input Error", JOptionPane.ERROR_MESSAGE);
+            } catch (IllegalArgumentException e) {
+                JOptionPane.showMessageDialog(parent, e.getMessage(), "Input Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
@@ -96,9 +125,5 @@ public class ItemService {
         }
 
         return supplierOptions;
-    }
-
-    private void addNewSupplier() {
-        System.out.println("add new supplier");
     }
 }

@@ -78,7 +78,7 @@ public class SalesManagerController extends BaseController {
 
     private void salePanelListener() {
         addSaleButtonListener();
-        addSaleTableListener();
+        saleTableListener();
     }
 
     private void itemPanelListener() {
@@ -98,7 +98,7 @@ public class SalesManagerController extends BaseController {
         });
     }
 
-    private void addSaleTableListener() {
+    private void saleTableListener() {
         dailySalesTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent evt) {

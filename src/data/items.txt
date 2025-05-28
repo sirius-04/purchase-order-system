@@ -3,3 +3,4 @@ i002,item2,61,20.00,40.00,su001,onSale
 i003,item3,10,100.00,200.00,su001,notOnSale
 i004,item4,100,5.00,9.00,su001,onSale
 i005,item5,69,44.30,90.00,su002,onSale
+i006,item9,100,20.50,40.00,su002,onSale
