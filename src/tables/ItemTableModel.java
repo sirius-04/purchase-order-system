@@ -8,7 +8,6 @@ package tables;
  *
  * @author dede
  */
-
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
@@ -17,8 +16,8 @@ import models.Supplier;
 import repository.ItemRepository;
 import repository.SupplierRepository;
 
-public class ItemTableModel extends AbstractTableModel  {
-    
+public class ItemTableModel extends AbstractTableModel implements SearchableTableModel {
+
     // Status Selection Enum
     public enum Status {
         ALL,
@@ -28,7 +27,7 @@ public class ItemTableModel extends AbstractTableModel  {
 
     //  Default Selection = ALL
     private Status status = Status.ALL;
-    
+
     //   Column Names
     private final String[] columnNames = {
         "Item ID",
@@ -46,14 +45,14 @@ public class ItemTableModel extends AbstractTableModel  {
     public ItemTableModel() {
         refresh();
     }
-    
+
     public void setStatus(Status status) {
         this.status = status;
         refresh();
     }
 
     public void refresh() {
-        
+
         //  Dynamically render based on the user SELECTION
         switch (status) {
             case ON_SALE:
@@ -74,24 +73,22 @@ public class ItemTableModel extends AbstractTableModel  {
         fireTableDataChanged();
     }
 
-    public void searchByName(String name) {
-        if (name == null || name.trim().isEmpty()) {
-            refresh(); // fallback to status-based filtering
+    @Override
+    public void filterByKeyword(String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            refresh();
             return;
         }
+        
+        String lowerKeyword = keyword.toLowerCase();
 
-        String keyword = name.trim().toLowerCase();
-
-       itemTable = itemRepo.getAll().stream()
-            .filter(item -> 
-                item.getName().toLowerCase().contains(keyword) || 
-                String.valueOf(item.getItemId()).toLowerCase().contains(keyword)
-            )
-            .toList();
-
+        itemTable = itemRepo.getAll().stream()
+                .filter(item -> item.getName().toLowerCase().contains(lowerKeyword)
+                || item.getId().toLowerCase().contains(lowerKeyword))
+                .toList();
         fireTableDataChanged();
     }
-    
+
     @Override
     public int getRowCount() {
         return itemTable.size();

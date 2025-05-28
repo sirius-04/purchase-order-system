@@ -40,7 +40,7 @@ public class PaymentTableModel extends AbstractTableModel {
 
     public void refresh() {
         payments = paymentRepo.getAll();
-
+        
         fireTableDataChanged();
     }
 

@@ -1,5 +1,6 @@
 package views;
 
+import java.awt.Color;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTable;
@@ -129,6 +130,16 @@ public class SalesManagerDashboard extends javax.swing.JFrame {
 
         jLabel7.setText("Search:");
 
+        itemSaleSearchInput.setForeground(new java.awt.Color(153, 153, 153));
+        itemSaleSearchInput.setText("Search by Item ID, Name...");
+        itemSaleSearchInput.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                itemSaleSearchInputFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                itemSaleSearchInputFocusLost(evt);
+            }
+        });
         itemSaleSearchInput.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 itemSaleSearchInputActionPerformed(evt);
@@ -160,6 +171,16 @@ public class SalesManagerDashboard extends javax.swing.JFrame {
 
         jLabel15.setText("Search:");
 
+        salesSearchInput.setForeground(new java.awt.Color(153, 153, 153));
+        salesSearchInput.setText("Search by Sale ID...");
+        salesSearchInput.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                salesSearchInputFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                salesSearchInputFocusLost(evt);
+            }
+        });
         salesSearchInput.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 salesSearchInputActionPerformed(evt);
@@ -184,14 +205,14 @@ public class SalesManagerDashboard extends javax.swing.JFrame {
                                 .addComponent(jLabel14)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLabel7)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(itemSaleSearchInput, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(3, 3, 3)
+                                .addComponent(itemSaleSearchInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel5Layout.createSequentialGroup()
                                 .addComponent(jLabel13)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLabel15)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(salesSearchInput, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(salesSearchInput, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel5Layout.createSequentialGroup()
                                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 920, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -203,7 +224,7 @@ public class SalesManagerDashboard extends javax.swing.JFrame {
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                .addContainerGap(28, Short.MAX_VALUE)
+                .addContainerGap(34, Short.MAX_VALUE)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel15)
@@ -211,7 +232,7 @@ public class SalesManagerDashboard extends javax.swing.JFrame {
                     .addComponent(jLabel13, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(addSalesButton)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -245,6 +266,17 @@ public class SalesManagerDashboard extends javax.swing.JFrame {
 
         addItemButton.setText("Add New");
 
+        itemNotSaleSearchInput.setForeground(new java.awt.Color(153, 153, 153));
+        itemNotSaleSearchInput.setText("Search by Item ID, Name...");
+        itemNotSaleSearchInput.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                itemNotSaleSearchInputFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                itemNotSaleSearchInputFocusLost(evt);
+            }
+        });
+
         jLabel1.setText("Search:");
 
         itemNotOnSaleTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -261,6 +293,17 @@ public class SalesManagerDashboard extends javax.swing.JFrame {
         jScrollPane6.setViewportView(itemNotOnSaleTable);
 
         jLabel3.setText("Search:");
+
+        itemSearchInput.setForeground(new java.awt.Color(153, 153, 153));
+        itemSearchInput.setText("Search by Item ID, Name...");
+        itemSearchInput.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                itemSearchInputFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                itemSearchInputFocusLost(evt);
+            }
+        });
 
         jLabel4.setText("Item On Sale");
 
@@ -279,22 +322,22 @@ public class SalesManagerDashboard extends javax.swing.JFrame {
                             .addComponent(jLabel5)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel3)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(itemNotSaleSearchInput, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(itemNotSaleSearchInput, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addComponent(jLabel4)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel1)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(itemSearchInput, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(itemSearchInput, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 920, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 920, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(43, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(33, Short.MAX_VALUE)
+                .addContainerGap(34, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(itemSearchInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -332,6 +375,17 @@ public class SalesManagerDashboard extends javax.swing.JFrame {
         addSupplierButton.setText("Add New");
 
         jLabel6.setText("Search:");
+
+        supplierSearchInput.setForeground(new java.awt.Color(153, 153, 153));
+        supplierSearchInput.setText("Search by ID, Name...");
+        supplierSearchInput.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                supplierSearchInputFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                supplierSearchInputFocusLost(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -384,6 +438,17 @@ public class SalesManagerDashboard extends javax.swing.JFrame {
             }
         });
 
+        historicalRequisitionSearch.setForeground(new java.awt.Color(153, 153, 153));
+        historicalRequisitionSearch.setText("Search by ID, Name...");
+        historicalRequisitionSearch.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                historicalRequisitionSearchFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                historicalRequisitionSearchFocusLost(evt);
+            }
+        });
+
         jLabel2.setText("Search:");
 
         jLabel9.setText("Pending Purchase Requisitions");
@@ -405,38 +470,47 @@ public class SalesManagerDashboard extends javax.swing.JFrame {
 
         jLabel12.setText("Search:");
 
+        requisitionSearch.setForeground(new java.awt.Color(153, 153, 153));
+        requisitionSearch.setText("Search by ID, Name...");
+        requisitionSearch.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                requisitionSearchFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                requisitionSearchFocusLost(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(43, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel10)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel12)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(historicalRequisitionSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 920, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(addRequisitionButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 920, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(59, 59, 59))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel9)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(requisitionSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(53, 53, 53))))
+                        .addComponent(requisitionSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                            .addComponent(jLabel10)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel12)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(historicalRequisitionSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 920, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(addRequisitionButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 920, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(59, 59, 59))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap(31, Short.MAX_VALUE)
+                .addContainerGap(32, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jLabel9)
@@ -471,6 +545,17 @@ public class SalesManagerDashboard extends javax.swing.JFrame {
         jScrollPane3.setViewportView(orderTable);
 
         jLabel11.setText("Search:");
+
+        orderSearchInput.setForeground(new java.awt.Color(153, 153, 153));
+        orderSearchInput.setText("Search by ID, Name...");
+        orderSearchInput.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                orderSearchInputFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                orderSearchInputFocusLost(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -533,6 +618,138 @@ public class SalesManagerDashboard extends javax.swing.JFrame {
     private void salesSearchInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salesSearchInputActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_salesSearchInputActionPerformed
+
+    private void salesSearchInputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_salesSearchInputFocusGained
+        if (salesSearchInput.getText().equals("Search by Sale ID..."))
+        {
+            salesSearchInput.setText("");
+            salesSearchInput.setForeground(new Color(0,0,0));
+        }
+    }//GEN-LAST:event_salesSearchInputFocusGained
+
+    private void salesSearchInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_salesSearchInputFocusLost
+        if (salesSearchInput.getText().equals(""))
+        {
+            salesSearchInput.setText("Search by Sale ID...");
+            salesSearchInput.setForeground(new Color(153, 153, 153));
+        }
+    }//GEN-LAST:event_salesSearchInputFocusLost
+
+    private void itemSaleSearchInputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_itemSaleSearchInputFocusGained
+        if (itemSaleSearchInput.getText().equals("Search by Item ID, Name..."))
+        {
+            itemSaleSearchInput.setText("");
+            itemSaleSearchInput.setForeground(new Color(0,0,0));
+        }
+    }//GEN-LAST:event_itemSaleSearchInputFocusGained
+
+    private void itemSaleSearchInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_itemSaleSearchInputFocusLost
+        if (itemSaleSearchInput.getText().equals(""))
+        {
+            itemSaleSearchInput.setText("Search by Item ID, Name...");
+            itemSaleSearchInput.setForeground(new Color(153, 153, 153));
+        }
+    }//GEN-LAST:event_itemSaleSearchInputFocusLost
+
+    private void itemSearchInputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_itemSearchInputFocusGained
+        if (itemSearchInput.getText().equals("Search by Item ID, Name..."))
+        {
+            itemSearchInput.setText("");
+            itemSearchInput.setForeground(new Color(0,0,0));
+        }
+    }//GEN-LAST:event_itemSearchInputFocusGained
+
+    private void itemSearchInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_itemSearchInputFocusLost
+        if (itemSearchInput.getText().equals(""))
+        {
+            itemSearchInput.setText("Search by Item ID, Name...");
+            itemSearchInput.setForeground(new Color(153, 153, 153));
+        }
+    }//GEN-LAST:event_itemSearchInputFocusLost
+
+    private void itemNotSaleSearchInputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_itemNotSaleSearchInputFocusGained
+       if (itemNotSaleSearchInput.getText().equals("Search by Item ID, Name..."))
+        {
+            itemNotSaleSearchInput.setText("");
+            itemNotSaleSearchInput.setForeground(new Color(0,0,0));
+        }
+    }//GEN-LAST:event_itemNotSaleSearchInputFocusGained
+
+    private void itemNotSaleSearchInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_itemNotSaleSearchInputFocusLost
+        if (itemNotSaleSearchInput.getText().equals(""))
+        {
+            itemNotSaleSearchInput.setText("Search by Item ID, Name...");
+            itemNotSaleSearchInput.setForeground(new Color(153, 153, 153));
+        }
+    }//GEN-LAST:event_itemNotSaleSearchInputFocusLost
+
+    private void supplierSearchInputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_supplierSearchInputFocusGained
+        if (supplierSearchInput.getText().equals("Search by ID, Name..."))
+        {
+            supplierSearchInput.setText("");
+            supplierSearchInput.setForeground(new Color(0,0,0));
+        }
+    }//GEN-LAST:event_supplierSearchInputFocusGained
+
+    private void supplierSearchInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_supplierSearchInputFocusLost
+        if (supplierSearchInput.getText().equals(""))
+        {
+            supplierSearchInput.setText("Search by ID, Name...");
+            supplierSearchInput.setForeground(new Color(153, 153, 153));
+        }
+    }//GEN-LAST:event_supplierSearchInputFocusLost
+
+    private void requisitionSearchFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_requisitionSearchFocusGained
+        if (requisitionSearch.getText().equals("Search by ID, Name..."))
+        {
+            requisitionSearch.setText("");
+            requisitionSearch.setForeground(new Color(0,0,0));
+        }
+    }//GEN-LAST:event_requisitionSearchFocusGained
+
+    private void requisitionSearchFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_requisitionSearchFocusLost
+        if (requisitionSearch.getText().equals(""))
+        {
+            requisitionSearch.setText("Search by ID, Name...");
+            requisitionSearch.setForeground(new Color(153, 153, 153));
+        }
+    }//GEN-LAST:event_requisitionSearchFocusLost
+
+    private void historicalRequisitionSearchFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_historicalRequisitionSearchFocusGained
+        if (historicalRequisitionSearch.getText().equals("Search by ID, Name..."))
+        {
+            historicalRequisitionSearch.setText("");
+            historicalRequisitionSearch.setForeground(new Color(0,0,0));
+        }
+    }//GEN-LAST:event_historicalRequisitionSearchFocusGained
+
+    private void historicalRequisitionSearchFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_historicalRequisitionSearchFocusLost
+        if (historicalRequisitionSearch.getText().equals(""))
+        {
+            historicalRequisitionSearch.setText("Search by ID, Name...");
+            historicalRequisitionSearch.setForeground(new Color(153, 153, 153));
+        }
+    }//GEN-LAST:event_historicalRequisitionSearchFocusLost
+
+    private void orderSearchInputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_orderSearchInputFocusGained
+        if (orderSearchInput.getText().equals("Search by ID, Name..."))
+        {
+            orderSearchInput.setText("");
+            orderSearchInput.setForeground(new Color(0,0,0));
+        }
+    }//GEN-LAST:event_orderSearchInputFocusGained
+
+    private void orderSearchInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_orderSearchInputFocusLost
+        if (orderSearchInput.getText().equals(""))
+        {
+            orderSearchInput.setText("Search by ID, Name...");
+            orderSearchInput.setForeground(new Color(153, 153, 153));
+        }
+    }//GEN-LAST:event_orderSearchInputFocusLost
+
+    private void historicalRequisitionSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_historicalRequisitionSearchActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_historicalRequisitionSearchActionPerformed
 
     public JTextField getItemNotSaleSearchInput() {
         return itemNotSaleSearchInput;
