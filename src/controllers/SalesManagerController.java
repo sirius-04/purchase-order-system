@@ -7,6 +7,8 @@ import views.SalesManagerDashboard;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import services.GeneratePO;
+import services.GeneratePR;
 import services.SalesService;
 
 public class SalesManagerController extends BaseController {
@@ -42,6 +44,8 @@ public class SalesManagerController extends BaseController {
     @Override
     protected void setupCustomListeners() {
         setupAddSaleListener();
+        setupAddPurchaseRequsitionListener();
+        setupGeneratePOListener();
     }
 
     private void populateAllTables() {
@@ -73,7 +77,7 @@ public class SalesManagerController extends BaseController {
         historicalRequisitionTable = dashboard.getHistoricalRequisitionTable();
         pendingRequisitionTable = dashboard.getPendingRequisitionTable();
         
-        PurchaseRequisitionsTableHelper.populateAllRequisitions(historicalRequisitionTable, pendingRequisitionTable);
+        PurchaseRequisitionsTableHelper.populateAllRequisitions(pendingRequisitionTable,historicalRequisitionTable);
     }
 
     private void populateSupplierTable() {
@@ -90,6 +94,23 @@ public class SalesManagerController extends BaseController {
             }
         });
     }
+    
+    private void setupAddPurchaseRequsitionListener() {
+    JButton addRequisitionButton = dashboard.getAddRequisitionButton();
+    addRequisitionButton.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            GeneratePR generator = new GeneratePR();
+            generator.showForm(dashboard, () -> populateRequisitionTables());
+        }
+    });
+}
+    private void setupGeneratePOListener() {
+    GeneratePO generatePO = new GeneratePO();
+    generatePO.attachRowClickListener(
+        dashboard.getPendingRequisitionTable(),
+        () -> populatePurchaseOrderTable() 
+    );
+}
     
     private void updateTotalSaleAmount() {
         JLabel totalAmountText = dashboard.getTotalAmount();
