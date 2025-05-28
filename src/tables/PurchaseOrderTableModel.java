@@ -22,7 +22,7 @@ import repository.PurchaseOrdersRepository;
 // Example for use this class, need to pass a parameter fo this class.
 // PurchaseOrderTableModel purchaseOrderTableModel = new PurchaseOrderTableModel(PurchaseOrderTableModel.POStatus.FULFILLED)
 
-public class PurchaseOrderTableModel extends AbstractTableModel {
+public class PurchaseOrderTableModel extends AbstractTableModel implements SearchableTableModel{
 
     private final String[] allColumns = {
         "Order ID",
@@ -91,6 +91,55 @@ public class PurchaseOrderTableModel extends AbstractTableModel {
 
         fireTableDataChanged();
     }
+    
+    public void filterByKeyword(String keyword) {
+        List<PurchaseOrder> allOrders = orderRepo.getAll();
+
+        // Step 1: Filter by statusFilter first (same as refresh logic)
+        List<PurchaseOrder> filteredByStatus;
+        if (statusFilter == POStatus.ALL) {
+            filteredByStatus = allOrders;
+        } else {
+            PurchaseOrder.Status poStatus = switch (statusFilter) {
+                case PENDING -> PurchaseOrder.Status.pending;
+                case FULFILLED -> PurchaseOrder.Status.fulfilled;
+                case VERIFIED -> PurchaseOrder.Status.verified;
+                default -> null;
+            };
+            filteredByStatus = allOrders.stream()
+                .filter(po -> po.getStatus() == poStatus)
+                .collect(Collectors.toList());
+        }
+
+        // Step 2: If keyword is null or empty, just use filteredByStatus list
+        if (keyword == null || keyword.trim().isEmpty()) {
+            this.purchaseOrders = filteredByStatus;
+            fireTableDataChanged();
+            return;
+        }
+
+        String lowerKeyword = keyword.toLowerCase();
+
+        // Step 3: Filter filteredByStatus list by keyword on PO id, item id, and item name
+        this.purchaseOrders = filteredByStatus.stream()
+            .filter(po -> {
+                // PO ID
+                boolean matchesPOId = po.getPurchaseOrderId().toLowerCase().contains(lowerKeyword);
+
+                // Item ID
+                boolean matchesItemId = po.getItemId().toLowerCase().contains(lowerKeyword);
+
+                // Item Name (need to query itemRepo)
+                Item item = itemRepo.find(po.getItemId());
+                boolean matchesItemName = item != null && item.getName().toLowerCase().contains(lowerKeyword);
+
+                return matchesPOId || matchesItemId || matchesItemName;
+            })
+            .collect(Collectors.toList());
+
+        fireTableDataChanged();
+    }
+
 
     @Override
     public int getRowCount() {

@@ -36,6 +36,7 @@ public class SalesManagerController extends BaseController {
     SupplierTableModel supplierTableModel = new SupplierTableModel();
     HistoricalPurchaseRequisitionTableModel historicalPurchaseRequisitionTableModel = new HistoricalPurchaseRequisitionTableModel();
     PendingPurchaseRequisitionTableModel pendingPurchaseRequisitionTableModel = new PendingPurchaseRequisitionTableModel();
+    PurchaseOrderTableModel purchaseOrderTableModel = new PurchaseOrderTableModel(PurchaseOrderTableModel.POStatus.ALL);
 
     // tables
     private JTable itemOnSaleTable;
@@ -164,6 +165,20 @@ public class SalesManagerController extends BaseController {
                 }
             }
         });
+        
+        // Search - Purchase Order
+        JTextField purchaseOrderSearchInput = dashboard.getOrderSearchInput();
+        purchaseOrderSearchInput.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    String inputText = purchaseOrderSearchInput.getText();
+                    purchaseOrderTableModel.filterByKeyword(inputText);
+                    
+                    historicalPRSearchInput.setText("");
+                }
+            }
+        });
     }
 
     private void loadTables() {
@@ -192,6 +207,10 @@ public class SalesManagerController extends BaseController {
         // historical purchase requisition table
         historicalPurchaseRequisitionTable = dashboard.getHistoricalRequisitionTable();
         historicalPurchaseRequisitionTable.setModel(historicalPurchaseRequisitionTableModel);
+        
+        // purchase order  table
+        purchaseOrderTable = dashboard.getOrderTable();
+        purchaseOrderTable.setModel(purchaseOrderTableModel);
         
        
     }

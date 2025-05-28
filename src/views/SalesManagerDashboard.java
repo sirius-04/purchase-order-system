@@ -432,6 +432,17 @@ public class SalesManagerDashboard extends javax.swing.JFrame {
 
         jLabel11.setText("Search:");
 
+        orderSearchInput.setForeground(new java.awt.Color(153, 153, 153));
+        orderSearchInput.setText("Search by ID, Name...");
+        orderSearchInput.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                orderSearchInputFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                orderSearchInputFocusLost(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -591,7 +602,7 @@ public class SalesManagerDashboard extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(orderPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 767, Short.MAX_VALUE)
+            .addComponent(orderPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -724,6 +735,22 @@ public class SalesManagerDashboard extends javax.swing.JFrame {
             requisitionSearch.setForeground(new Color(153, 153, 153));
         }
     }//GEN-LAST:event_requisitionSearchFocusLost
+
+    private void orderSearchInputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_orderSearchInputFocusGained
+        if (orderSearchInput.getText().equals("Search by ID, Name..."))
+        {
+            orderSearchInput.setText("");
+            orderSearchInput.setForeground(new Color(0,0,0));
+        }
+    }//GEN-LAST:event_orderSearchInputFocusGained
+
+    private void orderSearchInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_orderSearchInputFocusLost
+        if (orderSearchInput.getText().equals(""))
+        {
+            orderSearchInput.setText("Search by ID, Name...");
+            orderSearchInput.setForeground(new Color(153, 153, 153));
+        }
+    }//GEN-LAST:event_orderSearchInputFocusLost
 
     public JTextField getItemNotSaleSearchInput() {
         return itemNotSaleSearchInput;
