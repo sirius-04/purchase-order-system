@@ -36,7 +36,7 @@ public class InventoryManagerController extends BaseController {
     
      // table models
     ItemTableModel itemTableModel = new ItemTableModel();
-    PurchaseOrderTableModel purchaseOrderTableModel = new PurchaseOrderTableModel(PurchaseOrder.Status.fulfilled, false);
+    PurchaseOrderTableModel purchaseOrderTableModel = new PurchaseOrderTableModel(PurchaseOrderTableModel.POStatus.FULFILLED);
     private PDFExportService pdfExportService = new PDFExportService();
     
     private JFreeChart stockReportChart;
@@ -88,7 +88,7 @@ public class InventoryManagerController extends BaseController {
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     String inputText = searchInput.getText();
-                    itemTableModel.searchByName(inputText);
+                    itemTableModel.filterByKeyword(inputText);
                 }
             }
         });

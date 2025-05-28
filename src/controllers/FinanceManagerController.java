@@ -45,7 +45,7 @@ public class FinanceManagerController extends BaseController {
 
     // table models
     PaymentTableModel paymentTableModel = new PaymentTableModel();
-    PurchaseOrderTableModel purchaseOrderTableModel = new PurchaseOrderTableModel(PurchaseOrder.Status.pending, true);
+    PurchaseOrderTableModel purchaseOrderTableModel = new PurchaseOrderTableModel(PurchaseOrderTableModel.POStatus.PENDING);
     PendingPurchaseRequisitionTableModel pendingRequisitionTableModel = new PendingPurchaseRequisitionTableModel();
     HistoricalPurchaseRequisitionTableModel historicalRequisitionTableModel = new HistoricalPurchaseRequisitionTableModel();
     InventoryUpdateTableModel inventoryTableModel = new InventoryUpdateTableModel();
