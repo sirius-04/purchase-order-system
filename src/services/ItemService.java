@@ -15,6 +15,7 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import models.Item;
+import models.ItemSupplier;
 import models.Supplier;
 import repository.ItemRepository;
 import repository.ItemSupplierRepository;
@@ -104,8 +105,11 @@ public class ItemService {
                         selectedSupplier.getSupplierId(),
                         status
                 );
+                
+                ItemSupplier itemSupplier = new ItemSupplier(generatedItemId, selectedSupplier.getSupplierId());
 
                 itemRepo.save(newItem);
+                itemSupplierRepo.save(itemSupplier);
 
                 JOptionPane.showMessageDialog(parent, "Item added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
             } catch (NumberFormatException e) {
