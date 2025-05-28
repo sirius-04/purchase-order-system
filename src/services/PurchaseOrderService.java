@@ -6,7 +6,6 @@ package services;
 
 import java.awt.Component;
 import java.util.List;
-import javax.swing.JTable;
 import models.InventoryUpdate;
 import models.Payment;
 import models.PurchaseOrder;
@@ -17,9 +16,6 @@ import repository.ItemSupplierRepository;
 import repository.PaymentRepository;
 import repository.PurchaseOrdersRepository;
 import repository.SupplierRepository;
-import tables.InventoryUpdateTableModel;
-import tables.PaymentTableModel;
-import tables.PurchaseOrderTableModel;
 import utils.IdGenerator;
 
 /**
@@ -157,7 +153,7 @@ public class PurchaseOrderService {
     }
 
 
-    public boolean processPayment(Component parent, Payment payment) {
+    public void processPayment(Component parent, Payment payment) {
                             
         if (payment.getStatus() == Payment.Status.successed) {
             javax.swing.JOptionPane.showMessageDialog(parent, "This payment has already been processed.", "Info", javax.swing.JOptionPane.INFORMATION_MESSAGE);
@@ -227,7 +223,6 @@ public class PurchaseOrderService {
                 javax.swing.JOptionPane.showMessageDialog(parent, "Payment not confirmed.", "Info", javax.swing.JOptionPane.INFORMATION_MESSAGE);
             }
         }
-    return false;
     }
 }
 
