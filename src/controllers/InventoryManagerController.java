@@ -75,7 +75,7 @@ public class InventoryManagerController extends BaseController {
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     String inputText = searchInput.getText();
-                    itemTableModel.searchByName(inputText);
+                    itemTableModel.filterByKeyword(inputText);
                 }
             }
         });

@@ -1,13 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package tables;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import javax.swing.table.AbstractTableModel;
 import models.Item;
@@ -16,11 +9,7 @@ import repository.ItemRepository;
 import repository.SalesRepository;
 import utils.DateTimeService;
 
-/**
- *
- * @author Chan Yong Liang
- */
-public class ItemSaleTableModel extends AbstractTableModel {
+public class ItemSaleTableModel extends AbstractTableModel implements SearchableTableModel {
 
     private final String[] columnNames = {
         "Item ID",
@@ -30,27 +19,32 @@ public class ItemSaleTableModel extends AbstractTableModel {
         "Total Amount"
     };
 
-    private final List<Object[]> dataRows = new ArrayList<>();
+    private final List<Item> allItems = new ArrayList<>();
+    private final List<Item> dataRows = new ArrayList<>();
+
+    private final Map<String, Integer> quantityMap = new HashMap<>();
+    private final Map<String, Double> totalAmountMap = new HashMap<>();
     private final Map<Integer, Item> rowToItemMap = new HashMap<>();
+
     private final ItemRepository itemRepo = new ItemRepository();
+    private final SalesRepository salesRepo = new SalesRepository();
 
     public ItemSaleTableModel() {
         loadData();
     }
 
     private void loadData() {
+        allItems.clear();
         dataRows.clear();
         rowToItemMap.clear();
+        quantityMap.clear();
+        totalAmountMap.clear();
 
         String today = DateTimeService.getCurrentDate();
 
-        SalesRepository salesRepo = new SalesRepository();
         List<Sales> todaySales = salesRepo.getAll().stream()
                 .filter(sale -> today.equals(sale.getDate()))
                 .collect(Collectors.toList());
-
-        Map<String, Integer> quantityMap = new HashMap<>();
-        Map<String, Double> totalAmountMap = new HashMap<>();
 
         for (Sales sale : todaySales) {
             String itemId = sale.getItemId();
@@ -58,28 +52,18 @@ public class ItemSaleTableModel extends AbstractTableModel {
             totalAmountMap.put(itemId, totalAmountMap.getOrDefault(itemId, 0.0) + sale.getTotalAmount());
         }
 
-        List<Item> allOnSaleItems = itemRepo.getAll().stream()
+        List<Item> items = itemRepo.getAll().stream()
                 .filter(item -> item.getStatus() == Item.Status.onSale)
                 .collect(Collectors.toList());
 
-        int rowIndex = 0;
-        for (Item item : allOnSaleItems) {
-            String itemId = item.getItemId();
-            int quantitySold = quantityMap.getOrDefault(itemId, 0);
-            double totalAmount = totalAmountMap.getOrDefault(itemId, 0.0);
-            double pricePerUnit = item.getSellPrice();
+        allItems.addAll(items);
+        dataRows.addAll(items);
 
-            Object[] row = {
-                itemId,
-                item.getName(),
-                quantitySold,
-                pricePerUnit,
-                totalAmount
-            };
-
-            dataRows.add(row);
-            rowToItemMap.put(rowIndex++, item);
+        for (int i = 0; i < dataRows.size(); i++) {
+            rowToItemMap.put(i, dataRows.get(i));
         }
+
+        fireTableDataChanged();
     }
 
     @Override
@@ -99,21 +83,27 @@ public class ItemSaleTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        if (rowIndex >= 0 && rowIndex < dataRows.size()) {
-            return dataRows.get(rowIndex)[columnIndex];
-        }
-        return null;
+        if (rowIndex < 0 || rowIndex >= dataRows.size()) return null;
+
+        Item item = dataRows.get(rowIndex);
+        String itemId = item.getItemId();
+
+        return switch (columnIndex) {
+            case 0 -> itemId;
+            case 1 -> item.getName();
+            case 2 -> quantityMap.getOrDefault(itemId, 0);
+            case 3 -> item.getSellPrice();
+            case 4 -> totalAmountMap.getOrDefault(itemId, 0.0);
+            default -> null;
+        };
     }
 
     @Override
     public Class<?> getColumnClass(int columnIndex) {
         return switch (columnIndex) {
-            case 2 ->
-                Integer.class;
-            case 3, 4 ->
-                Double.class;
-            default ->
-                String.class;
+            case 2 -> Integer.class;
+            case 3, 4 -> Double.class;
+            default -> String.class;
         };
     }
 
@@ -123,6 +113,27 @@ public class ItemSaleTableModel extends AbstractTableModel {
 
     public void refresh() {
         loadData();
+    }
+
+    @Override
+    public void filterByKeyword(String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            dataRows.clear();
+            dataRows.addAll(allItems);
+        } else {
+            String lowerKeyword = keyword.toLowerCase();
+            dataRows.clear();
+            dataRows.addAll(allItems.stream()
+                    .filter(item -> item.getItemId().toLowerCase().contains(lowerKeyword)
+                            || item.getName().toLowerCase().contains(lowerKeyword))
+                    .collect(Collectors.toList()));
+        }
+
+        rowToItemMap.clear();
+        for (int i = 0; i < dataRows.size(); i++) {
+            rowToItemMap.put(i, dataRows.get(i));
+        }
+
         fireTableDataChanged();
     }
 }

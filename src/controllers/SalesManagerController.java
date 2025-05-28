@@ -6,6 +6,8 @@ import views.SalesManagerDashboard;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import models.Sales;
@@ -15,6 +17,10 @@ import tables.DailySalesTableModel;
 import tables.ItemNotOnSaleTableModel;
 import tables.ItemOnSaleTableModel;
 import tables.ItemSaleTableModel;
+import tables.SupplierTableModel;
+import tables.HistoricalPurchaseRequisitionTableModel;
+import tables.PendingPurchaseRequisitionTableModel;
+import tables.PurchaseOrderTableModel;
 
 public class SalesManagerController extends BaseController {
 
@@ -27,6 +33,9 @@ public class SalesManagerController extends BaseController {
     ItemNotOnSaleTableModel itemNotOnSaleTableModel = new ItemNotOnSaleTableModel();
     DailySalesTableModel saleTableModel = new DailySalesTableModel();
     ItemSaleTableModel itemSaleTableModel = new ItemSaleTableModel();
+    SupplierTableModel supplierTableModel = new SupplierTableModel();
+    HistoricalPurchaseRequisitionTableModel historicalPurchaseRequisitionTableModel = new HistoricalPurchaseRequisitionTableModel();
+    PendingPurchaseRequisitionTableModel pendingPurchaseRequisitionTableModel = new PendingPurchaseRequisitionTableModel();
 
     // tables
     private JTable itemOnSaleTable;
@@ -34,7 +43,7 @@ public class SalesManagerController extends BaseController {
     private JTable dailySalesTable;
     private JTable itemSaleTable;
     private JTable purchaseOrderTable;
-    private JTable historicalRequisitionTable;
+    private JTable historicalPurchaseRequisitionTable;
     private JTable pendingRequisitionTable;
     private JTable supplierTable;
 
@@ -58,6 +67,103 @@ public class SalesManagerController extends BaseController {
     protected void setupCustomListeners() {
         salePanelListener();
         itemPanelListener();
+        
+        // Search - Sales Today
+        JTextField saleSearchInput = dashboard.getSalesSearchInput();
+        saleSearchInput.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    String inputText = saleSearchInput.getText();
+                    saleTableModel.filterByKeyword(inputText);
+                    
+                    saleSearchInput.setText("");
+                }
+            }
+        });
+        
+        // Search - Sales of Items
+        JTextField itemSaleSearchInput = dashboard.getItemSaleSearchInput();
+        itemSaleSearchInput.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    String inputText = itemSaleSearchInput.getText();
+                    itemSaleTableModel.filterByKeyword(inputText);
+                    
+                    itemSaleSearchInput.setText("");
+                }
+            }
+        });
+        // Search - Item On Sale
+        JTextField itemOnSaleSaerchInput = dashboard.getItemSearchInput();
+        itemOnSaleSaerchInput.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    String inputText = itemOnSaleSaerchInput.getText();
+                    itemOnSaleTableModel.filterByKeyword(inputText);
+                    
+                    itemOnSaleSaerchInput.setText("");
+                }
+            }
+        });
+        
+        // Search - Item not on Sale
+        JTextField itemNotOnSaleSearchInput = dashboard.getItemNotSaleSearchInput();
+        itemNotOnSaleSearchInput.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    String inputText = itemNotOnSaleSearchInput.getText();
+                    itemNotOnSaleTableModel.filterByKeyword(inputText);
+                    
+                    itemNotOnSaleSearchInput.setText("");
+                }
+            }
+        });
+        
+        // Search - Supplier
+        JTextField supplierSearchInput = dashboard.getSupplierSearchInput();
+        supplierSearchInput.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    String inputText = supplierSearchInput.getText();
+                    supplierTableModel.filterByKeyword(inputText);
+                    
+                    supplierSearchInput.setText("");
+                }
+            }
+        });
+        
+         // Search - Pending Purchase Requisitions
+        JTextField pendingPRSearchInput = dashboard.getRequisitionSearch();
+        pendingPRSearchInput.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    String inputText = pendingPRSearchInput.getText();
+                    pendingPurchaseRequisitionTableModel.filterByKeyword(inputText);
+                    
+                    pendingPRSearchInput.setText("");
+                }
+            }
+        });
+        
+        // Search - Historical Purchase Requisitions
+        JTextField historicalPRSearchInput = dashboard.getHistoricalRequisitionSearch();
+        historicalPRSearchInput.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    String inputText = historicalPRSearchInput.getText();
+                    historicalPurchaseRequisitionTableModel.filterByKeyword(inputText);
+                    
+                    historicalPRSearchInput.setText("");
+                }
+            }
+        });
     }
 
     private void loadTables() {
@@ -74,6 +180,20 @@ public class SalesManagerController extends BaseController {
         // item sale table
         itemSaleTable = dashboard.getItemSaleTable();
         itemSaleTable.setModel(itemSaleTableModel);
+        
+        // supplier table
+        supplierTable = dashboard.getSupplierTable();
+        supplierTable.setModel(supplierTableModel);
+        
+         // pending purchase requisition table
+        pendingRequisitionTable = dashboard.getPendingRequisitionTable();
+        pendingRequisitionTable.setModel(pendingPurchaseRequisitionTableModel);
+        
+        // historical purchase requisition table
+        historicalPurchaseRequisitionTable = dashboard.getHistoricalRequisitionTable();
+        historicalPurchaseRequisitionTable.setModel(historicalPurchaseRequisitionTableModel);
+        
+       
     }
 
     private void salePanelListener() {

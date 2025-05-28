@@ -16,7 +16,7 @@ import repository.SupplierRepository;
  *
  * @author Chan Yong Liang
  */
-public class ItemOnSaleTableModel extends AbstractTableModel {
+public class ItemOnSaleTableModel extends AbstractTableModel implements SearchableTableModel {
 
     private final String[] columnNames = {
         "Item ID",
@@ -40,6 +40,24 @@ public class ItemOnSaleTableModel extends AbstractTableModel {
         itemsOnSale = itemRepo.getAll().stream()
                 .filter(item -> item.getStatus() == Item.Status.onSale)
                 .toList();
+
+        fireTableDataChanged();
+    }
+    
+    @Override
+    public void filterByKeyword(String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            refresh();
+            return;
+        }
+
+        String lowerKeyword = keyword.toLowerCase();
+
+        itemsOnSale = itemRepo.getAll().stream()
+            .filter(item -> item.getStatus() == Item.Status.onSale &&
+                    (item.getName().toLowerCase().contains(lowerKeyword) ||
+                     item.getItemId().toLowerCase().contains(lowerKeyword)))
+            .toList();
 
         fireTableDataChanged();
     }
