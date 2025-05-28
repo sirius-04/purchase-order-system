@@ -4,6 +4,7 @@
  */
 package views;
 
+import javax.swing.JPanel;
 import javax.swing.JTable;
 
 /**
@@ -358,6 +359,10 @@ public class FinanceManagerDashboard extends javax.swing.JFrame {
     
     public JTable getInventoryTable() {
         return inventoryTable;
+    }
+    
+    public JPanel getDailyProfitPanel() {
+        return jPanel4;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

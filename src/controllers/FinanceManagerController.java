@@ -4,12 +4,18 @@
  */
 package controllers;
 
+import java.awt.BorderLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.util.Map;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JTable;
 import models.InventoryUpdate;
 import models.Payment;
 import models.users.FinanceManager;
 import services.PurchaseOrderService;
+import services.ReportService;
 import tables.HistoricalPurchaseRequisitionTableModel;
 import tables.InventoryUpdateTableModel;
 import tables.PaymentTableModel;
@@ -17,6 +23,8 @@ import tables.PendingPurchaseRequisitionTableModel;
 import tables.PurchaseOrderTableModel;
 import views.FinanceManagerDashboard;
 import models.PurchaseOrder;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
 
 /**
  *
@@ -53,6 +61,7 @@ public class FinanceManagerController extends BaseController {
     @Override
     protected void loadInitialData() {
         loadTables();
+        showDailyProfitChart();
     }
 
     @Override
@@ -132,6 +141,33 @@ public class FinanceManagerController extends BaseController {
                 }
             }
         });
+    }
+    
+    private void showDailyProfitChart() {
+        ReportService reportService = new ReportService();
+        Map<String, Double> dailyProfitMap = reportService.getDailyProfit();
+
+        JFreeChart chart = reportService.createDailyProfitChart(dailyProfitMap);
+
+        ChartPanel chartPanel = new ChartPanel(chart);
+        chartPanel.setPreferredSize(new java.awt.Dimension(
+            dashboard.getDailyProfitPanel().getWidth() - 20, 
+            dashboard.getDailyProfitPanel().getHeight() - 20
+        ));
+        
+        JPanel wrapperPanel = new JPanel(new GridBagLayout());
+        wrapperPanel.setBackground(dashboard.getDailyProfitPanel().getBackground());
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.fill = GridBagConstraints.NONE;
+
+        wrapperPanel.add(chartPanel, gbc);
+
+        dashboard.getDailyProfitPanel().setLayout(new BorderLayout());
+        dashboard.getDailyProfitPanel().add(wrapperPanel, BorderLayout.CENTER);
+        dashboard.getDailyProfitPanel().revalidate();
+        dashboard.getDailyProfitPanel().repaint();
     }
 }
 
