@@ -21,7 +21,7 @@ public class PaymentRepository extends BaseRepository<Payment> {
     protected String formatToRow(Payment payment) {
         return String.format(rowFormat,
                 payment.getPaymentId(),
-                payment.getPurchaseOrderId(),
+                payment.getInventoryUpdateId(),
                 payment.getAmountPaid(),
                 payment.getDatePaid(),
                 payment.getStatus()

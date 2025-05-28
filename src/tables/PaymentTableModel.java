@@ -8,10 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
 import models.Payment;
-import models.PurchaseOrder;
 import models.Supplier;
+import repository.InventoryUpdateRepository;
 import repository.PaymentRepository;
-import repository.PurchaseOrdersRepository;
 import repository.SupplierRepository;
 
 /**
@@ -31,7 +30,7 @@ public class PaymentTableModel extends AbstractTableModel {
 
     private final PaymentRepository paymentRepo = new PaymentRepository();
     private final SupplierRepository supplierRepo = new SupplierRepository();
-    private final PurchaseOrdersRepository purchaseOrderRepo = new PurchaseOrdersRepository();
+    private final InventoryUpdateRepository inventoryUpdateRepo = new InventoryUpdateRepository();
 
     private List<Payment> payments = new ArrayList<>();
 
@@ -40,17 +39,8 @@ public class PaymentTableModel extends AbstractTableModel {
     }
 
     public void refresh() {
-        List<Payment> allPayments = paymentRepo.getAll();
-        List<Payment> verifiedPayment = new ArrayList<>();
-        
-        for (Payment payment: allPayments) {
-            var purchaseOrder = purchaseOrderRepo.find(payment.getPurchaseOrderId());
-            if (purchaseOrder != null && purchaseOrder.getStatus() == PurchaseOrder.Status.verified){
-                verifiedPayment.add(payment);
-            }
-        }
-        
-        this.payments = verifiedPayment;
+        payments = paymentRepo.getAll();
+
         fireTableDataChanged();
     }
 
@@ -81,12 +71,12 @@ public class PaymentTableModel extends AbstractTableModel {
         Payment pay = payments.get(rowIndex);
 
         // Find associated PurchaseOrder and Supplier
-        var purchaseOrder = purchaseOrderRepo.find(pay.getPurchaseOrderId());
-        if (purchaseOrder == null) {
+        var inventoryUpdate = inventoryUpdateRepo.find(pay.getInventoryUpdateId());
+        if (inventoryUpdate == null) {
             return null;
         }
 
-        Supplier supplier = supplierRepo.find(purchaseOrder.getSupplierId());
+        Supplier supplier = supplierRepo.find(inventoryUpdate.getSupplierId());
         if (supplier == null) {
             return null;
         }

@@ -6,6 +6,8 @@ package controllers;
 
 import javax.swing.JFrame;
 import javax.swing.JTable;
+import models.InventoryUpdate;
+import models.Payment;
 import models.users.FinanceManager;
 import services.PurchaseOrderService;
 import tables.HistoricalPurchaseRequisitionTableModel;
@@ -56,8 +58,8 @@ public class FinanceManagerController extends BaseController {
     @Override
     protected void setupCustomListeners() {
         approvePOListener();
-        poService.verifyUpdateListener(dashboard, inventoryTable, paymentTable);
-        poService.processPayment(dashboard, paymentTable);
+        verifyUpdateListener();
+        processPaymentListener();
     }
 
     private void loadTables() {
@@ -81,8 +83,57 @@ public class FinanceManagerController extends BaseController {
     }
     
     private void approvePOListener() {
-        poService.addApprovalListener(dashboard, purchaseOrderTable, inventoryTable);
-        purchaseOrderTableModel.refresh();
-        inventoryTableModel.refresh();
+       purchaseOrderTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int row = purchaseOrderTable.getSelectedRow();
+                if (row != -1) {
+                   PurchaseOrderTableModel purchaseOrderModel = (PurchaseOrderTableModel) purchaseOrderTable.getModel();
+                   InventoryUpdateTableModel inventoryModel = (InventoryUpdateTableModel) inventoryTable.getModel();
+                   PurchaseOrder selectedPO = purchaseOrderModel.getPurchaseOrderAt(row);
+                   
+                   poService.addApprovalListener(dashboard, selectedPO);
+                   purchaseOrderModel.refresh();
+                   inventoryModel.refresh();
+                }
+            }
+        });
+    }
+    
+    private void verifyUpdateListener() {
+        inventoryTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int row = inventoryTable.getSelectedRow();
+                if (row != -1) {
+                    InventoryUpdateTableModel inventoryModel = (InventoryUpdateTableModel) inventoryTable.getModel();
+                    PaymentTableModel paymentModel = (PaymentTableModel) paymentTable.getModel();
+                    InventoryUpdate inventory = inventoryModel.getInventoryUpdateAt(row);
+
+                    poService.verifyUpdate(dashboard, inventory);
+                    inventoryModel.refresh();
+                    paymentModel.refresh();
+                    }
+                }
+            }); 
+    } 
+    
+    private void processPaymentListener() {
+        paymentTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int row = paymentTable.getSelectedRow();
+                if (row != -1) {
+                    PaymentTableModel paymentModel = (PaymentTableModel) paymentTable.getModel();
+                    Payment selectedPayment = paymentModel.getPaymentAt(row);
+                    
+                poService.processPayment(dashboard, selectedPayment);
+                paymentModel.refresh();
+                }
+            }
+        });
     }
 }
+
+
+        
