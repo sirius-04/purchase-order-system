@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import models.Sales;
+import services.ItemService;
 import services.SalesService;
 import tables.DailySalesTableModel;
 import tables.ItemNotOnSaleTableModel;
@@ -19,6 +20,7 @@ public class SalesManagerController extends BaseController {
 
     private SalesManagerDashboard dashboard;
     private SalesService salesService = new SalesService();
+    private ItemService itemService = new ItemService();
 
     // table models
     ItemOnSaleTableModel itemOnSaleTableModel = new ItemOnSaleTableModel();
@@ -54,8 +56,8 @@ public class SalesManagerController extends BaseController {
 
     @Override
     protected void setupCustomListeners() {
-        addSaleButtonListener();
-        addSaleTableListener();
+        salePanelListener();
+        itemPanelListener();
     }
 
     private void loadTables() {
@@ -72,6 +74,15 @@ public class SalesManagerController extends BaseController {
         // item sale table
         itemSaleTable = dashboard.getItemSaleTable();
         itemSaleTable.setModel(itemSaleTableModel);
+    }
+
+    private void salePanelListener() {
+        addSaleButtonListener();
+        addSaleTableListener();
+    }
+
+    private void itemPanelListener() {
+        addItemButtonListener();
     }
 
     private void addSaleButtonListener() {
@@ -104,6 +115,19 @@ public class SalesManagerController extends BaseController {
         });
     }
 
+    private void addItemButtonListener() {
+        JButton addItemButton = dashboard.getAddItemButton();
+
+        addItemButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                itemService.addItem(dashboard);
+
+                refreshDailySalePanel();
+                refreshItemPanel();
+            }
+        });
+    }
+
     private void updateTotalSaleAmount() {
         JLabel totalAmountText = dashboard.getTotalAmount();
         Double totalSale = salesService.calculateTodaySalesTotal();
@@ -116,7 +140,7 @@ public class SalesManagerController extends BaseController {
         itemSaleTableModel.refresh();
         updateTotalSaleAmount();
     }
-    
+
     private void refreshItemPanel() {
         itemOnSaleTableModel.refresh();
         itemNotOnSaleTableModel.refresh();

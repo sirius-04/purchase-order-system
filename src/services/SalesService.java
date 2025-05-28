@@ -160,7 +160,7 @@ public class SalesService {
         }
     }
 
-    private void deleteSale(Component parent, Sales sale) {
+    public void deleteSale(Component parent, Sales sale) {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.add(new JLabel("Confirm delete sale:"));
