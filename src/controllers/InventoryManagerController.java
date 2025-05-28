@@ -15,6 +15,7 @@ import views.InventoryManagerDashboard;
 import tables.ItemTableModel;
 import tables.PurchaseOrderTableModel;
 import utils.LowStockRenderer;
+import models.PurchaseOrder;
 
 /**
  *
@@ -25,7 +26,7 @@ public class InventoryManagerController extends BaseController {
     
      // table models
     ItemTableModel itemTableModel = new ItemTableModel();
-     PurchaseOrderTableModel purchaseOrderTableModel = new PurchaseOrderTableModel();
+     PurchaseOrderTableModel purchaseOrderTableModel = new PurchaseOrderTableModel(PurchaseOrder.Status.fulfilled, false);
 
     // tables
     private JTable itemTable;
