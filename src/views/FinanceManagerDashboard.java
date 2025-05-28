@@ -4,6 +4,7 @@
  */
 package views;
 
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 
@@ -46,6 +47,7 @@ public class FinanceManagerDashboard extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         searchSupplierTable = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
+        exportButton = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         historicalRequisitionTable = new javax.swing.JTable();
@@ -193,15 +195,23 @@ public class FinanceManagerDashboard extends javax.swing.JFrame {
 
         requisitionPanel.addTab("Process Payment", jPanel3);
 
+        exportButton.setText("Export");
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1045, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap(894, Short.MAX_VALUE)
+                .addComponent(exportButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(51, 51, 51))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 691, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap(651, Short.MAX_VALUE)
+                .addComponent(exportButton)
+                .addGap(17, 17, 17))
         );
 
         requisitionPanel.addTab("Finance Report", jPanel4);
@@ -364,9 +374,14 @@ public class FinanceManagerDashboard extends javax.swing.JFrame {
     public JPanel getDailyProfitPanel() {
         return jPanel4;
     }
+    
+    public JButton getExportButton() {
+        return exportButton;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable approveOrderTable;
+    private javax.swing.JButton exportButton;
     private javax.swing.JTextField historicalRequisitionSearchInput;
     private javax.swing.JTable historicalRequisitionTable;
     private javax.swing.JTextField inventorySearchInput;
