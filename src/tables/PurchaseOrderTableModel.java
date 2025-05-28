@@ -17,20 +17,26 @@ import repository.PurchaseOrdersRepository;
  *
  * @author Chan Yong Liang
  */
+
+
+// Example for use this class, need to pass a parameter fo this class.
+// PurchaseOrderTableModel purchaseOrderTableModel = new PurchaseOrderTableModel(PurchaseOrderTableModel.POStatus.FULFILLED)
+
 public class PurchaseOrderTableModel extends AbstractTableModel {
 
-   private final String[] allColumns = {
-        "Order ID",       
-        "Item ID",        
-        "Item Name",      
-        "Quantity",       
-        "Price",          
-        "Purchase Manager ID", 
-        "Status",         
-        "Supplier ID"     
+    private final String[] allColumns = {
+        "Order ID",
+        "Item ID",
+        "Item Name",
+        "Quantity",
+        "Price",
+        "Purchase Manager ID",
+        "Status",
+        "Supplier ID"
     };
 
-    private final int[] defaultColumnIndexes = { 0, 1, 2, 3, 4, 5, 6, 7 };
+    private final int[] allColumnsIndexes = { 0, 1, 2, 3, 4, 5, 6, 7 };
+    private final int[] filteredColumnsIndexes = { 0, 1, 2, 3, 4, 5, 7 }; // remove the status column
 
     private int[] visibleColumnIndexes;
 
@@ -38,21 +44,51 @@ public class PurchaseOrderTableModel extends AbstractTableModel {
     private final ItemRepository itemRepo = new ItemRepository();
 
     private List<PurchaseOrder> purchaseOrders = new ArrayList<>();
-    private final PurchaseOrder.Status statusFilter;
+    private final POStatus statusFilter;
 
-    public PurchaseOrderTableModel(PurchaseOrder.Status statusFilter, boolean showStatusColumn) {
+    public static enum POStatus {
+        ALL,
+        PENDING,
+        FULFILLED,
+        VERIFIED;
+
+        public static POStatus fromString(String value) {
+            try {
+                return POStatus.valueOf(value.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                return POStatus.ALL;
+            }
+        }
+    }
+    
+    public PurchaseOrderTableModel(POStatus statusFilter) {
         this.statusFilter = statusFilter;
-        this.visibleColumnIndexes = showStatusColumn
-            ? defaultColumnIndexes
-            : new int[] { 0, 1, 2, 3, 4, 5, 7 }; // omit index 6 ("Status")
+
+        // Set visible columns based on filter
+        this.visibleColumnIndexes = (statusFilter == POStatus.ALL)
+            ? allColumnsIndexes
+            : filteredColumnsIndexes;
+
         refresh();
     }
 
     public void refresh() {
         List<PurchaseOrder> allOrders = orderRepo.getAll();
-        this.purchaseOrders = allOrders.stream()
-            .filter(po -> po.getStatus() == statusFilter)
-            .collect(Collectors.toList());
+
+        if (statusFilter == POStatus.ALL) {
+            this.purchaseOrders = allOrders;
+        } else {
+            PurchaseOrder.Status status = switch (statusFilter) {
+                case PENDING -> PurchaseOrder.Status.pending;
+                case FULFILLED -> PurchaseOrder.Status.fulfilled;
+                case VERIFIED -> PurchaseOrder.Status.verified;
+                default -> null;
+            };
+            this.purchaseOrders = allOrders.stream()
+                .filter(po -> po.getStatus() == status)
+                .collect(Collectors.toList());
+        }
+
         fireTableDataChanged();
     }
 
@@ -100,5 +136,22 @@ public class PurchaseOrderTableModel extends AbstractTableModel {
             return null;
         }
         return purchaseOrders.get(rowIndex);
+    }
+}
+
+
+// Status enum
+enum POStatus {
+    ALL,
+    PENDING,
+    FULFILLED,
+    VERIFIED;
+
+    public static POStatus fromString(String value) {
+        try {
+            return POStatus.valueOf(value.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            return POStatus.ALL;
+        }
     }
 }

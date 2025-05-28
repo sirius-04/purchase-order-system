@@ -26,7 +26,7 @@ public class InventoryManagerController extends BaseController {
     
      // table models
     ItemTableModel itemTableModel = new ItemTableModel();
-     PurchaseOrderTableModel purchaseOrderTableModel = new PurchaseOrderTableModel(PurchaseOrder.Status.fulfilled, false);
+    PurchaseOrderTableModel purchaseOrderTableModel = new PurchaseOrderTableModel(PurchaseOrderTableModel.POStatus.FULFILLED);
 
     // tables
     private JTable itemTable;
