@@ -5,12 +5,13 @@
 package controllers;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JTable;
 import models.users.Admin;
+import models.users.UserRole;
 import services.ItemService;
+import services.UserService;
 import tables.HistoricalPurchaseRequisitionTableModel;
 import tables.ItemNotOnSaleTableModel;
 import tables.ItemOnSaleTableModel;
@@ -28,6 +29,7 @@ public class AdminController extends BaseController {
     
     private AdminDashboard dashboard;
     private ItemService itemService = new ItemService();
+    private UserService userService = new UserService();
     
     UserTableModel userTableModel = new UserTableModel();
     ItemOnSaleTableModel itemOnSaleTableModel = new ItemOnSaleTableModel();
@@ -63,6 +65,7 @@ public class AdminController extends BaseController {
 
     @Override
     protected void setupCustomListeners() {
+        registerNewUser();
         addItemButtonListener();
     }
     
@@ -90,12 +93,10 @@ public class AdminController extends BaseController {
     private void addItemButtonListener() {
         JButton addItemButton = dashboard.getAddItemButton();
 
-        addItemButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                itemService.addItem(dashboard);
-
-                refreshItemPanel();
-            }
+        addItemButton.addActionListener((ActionEvent e) -> {
+            itemService.addItem(dashboard);
+            
+            refreshItemPanel();
         });
     }
     
@@ -104,4 +105,19 @@ public class AdminController extends BaseController {
         itemNotOnSaleTableModel.refresh();
     }
     
+    private void registerNewUser() {
+        JButton registerUserButton = dashboard.getCreateUserButton();
+        
+        registerUserButton.addActionListener((ActionEvent e) -> {
+            String username = dashboard.getUsername().getText();
+            String password = dashboard.getPassword().getText();
+            String roleToString = (String) dashboard.getSelectedRole().getSelectedItem();
+            
+            UserRole role = UserRole.valueOf(roleToString);
+            
+            userService.registerUser(dashboard, username, password, role);
+            
+            userTableModel.refresh();
+        });
+    }
 }
