@@ -6,6 +6,7 @@ package services;
 
 import java.awt.Component;
 import java.util.List;
+import javax.swing.JOptionPane;
 import models.PurchaseOrder;
 import models.Supplier;
 import repository.ItemRepository;
@@ -100,6 +101,25 @@ public class PurchaseOrderService {
             } else {
                 javax.swing.JOptionPane.showMessageDialog(parent, "Failed to approve. Please try again.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
             }
+        }
+    }
+    
+    public void verifyPO(Component parent, PurchaseOrder po) {
+        if (po == null) return;
+        
+        int result = JOptionPane.showConfirmDialog(
+            parent,
+            "Are you sure you want to verify this Purchase Order?",
+            "Confirm Verification",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE
+        );
+
+        if (result == JOptionPane.YES_OPTION) {
+            po.setStatus(PurchaseOrder.Status.verified);
+
+             purchaseOrderRepo.update(po); 
+            JOptionPane.showMessageDialog(parent, "Purchase Order verified.");
         }
     }
 }

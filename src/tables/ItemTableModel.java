@@ -34,7 +34,8 @@ public class ItemTableModel extends AbstractTableModel implements SearchableTabl
         "Item Name",
         "Price",
         "Stock Quantity",
-        "Supplier Name"
+        "Supplier Name",
+        "Item Status",
     };
 
     private final ItemRepository itemRepo = new ItemRepository();
@@ -131,7 +132,8 @@ public class ItemTableModel extends AbstractTableModel implements SearchableTabl
             case 4:
                 Supplier supplier = supplierRepo.find(item.getSupplierId());
                 return supplier != null ? supplier.getName() : "Unknown";
-
+            case 5:
+                return item.getStatus();
             default:
                 return null;
         }
