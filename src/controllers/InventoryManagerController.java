@@ -29,6 +29,8 @@ import org.jfree.chart.JFreeChart;
 import services.PDFExportService;
 import services.ReportService;
 import services.ItemService;
+import models.PurchaseOrder;
+import services.PurchaseOrderService;
 
 /**
  *
@@ -36,14 +38,17 @@ import services.ItemService;
  */
 public class InventoryManagerController extends BaseController {
     private InventoryManagerDashboard dashboard;
+    
+    // service
     private ItemService itemService = new ItemService();
+    private PurchaseOrderService poService = new PurchaseOrderService();
+    private PDFExportService pdfExportService = new PDFExportService();
     
      // table models
     ItemTableModel itemTableModel = new ItemTableModel();
     PurchaseOrderTableModel fulfiledPOTableModel = new PurchaseOrderTableModel(PurchaseOrderTableModel.POStatus.FULFILLED);
     PurchaseOrderTableModel verifiedPOTableModel = new PurchaseOrderTableModel(PurchaseOrderTableModel.POStatus.VERIFIED);
     InventoryUpdateTableModel inventoryUpdateTableModel = new InventoryUpdateTableModel();
-    private PDFExportService pdfExportService = new PDFExportService();
     
     private JFreeChart stockReportChart;
     
@@ -72,7 +77,14 @@ public class InventoryManagerController extends BaseController {
     @Override
     protected void setupCustomListeners() {
         
+        // item table - edit item
         editItemListener();
+        
+        // pending PO table - change status to 'VERIFIED'
+        verifyPOListener();
+        
+        // stock report
+        setupExportListeners();
     
         // Status selection
         JComboBox<String> statusComboBox = dashboard.getStatusComboBox();
@@ -92,7 +104,7 @@ public class InventoryManagerController extends BaseController {
             }
         });
 
-        // Search input
+        // Item Table - Search
         JTextField searchInput = dashboard.getItemSearchInput();
         searchInput.addKeyListener(new KeyAdapter() {
             @Override
@@ -104,8 +116,13 @@ public class InventoryManagerController extends BaseController {
             }
         });
         
-        // stock report
-        setupExportListeners();
+        // Pending PO - Search
+        
+        
+        // Historical PO - Search
+        
+        
+        // Inventory Update - Search
     }
     
     private void loadTables() {
@@ -173,20 +190,40 @@ public class InventoryManagerController extends BaseController {
             }
         });
     }
+    
     private void editItemListener() {
-    itemTable.addMouseListener(new java.awt.event.MouseAdapter(){
-        @Override
-        public void mouseClicked(java.awt.event.MouseEvent evt) {
-            int row = itemTable.getSelectedRow();
-            if (row != -1) {
-                ItemTableModel model = (ItemTableModel) itemTable.getModel();
-                Item selectedItem = model.getItemAt(row);
-                
-                itemService.editItem(dashboard, selectedItem); 
-                model.refresh(); 
+        itemTable.addMouseListener(new java.awt.event.MouseAdapter(){
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int row = itemTable.getSelectedRow();
+                if (row != -1) {
+                    ItemTableModel itemModel = (ItemTableModel) itemTable.getModel();
+                    Item selectedItem = itemModel.getItemAt(row);
+
+                    itemService.editItem(dashboard, selectedItem); 
+                    itemModel.refresh(); 
+                }
             }
-        }
-    });
-}
+        });
+    }
+    
+    private void verifyPOListener() {
+       fulfiledPOTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int row = fulfiledPOTable.getSelectedRow();
+                if (row != -1) {
+                    PurchaseOrderTableModel fulfiledPOTableModel = (PurchaseOrderTableModel) fulfiledPOTable.getModel();
+                    PurchaseOrderTableModel verifiedPOTableModel = (PurchaseOrderTableModel) verifiedPOTable.getModel();
+    
+                   PurchaseOrder selectedPO = fulfiledPOTableModel.getPurchaseOrderAt(row);
+                   
+                   poService.verifyPO(dashboard, selectedPO);
+                   fulfiledPOTableModel.refresh();
+                   verifiedPOTableModel.refresh(); 
+                }
+            }
+        });
+    }
 
 }
