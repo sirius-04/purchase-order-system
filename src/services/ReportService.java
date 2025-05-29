@@ -27,24 +27,24 @@ public class ReportService {
     private final ItemRepository itemRepo = new ItemRepository();
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     
-    public Map<String, Double> getDailyProfit() {
+    public Map<String, Double> getDailyProfit(YearMonth selectedMonth) {
         List<Sales> salesList = salesRepo.getAll();
         Map<String, Double> dailyProfitMap = new TreeMap<>();
        
-        YearMonth currentYearMonth = YearMonth.now();
-        LocalDate firstOfMonth = currentYearMonth.atDay(1);
-        LocalDate lastOfMonth = currentYearMonth.atEndOfMonth();
+        LocalDate firstOfMonth = selectedMonth.atDay(1);
+        LocalDate lastOfMonth = selectedMonth.atEndOfMonth();
 
         for (Sales sale : salesList) {
             try {
-                LocalDate saleDate = LocalDate.parse(sale.getDate(), dateFormatter);
+                String date = sale.getDate().split(",")[0];
+                LocalDate saleDate = LocalDate.parse(date, dateFormatter);
                 
-                // Filter sales to current month
+                // Filter sales to selected month
                 if (!saleDate.isBefore(firstOfMonth) && !saleDate.isAfter(lastOfMonth)) {
                     Item item = itemRepo.find(sale.getItemId());
                     if (item != null) {
                         double profit = (item.getSellPrice() - item.getPrice()) * sale.getQuantity();
-                        dailyProfitMap.merge(sale.getDate(), profit, Double::sum);
+                        dailyProfitMap.merge(date, profit, Double::sum);
                     }
                 }
             } catch (Exception e) {
@@ -55,13 +55,13 @@ public class ReportService {
         return dailyProfitMap;
     }
 
-    public JFreeChart createDailyProfitChart(Map<String, Double> dailyProfitMap) {
+    public JFreeChart createDailyProfitChart(Map<String, Double> dailyProfitMap, YearMonth selectedMonth) {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         for (Map.Entry<String, Double> entry : dailyProfitMap.entrySet()) {
             dataset.addValue(entry.getValue(), "Profit", entry.getKey());
         }
 
-        String monthName = YearMonth.now().format(DateTimeFormatter.ofPattern("MMMM yyyy"));
+        String monthName = selectedMonth.format(DateTimeFormatter.ofPattern("MMMM yyyy"));
         String title = "Daily Profit - " + monthName;
 
         return ChartFactory.createLineChart(

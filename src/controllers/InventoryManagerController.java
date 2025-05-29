@@ -119,17 +119,19 @@ public class InventoryManagerController extends BaseController {
         Map<String, Double> quantityMap = reportService.getStockQuantities();
         Map<String, Double> priceMap = reportService.getItemPrices();
         
+        JPanel stockChartContainer = dashboard.getStockChart();
+        
         stockReportChart = reportService.createStockReportChart(quantityMap, priceMap);
         JFreeChart chart = reportService.createStockReportChart(quantityMap, priceMap);
 
         ChartPanel chartPanel = new ChartPanel(chart);
         chartPanel.setPreferredSize(new java.awt.Dimension(
-            dashboard.getStockReportPanel().getWidth() - 20, 
-            dashboard.getStockReportPanel().getHeight() - 20
+            stockChartContainer.getWidth(), 
+            stockChartContainer.getHeight()
         ));
         
         JPanel wrapperPanel = new JPanel(new GridBagLayout());
-        wrapperPanel.setBackground(dashboard.getStockReportPanel().getBackground());
+        wrapperPanel.setBackground(stockChartContainer.getBackground());
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.CENTER;
@@ -137,10 +139,10 @@ public class InventoryManagerController extends BaseController {
 
         wrapperPanel.add(chartPanel, gbc);
 
-        dashboard.getStockReportPanel().setLayout(new BorderLayout());
-        dashboard.getStockReportPanel().add(wrapperPanel, BorderLayout.CENTER);
-        dashboard.getStockReportPanel().revalidate();
-        dashboard.getStockReportPanel().repaint();
+        stockChartContainer.setLayout(new BorderLayout());
+        stockChartContainer.add(wrapperPanel, BorderLayout.CENTER);
+        stockChartContainer.revalidate();
+        stockChartContainer.repaint();
     }
     
     private void setupExportListeners() {
