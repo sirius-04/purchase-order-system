@@ -55,6 +55,7 @@ public class InventoryManagerDashboard extends javax.swing.JFrame {
         stockSearchInput = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
         exportButton = new javax.swing.JButton();
+        stockChartPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -203,6 +204,17 @@ public class InventoryManagerDashboard extends javax.swing.JFrame {
 
         exportButton.setText("Export");
 
+        javax.swing.GroupLayout stockChartPanelLayout = new javax.swing.GroupLayout(stockChartPanel);
+        stockChartPanel.setLayout(stockChartPanelLayout);
+        stockChartPanelLayout.setHorizontalGroup(
+            stockChartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 968, Short.MAX_VALUE)
+        );
+        stockChartPanelLayout.setVerticalGroup(
+            stockChartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 555, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -211,11 +223,17 @@ public class InventoryManagerDashboard extends javax.swing.JFrame {
                 .addContainerGap(895, Short.MAX_VALUE)
                 .addComponent(exportButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(73, 73, 73))
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(50, 50, 50)
+                .addComponent(stockChartPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(622, Short.MAX_VALUE)
+                .addGap(41, 41, 41)
+                .addComponent(stockChartPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
                 .addComponent(exportButton)
                 .addGap(17, 17, 17))
         );
@@ -288,12 +306,12 @@ public class InventoryManagerDashboard extends javax.swing.JFrame {
         return itemSearchInput;
     }
     
-    public JPanel getStockReportPanel() {
-        return jPanel4;
-    }
-    
     public JButton getExportButton() {
         return exportButton;
+    }
+    
+    public JPanel getStockChart() {
+        return stockChartPanel;
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -317,6 +335,7 @@ public class InventoryManagerDashboard extends javax.swing.JFrame {
     private javax.swing.JTable orderTable;
     private CustomPanel.TabbedPaneCustom reportPanel;
     private javax.swing.JComboBox<String> statusComboBox;
+    private javax.swing.JPanel stockChartPanel;
     private javax.swing.JTextField stockSearchInput;
     private javax.swing.JTable stockTable;
     // End of variables declaration//GEN-END:variables

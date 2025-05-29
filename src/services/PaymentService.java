@@ -25,6 +25,7 @@ public class PaymentService {
 
         if (payment.getStatus() == Payment.Status.successed) {
             javax.swing.JOptionPane.showMessageDialog(parent, "This payment has already been processed.", "Info", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+            return;
         }
 
         InventoryUpdate inventoryUpdate = inventoryRepo.find(payment.getInventoryUpdateId());
@@ -54,17 +55,21 @@ public class PaymentService {
         if (option == javax.swing.JOptionPane.OK_OPTION) {
             String enteredAccountNum = accountNumField.getText();
             String enteredAmountStr = amountToPaidField.getText();
+            double enteredAmount = 0;
 
             if (enteredAccountNum.isEmpty() || enteredAmountStr.isEmpty()) {
                 javax.swing.JOptionPane.showMessageDialog(parent, "All fields are required.", "Warning", javax.swing.JOptionPane.WARNING_MESSAGE);
             }
 
-            double enteredAmount = 0;
-
             try {
                 enteredAmount = Double.parseDouble(enteredAmountStr);
             } catch (NumberFormatException e) {
                 javax.swing.JOptionPane.showMessageDialog(parent, "Invalid amount format.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+            }
+            
+            if (enteredAmount > amountToPaid) {
+            javax.swing.JOptionPane.showMessageDialog(parent, "Entered amount exceeds the payable amount.", "Warning", javax.swing.JOptionPane.WARNING_MESSAGE);
+            return;
             }
 
             int confirm = javax.swing.JOptionPane.showConfirmDialog(
@@ -73,23 +78,29 @@ public class PaymentService {
                     "Confirm Payment",
                     javax.swing.JOptionPane.YES_NO_OPTION
             );
+            
+            double balanceAmount = payment.getAmountPaid() - enteredAmount;
+            Payment.Status status = Payment.Status.pending;
 
-            if (confirm == javax.swing.JOptionPane.YES_OPTION) {
-                Payment updatedPayment = new Payment(
-                        payment.getPaymentId(),
-                        inventoryUpdate.getInventoryUpdateId(),
-                        payment.getAmountPaid() - enteredAmount,
-                        java.time.LocalDate.now().toString(),
-                        models.Payment.Status.successed
-                );
+            if (confirm == javax.swing.JOptionPane.YES_OPTION && balanceAmount == 0) {
+                status = Payment.Status.successed;
+            }
+            
+            Payment updatedPayment = new Payment(
+                       payment.getPaymentId(),
+                       inventoryUpdate.getInventoryUpdateId(),
+                       balanceAmount,
+                       java.time.LocalDate.now().toString(),
+                       status
+               );
 
-                PaymentRepository paymentRepo = new PaymentRepository();
-                paymentRepo.update(updatedPayment);     
+            PaymentRepository paymentRepo = new PaymentRepository();
+            paymentRepo.update(updatedPayment);     
 
-                javax.swing.JOptionPane.showMessageDialog(parent, "Payment processed successfully!", "Success", javax.swing.JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                javax.swing.JOptionPane.showMessageDialog(parent, "Payment not confirmed.", "Info", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+            javax.swing.JOptionPane.showMessageDialog(parent, "Payment processed successfully!", "Success", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+            }
+            else {
+                javax.swing.JOptionPane.showMessageDialog(parent, "Payment not finished.", "Info", javax.swing.JOptionPane.INFORMATION_MESSAGE);
             }
         }
-    }
 }

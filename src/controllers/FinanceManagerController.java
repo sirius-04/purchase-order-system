@@ -7,9 +7,14 @@ package controllers;
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.time.Month;
+import java.time.Year;
+import java.time.YearMonth;
+import java.time.format.TextStyle;
+import java.util.Locale;
 import java.util.Map;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
@@ -70,6 +75,7 @@ public class FinanceManagerController extends BaseController {
     @Override
     protected void loadInitialData() {
         loadTables();
+        setupMonthComboBox();
         showDailyProfitChart();
     }
 
@@ -153,46 +159,77 @@ public class FinanceManagerController extends BaseController {
         });
     }
     
+   
+    private void setupMonthComboBox() {
+        JComboBox<String> monthCombo = (JComboBox<String>) dashboard.getMonthButton();
+        monthCombo.removeAllItems();
+
+        String[] months = {"January", "February", "March", "April", "May", "June", 
+                          "July", "August", "September", "October", "November", "December"};
+        for (String month : months) {
+            monthCombo.addItem(month);
+        }
+
+        String currentMonth = YearMonth.now().getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
+        monthCombo.setSelectedItem(currentMonth);
+
+        // Add listener to refresh chart based on month
+        monthCombo.addActionListener(e -> showDailyProfitChart());
+    }
+    
     private void showDailyProfitChart() {
         ReportService reportService = new ReportService();
-        Map<String, Double> dailyProfitMap = reportService.getDailyProfit();
-        
-        dailyProfitChart = reportService.createDailyProfitChart(dailyProfitMap);
-        JFreeChart chart = reportService.createDailyProfitChart(dailyProfitMap);
 
-        ChartPanel chartPanel = new ChartPanel(chart);
-        chartPanel.setPreferredSize(new java.awt.Dimension(
-            dashboard.getDailyProfitPanel().getWidth() - 20, 
-            dashboard.getDailyProfitPanel().getHeight() - 20
-        ));
+        String selectedMonthName = (String) dashboard.getMonthButton().getSelectedItem();
+        int year = Year.now().getValue();
+        int month = Month.valueOf(selectedMonthName.toUpperCase()).getValue();
+        YearMonth selectedYearMonth = YearMonth.of(year, month);
+
+        Map<String, Double> dailyProfitMap = reportService.getDailyProfit(selectedYearMonth);
         
+        JPanel chartContainer = dashboard.getChartPanel();
+        
+        chartContainer.removeAll();
+        chartContainer.setLayout(new BorderLayout());
+
+      
+        dailyProfitChart = reportService.createDailyProfitChart(dailyProfitMap, selectedYearMonth);
+
+        ChartPanel chartPanel = new ChartPanel(dailyProfitChart);
+        chartPanel.setPreferredSize(new java.awt.Dimension(
+            chartContainer.getWidth(),
+            chartContainer.getHeight()
+        ));
+
         JPanel wrapperPanel = new JPanel(new GridBagLayout());
-        wrapperPanel.setBackground(dashboard.getDailyProfitPanel().getBackground());
+        wrapperPanel.setBackground(chartContainer.getBackground());
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.fill = GridBagConstraints.NONE;
 
         wrapperPanel.add(chartPanel, gbc);
+        chartContainer.add(wrapperPanel, BorderLayout.CENTER);
         
-        JPanel noDataPanel = new JPanel();
-        noDataPanel.add(new JLabel("No profit data available for current month"));
-        dashboard.getDailyProfitPanel().setLayout(new BorderLayout());
-        dashboard.getDailyProfitPanel().add(wrapperPanel, BorderLayout.CENTER);
-        dashboard.getDailyProfitPanel().revalidate();
-        dashboard.getDailyProfitPanel().repaint();
+        chartContainer.revalidate();
+        chartContainer.repaint();
     }
     
     private void exportListeners() {
-        dashboard.getExportButton().addActionListener(e -> {
-            if (dailyProfitChart != null) {
-                pdfExportService.exportChartToPDF(dailyProfitChart, "Daily Profit Report");
-            } else {
-                JOptionPane.showMessageDialog(dashboard, "No daily profit chart available to export");
+    dashboard.getExportButton().addActionListener(e -> {
+        if (dailyProfitChart != null) {
+            String selectedMonth = (String) dashboard.getMonthButton().getSelectedItem();
+            
+            pdfExportService.exportChartToPDF(
+                dailyProfitChart, 
+                "Daily_Profit_Report_" + selectedMonth
+            );
+        } else {
+            JOptionPane.showMessageDialog(dashboard, "No daily profit chart available to export");
             }
         });
     }
 }
-
+ 
 
         
