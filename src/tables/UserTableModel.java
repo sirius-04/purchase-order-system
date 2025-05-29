@@ -64,7 +64,7 @@ public class UserTableModel extends AbstractTableModel {
             case 1 ->
                 user.getUsername();
             case 2 ->
-                user.getPassword();
+                "********";
             case 3 ->
                 user.getUserRole();
             default ->
