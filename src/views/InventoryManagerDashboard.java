@@ -47,10 +47,16 @@ public class InventoryManagerDashboard extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         orderTable = new javax.swing.JTable();
         jLabel5 = new javax.swing.JLabel();
+        verifiedOrderSearchInput = new javax.swing.JTextField();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        verifiedOrderTable = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
         orderSearchInput = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        stockTable = new javax.swing.JTable();
+        inventoryUpdateTable = new javax.swing.JTable();
         jLabel6 = new javax.swing.JLabel();
         stockSearchInput = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
@@ -128,37 +134,74 @@ public class InventoryManagerDashboard extends javax.swing.JFrame {
 
         jLabel5.setText("Search:");
 
+        verifiedOrderTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "Order ID", "Item ID", "Item Name", "Quantity", "Price", "Purchase Manager ID", "Supplier ID"
+            }
+        ));
+        jScrollPane4.setViewportView(verifiedOrderTable);
+
+        jLabel1.setText("Pending Purchase Orders");
+
+        jLabel2.setText("Historical Purchase Orders");
+
+        jLabel3.setText("Search:");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(60, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(orderSearchInput, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(59, 59, 59))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 951, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(verifiedOrderSearchInput, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 951, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 951, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(57, 57, 57))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(22, Short.MAX_VALUE)
+                .addContainerGap(25, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
+                    .addComponent(jLabel1)
                     .addComponent(orderSearchInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 570, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(25, 25, 25)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3)
+                    .addComponent(verifiedOrderSearchInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(19, 19, 19))
         );
 
         reportPanel.addTab("Purchase Orders", jPanel2);
 
-        stockTable.setModel(new javax.swing.table.DefaultTableModel(
+        inventoryUpdateTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null},
@@ -169,7 +212,7 @@ public class InventoryManagerDashboard extends javax.swing.JFrame {
                 "Purchase Order ID", "Item ID", "Item Name", "Quantity", "Price", "Purchase Manager", "Status"
             }
         ));
-        jScrollPane3.setViewportView(stockTable);
+        jScrollPane3.setViewportView(inventoryUpdateTable);
 
         jLabel6.setText("Search:");
 
@@ -200,7 +243,7 @@ public class InventoryManagerDashboard extends javax.swing.JFrame {
                 .addGap(27, 27, 27))
         );
 
-        reportPanel.addTab("Stocks", jPanel3);
+        reportPanel.addTab("Inventory Update", jPanel3);
 
         exportButton.setText("Export");
 
@@ -299,6 +342,12 @@ public class InventoryManagerDashboard extends javax.swing.JFrame {
     public JTable getOrderTable() {
         return orderTable;
     }
+    public JTable getVerifiedOrderTable() {
+        return verifiedOrderTable;
+    }
+    public JTable getInventoryUpdateTable() {
+        return inventoryUpdateTable;
+    }
     public JComboBox<String> getStatusComboBox() {
         return statusComboBox;
     }
@@ -319,8 +368,12 @@ public class InventoryManagerDashboard extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.ButtonGroup buttonGroup3;
     private javax.swing.JButton exportButton;
+    private javax.swing.JTable inventoryUpdateTable;
     private javax.swing.JTextField itemSearchInput;
     private javax.swing.JTable itemTable;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -331,12 +384,14 @@ public class InventoryManagerDashboard extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTextField orderSearchInput;
     private javax.swing.JTable orderTable;
     private CustomPanel.TabbedPaneCustom reportPanel;
     private javax.swing.JComboBox<String> statusComboBox;
     private javax.swing.JPanel stockChartPanel;
     private javax.swing.JTextField stockSearchInput;
-    private javax.swing.JTable stockTable;
+    private javax.swing.JTextField verifiedOrderSearchInput;
+    private javax.swing.JTable verifiedOrderTable;
     // End of variables declaration//GEN-END:variables
 }

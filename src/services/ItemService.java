@@ -5,18 +5,24 @@
 package services;
 
 import java.awt.Component;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.util.List;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import models.Supplier;
-import repository.ItemSupplierRepository;
 import repository.SupplierRepository;
+import models.Item;
+import repository.ItemRepository;
 
 /**
  *
@@ -24,7 +30,7 @@ import repository.SupplierRepository;
  */
 public class ItemService {
 
-    private ItemSupplierRepository itemSupplierRepo = new ItemSupplierRepository();
+    private ItemRepository itemSupplierRepo = new ItemRepository();
     private SupplierRepository supplierRepo = new SupplierRepository();
 
     public void addItem(Component parent) {
@@ -84,6 +90,92 @@ public class ItemService {
                 addNewSupplier();
                 // add new item
             }
+        }
+    }
+    
+    public void editItem(Component parent, Item item) {
+        if (item == null) return;
+        
+        // Jpanel's Input
+        JTextField nameField = new JTextField(item.getName(), 20);
+        JSpinner stockSpinner = new JSpinner(new SpinnerNumberModel(item.getStockQuantity(), 0, 10000, 1));
+        JTextField priceField = new JTextField(String.valueOf(item.getPrice()));
+        JComboBox<Item.Status> statusCombo = new JComboBox<>(Item.Status.values());
+        // onSale -> On Sale, notOnSale -> No On Sale
+        statusCombo.setRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index,
+                                                          boolean isSelected, boolean cellHasFocus) {
+                super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                if (value instanceof Item.Status) {
+                    Item.Status status = (Item.Status) value;
+                    setText(status == Item.Status.onSale ? "On Sale" : "Not On Sale");
+                }
+                return this;
+            }
+        });
+
+        // JPanel UI start here
+       JPanel editPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.anchor = GridBagConstraints.WEST;
+
+        // Row 0: Title
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        editPanel.add(new JLabel("Edit Item Details:"), gbc);
+        gbc.gridwidth = 1;
+
+        // Row 1: Name
+        gbc.gridy++;
+        editPanel.add(new JLabel("Name:"), gbc);
+        gbc.gridx = 1;
+        editPanel.add(nameField, gbc);
+
+        // Row 2: Stock Quantity
+        gbc.gridx = 0;
+        gbc.gridy++;
+        editPanel.add(new JLabel("Stock Quantity:"), gbc);
+        gbc.gridx = 1;
+        editPanel.add(stockSpinner, gbc);
+
+        // Row 3: Price
+        gbc.gridx = 0;
+        gbc.gridy++;
+        editPanel.add(new JLabel("Price (cost):"), gbc);
+        gbc.gridx = 1;
+        editPanel.add(priceField, gbc);
+
+        // Row 4: Status
+        gbc.gridx = 0;
+        gbc.gridy++;
+        editPanel.add(new JLabel("Status:"), gbc);
+        gbc.gridx = 1;
+        editPanel.add(statusCombo, gbc);
+        // JPanel UI end here
+
+        // Comfirm Dialog
+        int result = JOptionPane.showConfirmDialog(
+            parent,
+            editPanel,
+            "Edit Item",
+            JOptionPane.OK_CANCEL_OPTION,
+            JOptionPane.PLAIN_MESSAGE
+        );
+
+        // Update logic here
+        if (result == JOptionPane.OK_OPTION) {
+            item.setName(nameField.getText().trim());
+            item.setStockQuantity((int) stockSpinner.getValue());
+            item.setPrice(Double.parseDouble(priceField.getText().trim()));
+            item.setStatus((Item.Status) statusCombo.getSelectedItem());
+            
+            // Save changes to repository
+            itemSupplierRepo.update(item);
+
+            JOptionPane.showMessageDialog(parent, "Item updated successfully!");
         }
     }
 

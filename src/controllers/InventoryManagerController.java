@@ -16,16 +16,19 @@ import java.awt.event.KeyEvent;
 import java.util.Map;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import models.PurchaseOrder;
+import models.Item;
 import models.users.InventoryManager;
 import views.InventoryManagerDashboard;
 import tables.ItemTableModel;
 import tables.PurchaseOrderTableModel;
+import tables.InventoryUpdateTableModel;
 import utils.LowStockRenderer;
-import models.PurchaseOrder;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import services.PDFExportService;
 import services.ReportService;
+import services.ItemService;
 
 /**
  *
@@ -33,16 +36,22 @@ import services.ReportService;
  */
 public class InventoryManagerController extends BaseController {
     private InventoryManagerDashboard dashboard;
+    private ItemService itemService = new ItemService();
     
      // table models
     ItemTableModel itemTableModel = new ItemTableModel();
-    PurchaseOrderTableModel purchaseOrderTableModel = new PurchaseOrderTableModel(PurchaseOrderTableModel.POStatus.FULFILLED);
+    PurchaseOrderTableModel fulfiledPOTableModel = new PurchaseOrderTableModel(PurchaseOrderTableModel.POStatus.FULFILLED);
+    PurchaseOrderTableModel verifiedPOTableModel = new PurchaseOrderTableModel(PurchaseOrderTableModel.POStatus.VERIFIED);
+    InventoryUpdateTableModel inventoryUpdateTableModel = new InventoryUpdateTableModel();
     private PDFExportService pdfExportService = new PDFExportService();
     
     private JFreeChart stockReportChart;
+    
     // tables
     private JTable itemTable;
-    private JTable purchaseOrderTable;
+    private JTable fulfiledPOTable;
+    private JTable verifiedPOTable;
+    private JTable inventoryUpdateTable;
     
     public InventoryManagerController(InventoryManager user) {
         super(user);
@@ -62,6 +71,8 @@ public class InventoryManagerController extends BaseController {
 
     @Override
     protected void setupCustomListeners() {
+        
+        editItemListener();
     
         // Status selection
         JComboBox<String> statusComboBox = dashboard.getStatusComboBox();
@@ -108,9 +119,17 @@ public class InventoryManagerController extends BaseController {
             itemTable.getColumnModel().getColumn(i).setCellRenderer(rowRenderer);
         }
         
-        // po table
-        purchaseOrderTable = dashboard.getOrderTable();
-        purchaseOrderTable.setModel(purchaseOrderTableModel);
+        // fulfiled po table
+        fulfiledPOTable = dashboard.getOrderTable();
+        fulfiledPOTable.setModel(fulfiledPOTableModel);
+        
+        // verified po table
+        verifiedPOTable = dashboard.getVerifiedOrderTable();
+        verifiedPOTable.setModel(verifiedPOTableModel);
+        
+        // inventory update table
+        inventoryUpdateTable = dashboard.getInventoryUpdateTable();
+        inventoryUpdateTable.setModel(inventoryUpdateTableModel);
         
     }
     
@@ -154,6 +173,20 @@ public class InventoryManagerController extends BaseController {
             }
         });
     }
-     
-    
+    private void editItemListener() {
+    itemTable.addMouseListener(new java.awt.event.MouseAdapter(){
+        @Override
+        public void mouseClicked(java.awt.event.MouseEvent evt) {
+            int row = itemTable.getSelectedRow();
+            if (row != -1) {
+                ItemTableModel model = (ItemTableModel) itemTable.getModel();
+                Item selectedItem = model.getItemAt(row);
+                
+                itemService.editItem(dashboard, selectedItem); 
+                model.refresh(); 
+            }
+        }
+    });
+}
+
 }
