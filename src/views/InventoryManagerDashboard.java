@@ -9,6 +9,7 @@ package views;
  * @author ngoh
  */
 
+import java.awt.Color;
 import javax.swing.JTable;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -80,6 +81,16 @@ public class InventoryManagerDashboard extends javax.swing.JFrame {
 
         jLabel4.setText("Search:");
 
+        itemSearchInput.setForeground(new java.awt.Color(153, 153, 153));
+        itemSearchInput.setText("Search by ID, Name...");
+        itemSearchInput.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                itemSearchInputFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                itemSearchInputFocusLost(evt);
+            }
+        });
         itemSearchInput.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 itemSearchInputActionPerformed(evt);
@@ -134,6 +145,17 @@ public class InventoryManagerDashboard extends javax.swing.JFrame {
 
         jLabel5.setText("Search:");
 
+        verifiedOrderSearchInput.setForeground(new java.awt.Color(153, 153, 153));
+        verifiedOrderSearchInput.setText("Search by ID, Name...");
+        verifiedOrderSearchInput.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                verifiedOrderSearchInputFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                verifiedOrderSearchInputFocusLost(evt);
+            }
+        });
+
         verifiedOrderTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null},
@@ -152,6 +174,17 @@ public class InventoryManagerDashboard extends javax.swing.JFrame {
         jLabel2.setText("Historical Purchase Orders");
 
         jLabel3.setText("Search:");
+
+        orderSearchInput.setForeground(new java.awt.Color(153, 153, 153));
+        orderSearchInput.setText("Search by ID, Name...");
+        orderSearchInput.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                orderSearchInputFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                orderSearchInputFocusLost(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -215,6 +248,17 @@ public class InventoryManagerDashboard extends javax.swing.JFrame {
         jScrollPane3.setViewportView(inventoryUpdateTable);
 
         jLabel6.setText("Search:");
+
+        stockSearchInput.setForeground(new java.awt.Color(153, 153, 153));
+        stockSearchInput.setText("Search by ID...");
+        stockSearchInput.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                stockSearchInputFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                stockSearchInputFocusLost(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -301,6 +345,70 @@ public class InventoryManagerDashboard extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_itemSearchInputActionPerformed
 
+    private void itemSearchInputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_itemSearchInputFocusGained
+        if (itemSearchInput.getText().equals("Search by ID, Name..."))
+        {
+            itemSearchInput.setText("");
+            itemSearchInput.setForeground(new Color(0,0,0));
+        }
+    }//GEN-LAST:event_itemSearchInputFocusGained
+
+    private void itemSearchInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_itemSearchInputFocusLost
+        if (itemSearchInput.getText().equals(""))
+        {
+            itemSearchInput.setText("Search by ID, Name...");
+            itemSearchInput.setForeground(new Color(153, 153, 153));
+        }
+    }//GEN-LAST:event_itemSearchInputFocusLost
+
+    private void orderSearchInputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_orderSearchInputFocusGained
+        if (orderSearchInput.getText().equals("Search by ID, Name..."))
+        {
+            orderSearchInput.setText("");
+            orderSearchInput.setForeground(new Color(0,0,0));
+        }
+    }//GEN-LAST:event_orderSearchInputFocusGained
+
+    private void orderSearchInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_orderSearchInputFocusLost
+        if (orderSearchInput.getText().equals(""))
+        {
+            orderSearchInput.setText("Search by ID, Name...");
+            orderSearchInput.setForeground(new Color(153, 153, 153));
+        }
+    }//GEN-LAST:event_orderSearchInputFocusLost
+
+    private void verifiedOrderSearchInputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_verifiedOrderSearchInputFocusGained
+        if (verifiedOrderSearchInput.getText().equals("Search by ID, Name..."))
+        {
+            verifiedOrderSearchInput.setText("");
+            verifiedOrderSearchInput.setForeground(new Color(0,0,0));
+        }
+    }//GEN-LAST:event_verifiedOrderSearchInputFocusGained
+
+    private void verifiedOrderSearchInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_verifiedOrderSearchInputFocusLost
+        if (verifiedOrderSearchInput.getText().equals(""))
+        {
+            verifiedOrderSearchInput.setText("Search by ID, Name...");
+            verifiedOrderSearchInput.setForeground(new Color(153, 153, 153));
+        }
+    }//GEN-LAST:event_verifiedOrderSearchInputFocusLost
+
+    private void stockSearchInputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_stockSearchInputFocusGained
+        if (stockSearchInput.getText().equals("Search by ID..."))
+        {
+            stockSearchInput.setText("");
+            stockSearchInput.setForeground(new Color(0,0,0));
+        }
+    }//GEN-LAST:event_stockSearchInputFocusGained
+
+    private void stockSearchInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_stockSearchInputFocusLost
+        if (stockSearchInput.getText().equals(""))
+        {
+            stockSearchInput.setText("Search by ID...");
+            stockSearchInput.setForeground(new Color(153, 153, 153));
+        }
+    }//GEN-LAST:event_stockSearchInputFocusLost
+
     /**
      * @param args the command line arguments
      */
@@ -354,7 +462,15 @@ public class InventoryManagerDashboard extends javax.swing.JFrame {
     public JTextField getItemSearchInput() {
         return itemSearchInput;
     }
-    
+    public JTextField getOrderSearchInput() {
+        return orderSearchInput;
+    }
+    public JTextField getVerifiedOrderSearchInput() {
+        return verifiedOrderSearchInput;
+    }
+    public JTextField getStockSearchInput() {
+        return stockSearchInput;
+    }
     public JButton getExportButton() {
         return exportButton;
     }

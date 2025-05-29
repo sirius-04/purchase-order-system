@@ -112,17 +112,53 @@ public class InventoryManagerController extends BaseController {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     String inputText = searchInput.getText();
                     itemTableModel.filterByKeyword(inputText);
+                    
+                    searchInput.setText((""));
                 }
             }
         });
         
         // Pending PO - Search
-        
+        JTextField fulfilledPOSearch = dashboard.getOrderSearchInput();
+        fulfilledPOSearch.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    String inputText = fulfilledPOSearch.getText();
+                    fulfiledPOTableModel.filterByKeyword(inputText);
+                    
+                    fulfilledPOSearch.setText("");
+                }
+            }
+        });
         
         // Historical PO - Search
-        
+        JTextField verifiedPOSearch = dashboard.getVerifiedOrderSearchInput();
+        verifiedPOSearch.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    String inputText = verifiedPOSearch.getText();
+                    verifiedPOTableModel.filterByKeyword(inputText);
+                    
+                    verifiedPOSearch.setText("");
+                }
+            }
+        });
         
         // Inventory Update - Search
+        JTextField inventorySearchInput = dashboard.getStockSearchInput();
+        inventorySearchInput.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    String inputText = inventorySearchInput.getText();
+                    inventoryUpdateTableModel.filterByKeyword(inputText);
+                    
+                    inventorySearchInput.setText("");
+                }
+            }
+        });
     }
     
     private void loadTables() {
