@@ -67,4 +67,72 @@ public class UserService {
             adminDashboard.clearUserFields();
         }
     }
+    
+    public boolean renameUserOrChangePassword(Component parent, User user) {
+        javax.swing.JPanel panel = new javax.swing.JPanel(new java.awt.GridLayout(2, 2, 40, 10));
+        javax.swing.JLabel usernameLabel = new javax.swing.JLabel("New Username:");
+        javax.swing.JTextField usernameField = new javax.swing.JTextField(user.getUsername());
+        javax.swing.JLabel passwordLabel = new javax.swing.JLabel("New Password:");
+        javax.swing.JTextField passwordField = new javax.swing.JTextField();
+
+        panel.add(usernameLabel);
+        panel.add(usernameField);
+        panel.add(passwordLabel);
+        panel.add(passwordField);
+
+        int result = JOptionPane.showConfirmDialog(
+            parent, 
+            panel, 
+            "Update Username or Password", 
+            JOptionPane.OK_CANCEL_OPTION, 
+            JOptionPane.PLAIN_MESSAGE
+        );
+
+        if (result == JOptionPane.OK_OPTION) {
+            String newUsername = usernameField.getText().trim();
+            String newPassword = passwordField.getText().trim();
+
+            boolean updated = false;
+
+            if (!newUsername.equals(user.getUsername())) {
+                if (newUsername.isEmpty()) {
+                    JOptionPane.showMessageDialog(parent, "Username cannot be empty!", "Input Error", JOptionPane.ERROR_MESSAGE);
+                    return false;
+                }
+
+                if (usernameExists(newUsername)) {
+                    JOptionPane.showMessageDialog(parent, "Username already exists!", "Input Error", JOptionPane.ERROR_MESSAGE);
+                    return false;
+                }
+
+                user.setUsername(newUsername);
+                updated = true;
+            }
+
+            if (!newPassword.isEmpty()) {
+                if (newPassword.equals(user.getPassword())) {
+                    JOptionPane.showMessageDialog(parent, "New password cannot be the same as the old password!", "Input Error", JOptionPane.ERROR_MESSAGE);
+                    return false;
+                }
+
+                if (newPassword.length() < 6) {
+                    JOptionPane.showMessageDialog(parent, "Password must be at least 6 characters!", "Input Error", JOptionPane.ERROR_MESSAGE);
+                    return false;
+                }
+
+                user.setPassword(newPassword);
+                updated = true;
+            }
+            
+            if (updated) {
+                userRepo.update(user);
+                JOptionPane.showMessageDialog(parent, "User updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(parent, "No changes were made.", "Information", JOptionPane.INFORMATION_MESSAGE);
+            }
+
+            return updated;
+        }
+        return false;
+    }
 }

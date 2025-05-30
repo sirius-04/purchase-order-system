@@ -580,6 +580,10 @@ public class AdminDashboard extends javax.swing.JFrame {
         selectedRole.setSelectedIndex(0);
     }
     
+    public JTextField getSupplierSearch() {
+        return supplierSearchInput;
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addItemButton;
     private javax.swing.JButton addSupplierButton;
