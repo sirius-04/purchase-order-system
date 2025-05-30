@@ -8,11 +8,16 @@ import java.awt.Component;
 import java.util.List;
 import javax.swing.JOptionPane;
 import models.PurchaseOrder;
+import models.Item;
 import models.Supplier;
+import models.Payment;
+import models.InventoryUpdate;
 import repository.ItemRepository;
 import repository.ItemSupplierRepository;
 import repository.PurchaseOrdersRepository;
 import repository.SupplierRepository;
+import repository.InventoryUpdateRepository;
+import utils.IdGenerator;
 
 /**
  *
@@ -24,6 +29,7 @@ public class PurchaseOrderService {
     private final SupplierRepository supplierRepo = new SupplierRepository();
     private final ItemRepository itemRepo = new ItemRepository();
     private final ItemSupplierRepository itemSupplierRepo = new ItemSupplierRepository();
+    private final InventoryUpdateRepository inventoryUpdateRepo = new InventoryUpdateRepository();
 
 
     private String[] getSuppliers(String itemId) {
@@ -116,10 +122,39 @@ public class PurchaseOrderService {
         );
 
         if (result == JOptionPane.YES_OPTION) {
+            
+            // 1. Change the PO status to 'verify'
             po.setStatus(PurchaseOrder.Status.verified);
+            purchaseOrderRepo.update(po); 
+            
+            // 2. Edit the stock quantity in item.text
+            int verifiedItemQuantity = po.getQuantity();
+            int newStockQuantity = verifiedItemQuantity + itemRepo.find(po.getItemId()).getStockQuantity();
+            
+           
+            Item updatedItem = new Item(po.getItemId(), itemRepo.find(po.getItemId()).getName(), 
+                                        newStockQuantity, itemRepo.find(po.getItemId()).getPrice(), itemRepo.find(po.getItemId()).getSellPrice(), 
+                                        itemRepo.find(po.getItemId()).getSupplierId(), itemRepo.find(po.getItemId()).getStatus()
+                                        );
 
-             purchaseOrderRepo.update(po); 
-            JOptionPane.showMessageDialog(parent, "Purchase Order verified.");
+            itemRepo.update(updatedItem);
+            
+            // 3. generate new inventory update
+            IdGenerator idGen = new IdGenerator();
+            String newInventoryUpdateId = idGen.generateNewId(InventoryUpdate.class);
+            
+            InventoryUpdate newInventoryUpdate = new InventoryUpdate(
+                    newInventoryUpdateId,
+                    po.getItemId(),
+                    po.getSupplierId(),
+                    po.getQuantity(),
+                    po.getPrice()
+            );
+
+            inventoryUpdateRepo.save(newInventoryUpdate);
+
+
+            JOptionPane.showMessageDialog(parent, "Purchase Order had verified. New stock quantity is updated!");
         }
     }
 }

@@ -235,7 +235,7 @@ public class InventoryManagerController extends BaseController {
                     ItemTableModel itemModel = (ItemTableModel) itemTable.getModel();
                     Item selectedItem = itemModel.getItemAt(row);
 
-                    itemService.editItem(dashboard, selectedItem); 
+                    itemService.editItemQuantity(dashboard, selectedItem); 
                     itemModel.refresh(); 
                 }
             }
@@ -254,8 +254,11 @@ public class InventoryManagerController extends BaseController {
                    PurchaseOrder selectedPO = fulfiledPOTableModel.getPurchaseOrderAt(row);
                    
                    poService.verifyPO(dashboard, selectedPO);
+                   
+                   itemTableModel.refresh();
                    fulfiledPOTableModel.refresh();
-                   verifiedPOTableModel.refresh(); 
+                   verifiedPOTableModel.refresh();
+                   inventoryUpdateTableModel.refresh();
                 }
             }
         });
