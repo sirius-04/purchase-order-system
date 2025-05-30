@@ -10,13 +10,13 @@ import javax.swing.table.AbstractTableModel;
 import models.Item;
 import models.Supplier;
 import repository.ItemRepository;
-import repository.SupplierRepository;
+import repository.ItemSupplierRepository;
 
 /**
  *
  * @author Chan Yong Liang
  */
-public class ItemNotOnSaleTableModel extends AbstractTableModel {
+public class ItemNotOnSaleTableModel extends AbstractTableModel implements SearchableTableModel {
 
     private final String[] columnNames = {
         "Item ID",
@@ -28,7 +28,7 @@ public class ItemNotOnSaleTableModel extends AbstractTableModel {
     };
 
     private final ItemRepository itemRepo = new ItemRepository();
-    private final SupplierRepository supplierRepo = new SupplierRepository();
+    private final ItemSupplierRepository itemSupplierRepo = new ItemSupplierRepository();
 
     private List<Item> itemsNotOnSale = new ArrayList<>();
 
@@ -39,6 +39,24 @@ public class ItemNotOnSaleTableModel extends AbstractTableModel {
     public void refresh() {
         itemsNotOnSale = itemRepo.getAll().stream()
                 .filter(item -> item.getStatus() == Item.Status.notOnSale)
+                .toList();
+
+        fireTableDataChanged();
+    }
+
+    @Override
+    public void filterByKeyword(String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            refresh();
+            return;
+        }
+
+        String lowerKeyword = keyword.toLowerCase();
+
+        itemsNotOnSale = itemRepo.getAll().stream()
+                .filter(item -> item.getStatus() == Item.Status.notOnSale
+                && (item.getName().toLowerCase().contains(lowerKeyword)
+                || item.getItemId().toLowerCase().contains(lowerKeyword)))
                 .toList();
 
         fireTableDataChanged();
@@ -76,10 +94,10 @@ public class ItemNotOnSaleTableModel extends AbstractTableModel {
 
             case 1:
                 return item.getName();
-                
+
             case 2:
                 return item.getPrice();
-                
+
             case 3:
                 return item.getSellPrice();
 
@@ -87,8 +105,23 @@ public class ItemNotOnSaleTableModel extends AbstractTableModel {
                 return item.getStockQuantity();
 
             case 5:
-                Supplier supplier = supplierRepo.find(item.getSupplierId());
-                return supplier != null ? supplier.getName() : "Unknown";
+                List<Supplier> supplierList = itemSupplierRepo.getItemSupplier(item.getItemId());
+
+                if (supplierList.isEmpty()) {
+                    return "supplier not found";
+                }
+
+                StringBuilder suppliersBuilder = new StringBuilder();
+                for (Supplier supplier : supplierList) {
+                    suppliersBuilder.append(supplier.getName()).append(", ");
+                }
+
+                String suppliers = suppliersBuilder.toString();
+                if (suppliers.endsWith(", ")) {
+                    suppliers = suppliers.substring(0, suppliers.length() - 2);
+                }
+
+                return suppliers;
 
             default:
                 return null;

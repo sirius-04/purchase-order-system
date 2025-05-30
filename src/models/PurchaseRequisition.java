@@ -14,11 +14,12 @@ public class PurchaseRequisition implements Identifiable {
     public enum Status {
         pending,
         approved,
-        rejected
+        rejected,
+        deleted
     }
 
     private String requisitionId;
-    private String salesManagerId;
+    private String userId;
     private String itemId;
     private int quantity;
     private String generatedDate;
@@ -26,9 +27,9 @@ public class PurchaseRequisition implements Identifiable {
     private Status status;
 
     // constructor
-    public PurchaseRequisition(String requisitionId, String salesManagerId, String itemId, int quantity, String generatedDate, String requiredDate, Status status) {
+    public PurchaseRequisition(String requisitionId, String userId, String itemId, int quantity, String generatedDate, String requiredDate, Status status) {
         this.requisitionId = requisitionId;
-        this.salesManagerId = salesManagerId;
+        this.userId = userId;
         this.itemId = itemId;
         this.quantity = quantity;
         this.generatedDate = generatedDate;
@@ -51,12 +52,12 @@ public class PurchaseRequisition implements Identifiable {
         this.requisitionId = requisitionId;
     }
 
-    public String getSalesManagerId() {
-        return salesManagerId;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setSalesManagerId(String salesManagerId) {
-        this.salesManagerId = salesManagerId;
+    public void setUserId(String salesManagerId) {
+        this.userId = salesManagerId;
     }
 
     public String getItemId() {

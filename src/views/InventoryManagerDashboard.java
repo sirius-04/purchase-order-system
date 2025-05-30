@@ -8,6 +8,14 @@ package views;
  *
  * @author ngoh
  */
+
+import java.awt.Color;
+import javax.swing.JTable;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
 public class InventoryManagerDashboard extends javax.swing.JFrame {
 
     /**
@@ -26,54 +34,85 @@ public class InventoryManagerDashboard extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
+        buttonGroup2 = new javax.swing.ButtonGroup();
+        buttonGroup3 = new javax.swing.ButtonGroup();
         reportPanel = new CustomPanel.TabbedPaneCustom();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         itemTable = new javax.swing.JTable();
         jLabel4 = new javax.swing.JLabel();
         itemSearchInput = new javax.swing.JTextField();
+        statusComboBox = new javax.swing.JComboBox<>();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         orderTable = new javax.swing.JTable();
         jLabel5 = new javax.swing.JLabel();
+        verifiedOrderSearchInput = new javax.swing.JTextField();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        verifiedOrderTable = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
         orderSearchInput = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        stockTable = new javax.swing.JTable();
+        inventoryUpdateTable = new javax.swing.JTable();
         jLabel6 = new javax.swing.JLabel();
         stockSearchInput = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
+        exportButton = new javax.swing.JButton();
+        stockChartPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         itemTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Item ID", "Item Name", "Price", "Stock Quantity", "Supplier Name"
+                "Item ID", "Item Name", "Price", "Stock Quantity", "Supplier Name", "Item Status"
             }
         ));
         jScrollPane1.setViewportView(itemTable);
 
         jLabel4.setText("Search:");
 
+        itemSearchInput.setForeground(new java.awt.Color(153, 153, 153));
+        itemSearchInput.setText("Search by ID, Name...");
+        itemSearchInput.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                itemSearchInputFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                itemSearchInputFocusLost(evt);
+            }
+        });
+        itemSearchInput.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemSearchInputActionPerformed(evt);
+            }
+        });
+
+        statusComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "On Sale", "Not On Sale" }));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(813, 813, 813)
-                .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(itemSearchInput, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(55, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 950, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(63, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(statusComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel4)
+                        .addGap(18, 18, 18)
+                        .addComponent(itemSearchInput, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 950, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(55, 55, 55))
         );
         jPanel1Layout.setVerticalGroup(
@@ -82,7 +121,8 @@ public class InventoryManagerDashboard extends javax.swing.JFrame {
                 .addContainerGap(17, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(itemSearchInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
+                    .addComponent(jLabel4)
+                    .addComponent(statusComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 570, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(34, 34, 34))
@@ -98,44 +138,103 @@ public class InventoryManagerDashboard extends javax.swing.JFrame {
                 {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Purchase Order ID", "Item ID", "Item Name", "Quantity", "Price", "Purchase Manager", "Status"
+                "Order ID", "Item ID", "Item Name", "Quantity", "Price", "Purchase Manager ID", "Supplier ID"
             }
         ));
         jScrollPane2.setViewportView(orderTable);
 
         jLabel5.setText("Search:");
 
+        verifiedOrderSearchInput.setForeground(new java.awt.Color(153, 153, 153));
+        verifiedOrderSearchInput.setText("Search by ID, Name...");
+        verifiedOrderSearchInput.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                verifiedOrderSearchInputFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                verifiedOrderSearchInputFocusLost(evt);
+            }
+        });
+
+        verifiedOrderTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "Order ID", "Item ID", "Item Name", "Quantity", "Price", "Purchase Manager ID", "Supplier ID"
+            }
+        ));
+        jScrollPane4.setViewportView(verifiedOrderTable);
+
+        jLabel1.setText("Pending Purchase Orders");
+
+        jLabel2.setText("Historical Purchase Orders");
+
+        jLabel3.setText("Search:");
+
+        orderSearchInput.setForeground(new java.awt.Color(153, 153, 153));
+        orderSearchInput.setText("Search by ID, Name...");
+        orderSearchInput.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                orderSearchInputFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                orderSearchInputFocusLost(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(60, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(orderSearchInput, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(59, 59, 59))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 951, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(verifiedOrderSearchInput, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 951, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 951, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(57, 57, 57))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(22, Short.MAX_VALUE)
+                .addContainerGap(25, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
+                    .addComponent(jLabel1)
                     .addComponent(orderSearchInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 570, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(25, 25, 25)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3)
+                    .addComponent(verifiedOrderSearchInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(19, 19, 19))
         );
 
         reportPanel.addTab("Purchase Orders", jPanel2);
 
-        stockTable.setModel(new javax.swing.table.DefaultTableModel(
+        inventoryUpdateTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null},
@@ -146,9 +245,20 @@ public class InventoryManagerDashboard extends javax.swing.JFrame {
                 "Purchase Order ID", "Item ID", "Item Name", "Quantity", "Price", "Purchase Manager", "Status"
             }
         ));
-        jScrollPane3.setViewportView(stockTable);
+        jScrollPane3.setViewportView(inventoryUpdateTable);
 
         jLabel6.setText("Search:");
+
+        stockSearchInput.setForeground(new java.awt.Color(153, 153, 153));
+        stockSearchInput.setText("Search by ID...");
+        stockSearchInput.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                stockSearchInputFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                stockSearchInputFocusLost(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -177,17 +287,42 @@ public class InventoryManagerDashboard extends javax.swing.JFrame {
                 .addGap(27, 27, 27))
         );
 
-        reportPanel.addTab("Stocks", jPanel3);
+        reportPanel.addTab("Inventory Update", jPanel3);
+
+        exportButton.setText("Export");
+
+        javax.swing.GroupLayout stockChartPanelLayout = new javax.swing.GroupLayout(stockChartPanel);
+        stockChartPanel.setLayout(stockChartPanelLayout);
+        stockChartPanelLayout.setHorizontalGroup(
+            stockChartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 968, Short.MAX_VALUE)
+        );
+        stockChartPanelLayout.setVerticalGroup(
+            stockChartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 555, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1068, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap(895, Short.MAX_VALUE)
+                .addComponent(exportButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(73, 73, 73))
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(50, 50, 50)
+                .addComponent(stockChartPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 662, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addGap(41, 41, 41)
+                .addComponent(stockChartPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addComponent(exportButton)
+                .addGap(17, 17, 17))
         );
 
         reportPanel.addTab("Stock Report", jPanel4);
@@ -205,6 +340,74 @@ public class InventoryManagerDashboard extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void itemSearchInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemSearchInputActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_itemSearchInputActionPerformed
+
+    private void itemSearchInputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_itemSearchInputFocusGained
+        if (itemSearchInput.getText().equals("Search by ID, Name..."))
+        {
+            itemSearchInput.setText("");
+            itemSearchInput.setForeground(new Color(0,0,0));
+        }
+    }//GEN-LAST:event_itemSearchInputFocusGained
+
+    private void itemSearchInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_itemSearchInputFocusLost
+        if (itemSearchInput.getText().equals(""))
+        {
+            itemSearchInput.setText("Search by ID, Name...");
+            itemSearchInput.setForeground(new Color(153, 153, 153));
+        }
+    }//GEN-LAST:event_itemSearchInputFocusLost
+
+    private void orderSearchInputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_orderSearchInputFocusGained
+        if (orderSearchInput.getText().equals("Search by ID, Name..."))
+        {
+            orderSearchInput.setText("");
+            orderSearchInput.setForeground(new Color(0,0,0));
+        }
+    }//GEN-LAST:event_orderSearchInputFocusGained
+
+    private void orderSearchInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_orderSearchInputFocusLost
+        if (orderSearchInput.getText().equals(""))
+        {
+            orderSearchInput.setText("Search by ID, Name...");
+            orderSearchInput.setForeground(new Color(153, 153, 153));
+        }
+    }//GEN-LAST:event_orderSearchInputFocusLost
+
+    private void verifiedOrderSearchInputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_verifiedOrderSearchInputFocusGained
+        if (verifiedOrderSearchInput.getText().equals("Search by ID, Name..."))
+        {
+            verifiedOrderSearchInput.setText("");
+            verifiedOrderSearchInput.setForeground(new Color(0,0,0));
+        }
+    }//GEN-LAST:event_verifiedOrderSearchInputFocusGained
+
+    private void verifiedOrderSearchInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_verifiedOrderSearchInputFocusLost
+        if (verifiedOrderSearchInput.getText().equals(""))
+        {
+            verifiedOrderSearchInput.setText("Search by ID, Name...");
+            verifiedOrderSearchInput.setForeground(new Color(153, 153, 153));
+        }
+    }//GEN-LAST:event_verifiedOrderSearchInputFocusLost
+
+    private void stockSearchInputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_stockSearchInputFocusGained
+        if (stockSearchInput.getText().equals("Search by ID..."))
+        {
+            stockSearchInput.setText("");
+            stockSearchInput.setForeground(new Color(0,0,0));
+        }
+    }//GEN-LAST:event_stockSearchInputFocusGained
+
+    private void stockSearchInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_stockSearchInputFocusLost
+        if (stockSearchInput.getText().equals(""))
+        {
+            stockSearchInput.setText("Search by ID...");
+            stockSearchInput.setForeground(new Color(153, 153, 153));
+        }
+    }//GEN-LAST:event_stockSearchInputFocusLost
 
     /**
      * @param args the command line arguments
@@ -240,10 +443,53 @@ public class InventoryManagerDashboard extends javax.swing.JFrame {
             }
         });
     }
-
+ 
+    public JTable getItemTable() {
+        return itemTable;
+    }
+    public JTable getOrderTable() {
+        return orderTable;
+    }
+    public JTable getVerifiedOrderTable() {
+        return verifiedOrderTable;
+    }
+    public JTable getInventoryUpdateTable() {
+        return inventoryUpdateTable;
+    }
+    public JComboBox<String> getStatusComboBox() {
+        return statusComboBox;
+    }
+    public JTextField getItemSearchInput() {
+        return itemSearchInput;
+    }
+    public JTextField getOrderSearchInput() {
+        return orderSearchInput;
+    }
+    public JTextField getVerifiedOrderSearchInput() {
+        return verifiedOrderSearchInput;
+    }
+    public JTextField getStockSearchInput() {
+        return stockSearchInput;
+    }
+    public JButton getExportButton() {
+        return exportButton;
+    }
+    
+    public JPanel getStockChart() {
+        return stockChartPanel;
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.ButtonGroup buttonGroup2;
+    private javax.swing.ButtonGroup buttonGroup3;
+    private javax.swing.JButton exportButton;
+    private javax.swing.JTable inventoryUpdateTable;
     private javax.swing.JTextField itemSearchInput;
     private javax.swing.JTable itemTable;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -254,10 +500,14 @@ public class InventoryManagerDashboard extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTextField orderSearchInput;
     private javax.swing.JTable orderTable;
     private CustomPanel.TabbedPaneCustom reportPanel;
+    private javax.swing.JComboBox<String> statusComboBox;
+    private javax.swing.JPanel stockChartPanel;
     private javax.swing.JTextField stockSearchInput;
-    private javax.swing.JTable stockTable;
+    private javax.swing.JTextField verifiedOrderSearchInput;
+    private javax.swing.JTable verifiedOrderTable;
     // End of variables declaration//GEN-END:variables
 }

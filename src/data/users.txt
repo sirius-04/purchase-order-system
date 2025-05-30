@@ -1,5 +1,5 @@
-u001,SalesManager,sirius,123
-u002,InventoryManager,abc,123
-u003,Admin,admin1,123
-u004,PurchaseManager,pm1,123
-u005,FinanceManager,fm1,123
+u001,SalesManager,sirius,123,active
+u002,InventoryManager,abc,123,active
+u003,Admin,admin1,123,active
+u004,PurchaseManager,pm1,123,active
+u005,FinanceManager,fm1,123,active

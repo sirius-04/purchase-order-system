@@ -4,6 +4,9 @@
  */
 package views;
 
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JPanel;
 import javax.swing.JTable;
 
 /**
@@ -28,7 +31,7 @@ public class FinanceManagerDashboard extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        requisitionPanel = new CustomPanel.TabbedPaneCustom();
+        TabbedPaneCustom = new CustomPanel.TabbedPaneCustom();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         approveOrderTable = new javax.swing.JTable();
@@ -45,6 +48,9 @@ public class FinanceManagerDashboard extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         searchSupplierTable = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
+        exportButton = new javax.swing.JButton();
+        selectedMonth = new javax.swing.JComboBox<>();
+        chartPanel = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         historicalRequisitionTable = new javax.swing.JTable();
@@ -79,7 +85,7 @@ public class FinanceManagerDashboard extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(64, Short.MAX_VALUE)
+                .addContainerGap(65, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel7)
@@ -100,7 +106,7 @@ public class FinanceManagerDashboard extends javax.swing.JFrame {
                 .addGap(38, 38, 38))
         );
 
-        requisitionPanel.addTab("Approve Purchase Order", jPanel1);
+        TabbedPaneCustom.addTab("Approve Purchase Order", jPanel1);
 
         inventoryTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -131,7 +137,7 @@ public class FinanceManagerDashboard extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(62, 62, 62)
                         .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 920, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(63, Short.MAX_VALUE))
+                .addContainerGap(64, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -145,7 +151,7 @@ public class FinanceManagerDashboard extends javax.swing.JFrame {
                 .addGap(37, 37, 37))
         );
 
-        requisitionPanel.addTab("Verify Inventory Update", jPanel2);
+        TabbedPaneCustom.addTab("Verify Inventory Update", jPanel2);
 
         supplierPaymentTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -176,7 +182,7 @@ public class FinanceManagerDashboard extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
                         .addGap(62, 62, 62)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 920, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(63, Short.MAX_VALUE))
+                .addContainerGap(64, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -190,20 +196,46 @@ public class FinanceManagerDashboard extends javax.swing.JFrame {
                 .addGap(32, 32, 32))
         );
 
-        requisitionPanel.addTab("Process Payment", jPanel3);
+        TabbedPaneCustom.addTab("Process Payment", jPanel3);
+
+        exportButton.setText("Export");
+
+        javax.swing.GroupLayout chartPanelLayout = new javax.swing.GroupLayout(chartPanel);
+        chartPanel.setLayout(chartPanelLayout);
+        chartPanelLayout.setHorizontalGroup(
+            chartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 944, Short.MAX_VALUE)
+        );
+        chartPanelLayout.setVerticalGroup(
+            chartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 578, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1045, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap(51, Short.MAX_VALUE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(chartPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(selectedMonth, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(exportButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(51, 51, 51))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 691, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addComponent(selectedMonth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(chartPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(exportButton)
+                .addGap(17, 17, 17))
         );
 
-        requisitionPanel.addTab("Finance Report", jPanel4);
+        TabbedPaneCustom.addTab("Finance Report", jPanel4);
 
         historicalRequisitionTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -244,7 +276,7 @@ public class FinanceManagerDashboard extends javax.swing.JFrame {
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                .addContainerGap(83, Short.MAX_VALUE)
+                .addContainerGap(84, Short.MAX_VALUE)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 879, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -289,17 +321,17 @@ public class FinanceManagerDashboard extends javax.swing.JFrame {
                 .addGap(36, 36, 36))
         );
 
-        requisitionPanel.addTab("Purchase Requisitions", jPanel5);
+        TabbedPaneCustom.addTab("Purchase Requisitions", jPanel5);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(requisitionPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(TabbedPaneCustom, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(requisitionPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(TabbedPaneCustom, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -359,9 +391,24 @@ public class FinanceManagerDashboard extends javax.swing.JFrame {
     public JTable getInventoryTable() {
         return inventoryTable;
     }
-
+    
+    public JButton getExportButton() {
+        return exportButton;
+    }
+    
+    public JComboBox getMonthButton() {
+        return selectedMonth;
+    }
+    
+    public JPanel getChartPanel() {
+        return chartPanel;
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private CustomPanel.TabbedPaneCustom TabbedPaneCustom;
     private javax.swing.JTable approveOrderTable;
+    private javax.swing.JPanel chartPanel;
+    private javax.swing.JButton exportButton;
     private javax.swing.JTextField historicalRequisitionSearchInput;
     private javax.swing.JTable historicalRequisitionTable;
     private javax.swing.JTextField inventorySearchInput;
@@ -385,9 +432,9 @@ public class FinanceManagerDashboard extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JTextField orderSearchInput;
     private javax.swing.JTable pendingRequisitionTable;
-    private CustomPanel.TabbedPaneCustom requisitionPanel;
     private javax.swing.JTextField requisitionSearchInput;
     private javax.swing.JTextField searchSupplierTable;
+    private javax.swing.JComboBox<String> selectedMonth;
     private javax.swing.JTable supplierPaymentTable;
     // End of variables declaration//GEN-END:variables
 }

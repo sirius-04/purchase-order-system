@@ -9,7 +9,11 @@ package models;
  * @author Chan Yong Liang
  */
 public class Sales implements Identifiable {
-    // field: saleID,itemID,quantity,date,totalAmount
+    
+    public enum Status {
+        added,
+        deleted
+    }
     
     private String salesId;
     private String itemId;
@@ -17,15 +21,17 @@ public class Sales implements Identifiable {
     private String date;
     private String time;
     private double totalAmount;
+    private Status status;
     
     // constructor
-    public Sales(String salesId, String itemId, int quantity, String date, String time, double totalAmount) {
+    public Sales(String salesId, String itemId, int quantity, String date, String time, double totalAmount, Status status) {
         this.salesId = salesId;
         this.itemId = itemId;
         this.quantity = quantity;
         this.date = date;
         this.time = time;
         this.totalAmount = totalAmount;
+        this.status = status;
     }
     
     // override interface
@@ -79,7 +85,15 @@ public class Sales implements Identifiable {
         return totalAmount;
     }
 
-    public void setTotalAmount(int totalAmount) {
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public void setTotalAmount(double totalAmount) {
         this.totalAmount = totalAmount;
     }
 }

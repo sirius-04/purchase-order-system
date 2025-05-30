@@ -4,19 +4,42 @@
  */
 package services;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Frame;
+import java.awt.GridLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.time.LocalDate;
 import java.util.List;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTable;
-import models.Payment;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import models.PurchaseOrder;
+import models.Item;
 import models.Supplier;
+import models.InventoryUpdate;
+import models.PurchaseRequisition;
+import models.users.PurchaseManager;
+import models.users.User;
 import repository.ItemRepository;
 import repository.ItemSupplierRepository;
-import repository.PaymentRepository;
 import repository.PurchaseOrdersRepository;
 import repository.SupplierRepository;
-import tables.InventoryTableModel;
-import tables.PaymentTableModel;
+import repository.InventoryUpdateRepository;
+import repository.PurchaseRequisitionRepository;
+import repository.UserRepository;
 import tables.PurchaseOrderTableModel;
 import utils.IdGenerator;
 
@@ -30,6 +53,11 @@ public class PurchaseOrderService {
     private final SupplierRepository supplierRepo = new SupplierRepository();
     private final ItemRepository itemRepo = new ItemRepository();
     private final ItemSupplierRepository itemSupplierRepo = new ItemSupplierRepository();
+    private final InventoryUpdateRepository inventoryUpdateRepo = new InventoryUpdateRepository();
+    private final PurchaseRequisitionRepository requisitionRepo = new PurchaseRequisitionRepository();
+    private final IdGenerator idGenerator = new IdGenerator();
+    private final UserRepository userRepository = new UserRepository();
+    private final ItemRepository itemRepository = new ItemRepository();
 
 
     private String[] getSuppliers(String itemId) {
@@ -42,51 +70,17 @@ public class PurchaseOrderService {
 
         return supplierOptions;
     }
-    
-     private void createPaymentForPurchaseOrder(PurchaseOrder po) {
-        PaymentRepository paymentRepo = new PaymentRepository();
 
-        IdGenerator idGen = new IdGenerator();
-        String newPaymentId = idGen.generateNewId(Payment.class);
-
-        // Create Payment object and save to file
-        Payment newPayment = new Payment(
-                newPaymentId,
-                po.getPurchaseOrderId(),
-                po.getPrice(),
-                java.time.LocalDate.now().toString(),
-                models.Payment.Status.pending
-        );
-
-        paymentRepo.save(newPayment);
-    }
-
-    public void addApprovalListener(Component parent, JTable purchaseOrderTable, JTable inventoryTable) {
-        purchaseOrderTable.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                int row = purchaseOrderTable.getSelectedRow();
-                if (row != -1) {
-                    showApprovalDialog(parent, purchaseOrderTable, inventoryTable, row);
-                }
-            }
-        });
-    }
-
-    private void showApprovalDialog(Component parent, JTable purchaseOrderTable, JTable inventoryTable, int selectedRow) {
-        PurchaseOrderTableModel purchaseOrderModel = (PurchaseOrderTableModel) purchaseOrderTable.getModel();
-        InventoryTableModel inventoryModel = (InventoryTableModel) inventoryTable.getModel();
-        PurchaseOrder selectedPO = purchaseOrderModel.getPurchaseOrderAt(selectedRow);
-
-        String poId = selectedPO.getPurchaseOrderId();
-        int currentQuantity = selectedPO.getQuantity();
-        Supplier currentSupplier = supplierRepo.find(selectedPO.getSupplierId());
+    public void addApprovalListener(Component parent, PurchaseOrder po) {
+        
+        int currentQuantity = po.getQuantity();
+        Supplier currentSupplier = supplierRepo.find(po.getSupplierId());
 
         javax.swing.JPanel panel = new javax.swing.JPanel(new java.awt.GridLayout(2, 2, 5, 5));
         panel.setPreferredSize(new java.awt.Dimension(350, 60));
         javax.swing.JTextField quantityField = new javax.swing.JTextField(String.valueOf(currentQuantity));
 
-        String[] supplierOptions = getSuppliers(selectedPO.getItemId());
+        String[] supplierOptions = getSuppliers(po.getItemId());
         javax.swing.JComboBox<String> supplierCombo = new javax.swing.JComboBox<>(supplierOptions);
         for (int i = 0; i < supplierOptions.length; i++) {
             if (supplierOptions[i].contains(currentSupplier.getName())) {
@@ -127,155 +121,325 @@ public class PurchaseOrderService {
             if (confirm == javax.swing.JOptionPane.YES_OPTION) {
                 int updatedQuantity = Integer.parseInt(newQuantity);
 
-                double newPrice = updatedQuantity * itemRepo.find(selectedPO.getItemId()).getPrice();
+                double newPrice = updatedQuantity * itemRepo.find(po.getItemId()).getPrice();
 
-                PurchaseOrder updatedPO = new PurchaseOrder(selectedPO.getPurchaseOrderId(), selectedPO.getItemId(), 
-                                                            selectedPO.getPurchaseRequisitionId(), selectedPO.getPurchaseManagerId(), 
-                                                            Integer.parseInt(newQuantity), newPrice, selectedPO.getDate(), 
-                                                            PurchaseOrder.Status.fulfilled, newSupplierId);
+                PurchaseOrder updatedPO = new PurchaseOrder(po.getPurchaseOrderId(), po.getItemId(), 
+                                                            po.getPurchaseRequisitionId(), po.getUserId(), 
+                                                            Integer.parseInt(newQuantity), newPrice, po.getDate(), 
+                                                            PurchaseOrder.Status.approved, newSupplierId);
 
                 purchaseOrderRepo.update(updatedPO);
 
                 javax.swing.JOptionPane.showMessageDialog(parent, "Approved successfully!", "Success", javax.swing.JOptionPane.INFORMATION_MESSAGE);
-
-                purchaseOrderModel.refresh();
-                inventoryModel.refresh();
 
             } else {
                 javax.swing.JOptionPane.showMessageDialog(parent, "Failed to approve. Please try again.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
             }
         }
     }
+    
+    public void verifyPO(Component parent, PurchaseOrder po) {
+        if (po == null) return;
+        
+        int result = JOptionPane.showConfirmDialog(
+            parent,
+            "Are you sure you want to verify this Purchase Order?",
+            "Confirm Verification",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE
+        );
 
-    public void verifyUpdateListener(Component parent, JTable inventoryTable, JTable paymentTable) {
-        inventoryTable.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                int row = inventoryTable.getSelectedRow();
-                if (row != -1) {
-                    InventoryTableModel inventoryModel = (InventoryTableModel) inventoryTable.getModel();
-                    PaymentTableModel paymentModel = (PaymentTableModel) paymentTable.getModel();
-                    PurchaseOrder selectedPO = inventoryModel.getPurchaseOrderAt(row);
+        if (result == JOptionPane.YES_OPTION) {
+            
+            // 1. Change the PO status to 'verify'
+            po.setStatus(PurchaseOrder.Status.verified);
+            purchaseOrderRepo.update(po); 
+            
+            // 2. Edit the stock quantity in item.text
+            int verifiedItemQuantity = po.getQuantity();
+            int newStockQuantity = verifiedItemQuantity + itemRepo.find(po.getItemId()).getStockQuantity();
+            
+           
+            Item updatedItem = new Item(po.getItemId(), itemRepo.find(po.getItemId()).getName(), 
+                                        newStockQuantity, itemRepo.find(po.getItemId()).getPrice(), itemRepo.find(po.getItemId()).getSellPrice(), 
+                                        itemRepo.find(po.getItemId()).getSupplierId(), itemRepo.find(po.getItemId()).getStatus()
+                                        );
 
-                    int option = javax.swing.JOptionPane.showConfirmDialog(
-                            parent,
-                            "Do you want to verify this inventory update?",
-                            "Verify update inventory",
-                            javax.swing.JOptionPane.YES_NO_OPTION
-                    );
+            itemRepo.update(updatedItem);
+            
+            // 3. generate new inventory update
+            IdGenerator idGen = new IdGenerator();
+            String newInventoryUpdateId = idGen.generateNewId(InventoryUpdate.class);
+            
+            InventoryUpdate newInventoryUpdate = new InventoryUpdate(
+                    newInventoryUpdateId,
+                    po.getItemId(),
+                    po.getSupplierId(),
+                    po.getQuantity(),
+                    po.getPrice()
+            );
 
-                    if (option == javax.swing.JOptionPane.YES_OPTION) {
-              
-                        PurchaseOrder updatedPO = new PurchaseOrder(selectedPO.getPurchaseOrderId(), selectedPO.getItemId(), 
-                                                                    selectedPO.getPurchaseRequisitionId(), selectedPO.getPurchaseManagerId(), 
-                                                                    selectedPO.getQuantity(), selectedPO.getPrice(), selectedPO.getDate(), 
-                                                                    PurchaseOrder.Status.verified, selectedPO.getSupplierId());
+            inventoryUpdateRepo.save(newInventoryUpdate);
 
-                        purchaseOrderRepo.update(updatedPO);
-                        
-                        //after verify create new payment
-                        createPaymentForPurchaseOrder(updatedPO);
 
-                        javax.swing.JOptionPane.showMessageDialog(parent, "Verify successfully!", "Success", javax.swing.JOptionPane.INFORMATION_MESSAGE);
-                            
-                        inventoryModel.refresh();
-                        paymentModel.refresh();
+            JOptionPane.showMessageDialog(parent, "Purchase Order had verified. New stock quantity is updated!");
+        }
+    }
+    
+     public void setupGeneratePOListener(JTable requisitionTable, PurchaseManager currentManager, Runnable onGenerateCallback) {
+    requisitionTable.addMouseListener(new MouseAdapter() {
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            if (e.getClickCount() == 2) {
+                int row = requisitionTable.getSelectedRow();
+                if (row >= 0) {
+                    String requisitionId = requisitionTable.getValueAt(row, 0).toString();
+                    PurchaseRequisition pr = requisitionRepo.find(requisitionId);
 
-                    } else {
-                        javax.swing.JOptionPane.showMessageDialog(parent, "Failed to verify. Please try again.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+                    if (pr != null) {
+                        showPODialog(requisitionTable, requisitionId, currentManager, onGenerateCallback);
                     }
+                }
+            }
+        }
+    });
+}
+    
+    public void showPODialog(Component parent, String requisitionId,PurchaseManager currentManager,Runnable onGenerateCallback) {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.add(new JLabel("Generating Purchase Order for Requisition ID: " + requisitionId));
+        panel.add(Box.createRigidArea(new Dimension(0, 10)));
+
+        int result = JOptionPane.showConfirmDialog(
+            parent, panel, "Generate Purchase Order",
+            JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE
+        );
+
+        if (result == JOptionPane.OK_OPTION) {
+            PurchaseRequisition pr = requisitionRepo.find(requisitionId);
+            if (pr != null) {
+                showDetailedPRPanel(parent, pr, currentManager, onGenerateCallback);
+            } else {
+                JOptionPane.showMessageDialog(parent, "Requisition not found.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+
+     private void showDetailedPRPanel(Component parent, PurchaseRequisition pr, PurchaseManager currentManager, Runnable onGenerateCallback) {
+        JPanel detailPanel = new JPanel();
+        detailPanel.setLayout(new BoxLayout(detailPanel, BoxLayout.Y_AXIS));
+        detailPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        User salesManager = userRepository.find(pr.getUserId());
+        Item item = itemRepository.find(pr.getItemId());
+
+        String salesManagerName = (salesManager != null) ? salesManager.getUsername() : "Unknown";
+        String itemName = (item != null) ? item.getName() : "Unknown";
+
+        detailPanel.add(new JLabel("Requisition ID: " + pr.getRequisitionId()));
+        detailPanel.add(new JLabel("Sales Manager: " + salesManagerName + " (" + pr.getUserId()+ ")"));
+        detailPanel.add(new JLabel("Item: " + itemName + " (" + pr.getItemId() + ")"));
+        detailPanel.add(new JLabel("Quantity: " + pr.getQuantity()));
+        detailPanel.add(new JLabel("Generated Date: " + pr.getGeneratedDate()));
+        detailPanel.add(new JLabel("Required Date: " + pr.getRequiredDate()));
+        detailPanel.add(new JLabel("Status: " + pr.getStatus()));
+        detailPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+
+        String[] options = {"Generate", "Reject", "Cancel"};
+        int result = JOptionPane.showOptionDialog(
+            parent,
+            detailPanel,
+            "Confirm Purchase Order Action",
+            JOptionPane.YES_NO_CANCEL_OPTION,
+            JOptionPane.PLAIN_MESSAGE,
+            null,
+            options,
+            options[0]
+        );
+
+        if (result == JOptionPane.YES_OPTION) {
+            generatePO(pr, currentManager); 
+            pr.setStatus(PurchaseRequisition.Status.approved);
+            requisitionRepo.update(pr);
+            JOptionPane.showMessageDialog(parent, "Purchase Order generated and requisition approved.");
+            onGenerateCallback.run();
+        } else if (result == JOptionPane.NO_OPTION) { 
+            pr.setStatus(PurchaseRequisition.Status.rejected);
+            requisitionRepo.update(pr);
+            JOptionPane.showMessageDialog(parent, "Requisition has been rejected.");
+            onGenerateCallback.run();
+        }
+    }
+
+    public void generatePO(PurchaseRequisition pr, PurchaseManager manager) {
+        String poId = idGenerator.generateNewId(PurchaseOrder.class);
+        String purchaseManagerId = manager.getUserId();       
+        String itemId = pr.getItemId();
+        Item item = itemRepository.find(itemId);
+        double price = item.getPrice() * pr.getQuantity(); 
+        String today = LocalDate.now().toString();
+        List<Supplier> suppliers = itemSupplierRepo.getItemSupplier(pr.getItemId());
+        String supplierId = suppliers.isEmpty() ? "" : suppliers.get(0).getSupplierId();
+
+        PurchaseOrder order = new PurchaseOrder(
+            poId,
+            pr.getItemId(),
+            pr.getRequisitionId(),
+            purchaseManagerId,
+            pr.getQuantity(),
+            price,
+            today,
+            PurchaseOrder.Status.pending,
+            supplierId
+        );
+
+        purchaseOrderRepo.save(order);
+        pr.setStatus(PurchaseRequisition.Status.approved);
+        requisitionRepo.update(pr); 
+    }
+    
+    
+   public void setupPOTableClickListener(JTable poTable, PurchaseManager manager, Runnable onUpdate) {
+        poTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    int row = poTable.getSelectedRow();
+                    if (row == -1) return;
+
+                    PurchaseOrderTableModel model = (PurchaseOrderTableModel) poTable.getModel();
+                    PurchaseOrder order = model.getPurchaseOrderAt(row);
+
+                    showPOActionPanel(poTable, order, manager, onUpdate);
                 }
             }
         });
     }
+    private void showPOActionPanel(Component parent, PurchaseOrder po, PurchaseManager currentManager, Runnable onUpdateCallback) {
+        SwingUtilities.invokeLater(() -> {
+            JPanel buttonPanel = new JPanel();
+            buttonPanel.setBorder(BorderFactory.createEmptyBorder(20, 30, 20, 30)); 
 
+            JButton editButton = new JButton("Edit");
+            JButton deleteButton = new JButton("Delete");
+            JButton cancelButton = new JButton("Cancel");
 
-    public boolean processPayment(Component parent, JTable paymentTable) {
-        paymentTable.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                int row = paymentTable.getSelectedRow();
-                if (row != -1) {
-                    PaymentTableModel paymentModel = (PaymentTableModel) paymentTable.getModel();
-                    Payment selectedPayment = paymentModel.getPaymentAt(row);
-                    
-                    if (selectedPayment.getStatus() == Payment.Status.successed) {
-                        javax.swing.JOptionPane.showMessageDialog(parent, "This payment has already been processed.", "Info", javax.swing.JOptionPane.INFORMATION_MESSAGE);
-                        return;
-                    }
+            buttonPanel.add(editButton);
+            buttonPanel.add(deleteButton);
+            buttonPanel.add(cancelButton);
 
-                    PurchaseOrder po = purchaseOrderRepo.find(selectedPayment.getPurchaseOrderId());
-                    Supplier supplier = supplierRepo.find(po.getSupplierId());
+            JPanel contentPanel = new JPanel(new BorderLayout(10, 10));
+            contentPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); 
+            contentPanel.add(new JLabel("Choose an action for Purchase Order ID: " + po.getPurchaseOrderId()), BorderLayout.NORTH);
+            contentPanel.add(buttonPanel, BorderLayout.SOUTH);
 
-                    String accountNum = supplier.getAccountNum();
-                    Double amountToPaid = selectedPayment.getAmountPaid();
+            JDialog dialog = new JDialog((Frame) null, "PO Actions", true);
+            dialog.setContentPane(contentPanel);
+            dialog.setPreferredSize(new Dimension(400, 200)); 
+            dialog.pack();
+            dialog.setLocationRelativeTo(parent);
 
-                    javax.swing.JPanel panel = new javax.swing.JPanel(new java.awt.GridLayout(2, 2, 5, 5));
-                    panel.setPreferredSize(new java.awt.Dimension(350, 100));
-                    javax.swing.JTextField accountNumField = new javax.swing.JTextField(accountNum);
-                    javax.swing.JTextField amountToPaidField = new javax.swing.JTextField(String.valueOf(amountToPaid));
+            editButton.addActionListener(e -> {
+                dialog.dispose();
+                showEditPODialog(po, currentManager, onUpdateCallback);
+            });
 
-                    panel.add(new javax.swing.JLabel("Account Number:"));
-                    panel.add(accountNumField);
-                    panel.add(new javax.swing.JLabel("Amount To Paid:"));
-                    panel.add(amountToPaidField);
-                    
-                    int option = javax.swing.JOptionPane.showConfirmDialog(
-                            parent,
-                            panel,
-                            "Process Payment",
-                            javax.swing.JOptionPane.OK_CANCEL_OPTION,
-                            javax.swing.JOptionPane.PLAIN_MESSAGE
-                    );
-
-                    if (option == javax.swing.JOptionPane.OK_OPTION) {
-                        String enteredAccountNum = accountNumField.getText();
-                        String enteredAmountStr = amountToPaidField.getText();
-
-                        if (enteredAccountNum.isEmpty() || enteredAmountStr.isEmpty()) {
-                            javax.swing.JOptionPane.showMessageDialog(parent, "All fields are required.", "Warning", javax.swing.JOptionPane.WARNING_MESSAGE);
-                            return;
-                        }
-
-                        double enteredAmount;
-                        
-                        try {
-                            enteredAmount = Double.parseDouble(enteredAmountStr);
-                        } catch (NumberFormatException e) {
-                            javax.swing.JOptionPane.showMessageDialog(parent, "Invalid amount format.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
-                            return;
-                        }
-
-                        int confirm = javax.swing.JOptionPane.showConfirmDialog(
-                                parent,
-                                "Do you want to confirm this payment?",
-                                "Confirm Payment",
-                                javax.swing.JOptionPane.YES_NO_OPTION
-                        );
-
-                        if (confirm == javax.swing.JOptionPane.YES_OPTION) {
-                            Payment updatedPayment = new Payment(
-                                    selectedPayment.getPaymentId(),
-                                    selectedPayment.getPurchaseOrderId(),
-                                    selectedPayment.getAmountPaid() - enteredAmount,
-                                    java.time.LocalDate.now().toString(),
-                                    models.Payment.Status.successed
-                            );
-                   
-                            PaymentRepository paymentRepo = new PaymentRepository();
-                            paymentRepo.update(updatedPayment);     
-
-                            javax.swing.JOptionPane.showMessageDialog(parent, "Payment processed successfully!", "Success", javax.swing.JOptionPane.INFORMATION_MESSAGE);
-
-                            paymentModel.refresh();
-                        } else {
-                            javax.swing.JOptionPane.showMessageDialog(parent, "Payment not confirmed.", "Info", javax.swing.JOptionPane.INFORMATION_MESSAGE);
-                        }
+            deleteButton.addActionListener(e -> {
+                int confirm = JOptionPane.showConfirmDialog(parent, "Mark this Purchase Order as deleted?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
+                if (confirm == JOptionPane.YES_OPTION) {
+                    try {
+                        po.setStatus(PurchaseOrder.Status.deleted); 
+                        purchaseOrderRepo.update(po); 
+                        JOptionPane.showMessageDialog(parent, "Marked as deleted successfully!");
+                        dialog.dispose();
+                        if (onUpdateCallback != null) onUpdateCallback.run();
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                        JOptionPane.showMessageDialog(parent, "Failed to update status: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                     }
                 }
+            });
+
+            cancelButton.addActionListener(e -> dialog.dispose());
+
+            dialog.setVisible(true);
+        });
+    }
+    
+    private void showEditPODialog(PurchaseOrder po, PurchaseManager currentManager, Runnable onUpdateCallback) {
+        JPanel panel = new JPanel(new GridLayout(0, 2, 10, 10)); 
+        panel.setBorder(BorderFactory.createEmptyBorder(20, 30, 20, 30)); 
+
+        JComboBox<Item> itemDropdown = new JComboBox<>();
+        for (Item item : itemRepository.getAll()) {
+            itemDropdown.addItem(item);
+        }
+
+        Item currentItem = itemRepository.find(po.getItemId());
+        if (currentItem != null) itemDropdown.setSelectedItem(currentItem);
+
+        JTextField quantityField = new JTextField(String.valueOf(po.getQuantity()));
+
+        panel.add(new JLabel("Item:"));
+        panel.add(itemDropdown);
+        panel.add(new JLabel("Quantity:"));
+        panel.add(quantityField);
+
+        JButton updateBtn = new JButton("Update");
+        JButton cancelBtn = new JButton("Cancel");
+
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
+        buttonPanel.add(updateBtn);
+        buttonPanel.add(cancelBtn);
+
+        JDialog dialog = new JDialog((Frame) null, "Edit Purchase Order", true);
+        dialog.setLayout(new BorderLayout(10, 10));
+        dialog.add(panel, BorderLayout.CENTER);
+        dialog.add(buttonPanel, BorderLayout.SOUTH);
+
+        dialog.setPreferredSize(new Dimension(450, 250)); 
+        dialog.pack();
+        dialog.setLocationRelativeTo(null);
+
+        updateBtn.addActionListener(ev -> {
+            try {
+                Item selectedItem = (Item) itemDropdown.getSelectedItem();
+                int qty = Integer.parseInt(quantityField.getText().trim());
+
+                if (selectedItem == null) {
+                    JOptionPane.showMessageDialog(null, "Item not found!", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                PurchaseOrder updatedPO = new PurchaseOrder(
+                    po.getPurchaseOrderId(),
+                    selectedItem.getItemId(),
+                    po.getPurchaseRequisitionId(),
+                    currentManager.getUserId(),
+                    qty,
+                    selectedItem.getPrice() * qty,
+                    LocalDate.now().toString(),
+                    po.getStatus(), 
+                    selectedItem.getSupplierId()
+                );
+
+                purchaseOrderRepo.update(updatedPO);
+                JOptionPane.showMessageDialog(null, "Updated successfully!");
+                dialog.dispose();
+                if (onUpdateCallback != null) onUpdateCallback.run();
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(null, "Invalid quantity", "Error", JOptionPane.ERROR_MESSAGE);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Update failed: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
-        return false;
+
+        cancelBtn.addActionListener(ev -> dialog.dispose());
+
+        dialog.setVisible(true);
     }
 }
 

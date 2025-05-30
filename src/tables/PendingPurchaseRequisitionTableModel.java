@@ -18,7 +18,7 @@ import repository.UserRepository;
  *
  * @author Chan Yong Liang
  */
-public class PendingPurchaseRequisitionTableModel extends AbstractTableModel {
+public class PendingPurchaseRequisitionTableModel extends AbstractTableModel implements SearchableTableModel {
 
     private final String[] columns = {
         "Requisition ID",
@@ -28,7 +28,7 @@ public class PendingPurchaseRequisitionTableModel extends AbstractTableModel {
         "Generated Date",
         "Required Date",
         "Supplier ID",
-        "Sales Manager"
+        "Raised User"
     };
 
     private final PurchaseRequisitionRepository requisitionRepo = new PurchaseRequisitionRepository();
@@ -53,6 +53,45 @@ public class PendingPurchaseRequisitionTableModel extends AbstractTableModel {
 
         fireTableDataChanged();
     }
+    
+    
+    @Override
+    public void filterByKeyword(String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            refresh();
+            return;
+        }
+        
+        String lowerKeyword = keyword.toLowerCase();
+        
+
+        pendingRequisitions = requisitionRepo.getAll().stream()
+            .filter(pr -> {
+                if (pr.getStatus() != PurchaseRequisition.Status.pending) return false;
+
+                // PR ID
+                boolean matchesRequisitionId = pr.getRequisitionId().toLowerCase().contains(lowerKeyword);
+
+                // Item ID
+                boolean matchesItemId = pr.getItemId().toLowerCase().contains(lowerKeyword);
+
+                Item item = itemRepo.find(pr.getItemId());
+
+                // Item Name
+                boolean matchesItemName = item != null && item.getName().toLowerCase().contains(lowerKeyword);
+
+                User sm = salesManagerRepo.find(pr.getUserId());
+
+                // Sales Manager Name
+                boolean matchesSalesManager = sm != null && sm.getUsername().toLowerCase().contains(lowerKeyword);
+
+                return matchesRequisitionId || matchesItemId || matchesItemName || matchesSalesManager;
+            })
+            .toList();
+
+
+        fireTableDataChanged();
+    }   
 
     @Override
     public int getRowCount() {
@@ -77,7 +116,7 @@ public class PendingPurchaseRequisitionTableModel extends AbstractTableModel {
 
         PurchaseRequisition pr = pendingRequisitions.get(rowIndex);
         Item item = itemRepo.find(pr.getItemId());
-        User sm = salesManagerRepo.find(pr.getSalesManagerId());
+        User sm = salesManagerRepo.find(pr.getUserId());
 
         return switch (columnIndex) {
             case 0 ->

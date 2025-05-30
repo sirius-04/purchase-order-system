@@ -10,17 +10,17 @@ package models;
  */
 public class PurchaseOrder implements Identifiable {
 
-    // fields: poID,itemID,prID,purchaseManagerID,quantity,price,status(pending/fulfilled)
     public enum Status {
         pending,
-        fulfilled,
-        verified
+        approved,
+        verified,
+        deleted
     }
 
     private String purchaseOrderId;
     private String itemId;
     private String purchaseRequisitionId;
-    private String purchaseManagerId;
+    private String userId;
     private int quantity;
     private double price;
     private String date;
@@ -29,11 +29,11 @@ public class PurchaseOrder implements Identifiable {
 
     // constructor
     public PurchaseOrder(String purchaseOrderId, String itemId, String purchaseRequisitionId,
-            String purchaseManagerId, int quantity, double price, String date, Status status, String supplierId) {
+            String userId, int quantity, double price, String date, Status status, String supplierId) {
         this.purchaseOrderId = purchaseOrderId;
         this.itemId = itemId;
         this.purchaseRequisitionId = purchaseRequisitionId;
-        this.purchaseManagerId = purchaseManagerId;
+        this.userId = userId;
         this.quantity = quantity;
         this.price = price;
         this.date = date;
@@ -72,12 +72,12 @@ public class PurchaseOrder implements Identifiable {
         this.purchaseRequisitionId = purchaseRequisitionId;
     }
 
-    public String getPurchaseManagerId() {
-        return purchaseManagerId;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setPurchaseManagerId(String purchaseManagerId) {
-        this.purchaseManagerId = purchaseManagerId;
+    public void setUserId(String purchaseManagerId) {
+        this.userId = purchaseManagerId;
     }
 
     public int getQuantity() {
@@ -111,7 +111,7 @@ public class PurchaseOrder implements Identifiable {
     public void setStatus(Status status) {
         this.status = status;
     }
-    
+
     public String getSupplierId() {
         return supplierId;
     }

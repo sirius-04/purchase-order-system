@@ -22,7 +22,7 @@ public class PurchaseOrdersRepository extends BaseRepository<PurchaseOrder>  {
                 purchaseOrder.getPurchaseOrderId(),
                 purchaseOrder.getItemId(),
                 purchaseOrder.getPurchaseRequisitionId(),
-                purchaseOrder.getPurchaseManagerId(),
+                purchaseOrder.getUserId(),
                 purchaseOrder.getQuantity(),
                 purchaseOrder.getPrice(),
                 purchaseOrder.getDate(),
@@ -36,13 +36,13 @@ public class PurchaseOrdersRepository extends BaseRepository<PurchaseOrder>  {
         String purchaseOrderId = columns[0].trim();
         String itemId = columns[1].trim();
         String purchaseRequisitionId = columns[2].trim();
-        String purchaseManagerId = columns[3].trim();
+        String userId = columns[3].trim();
         int quantity = Integer.parseInt(columns[4].trim());
         double price = Double.parseDouble(columns[5].trim());
         String date = columns[6].trim();
         PurchaseOrder.Status status = PurchaseOrder.Status.valueOf(columns[7].trim());
         String supplierId = columns[8].trim();
 
-        return new PurchaseOrder(purchaseOrderId, itemId, purchaseRequisitionId, purchaseManagerId, quantity, price, date, status, supplierId);
+        return new PurchaseOrder(purchaseOrderId, itemId, purchaseRequisitionId, userId, quantity, price, date, status, supplierId);
     }
 }
