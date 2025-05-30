@@ -254,8 +254,11 @@ public class InventoryManagerController extends BaseController {
                    PurchaseOrder selectedPO = fulfiledPOTableModel.getPurchaseOrderAt(row);
                    
                    poService.verifyPO(dashboard, selectedPO);
+                   
+                   itemTableModel.refresh();
                    fulfiledPOTableModel.refresh();
-                   verifiedPOTableModel.refresh(); 
+                   verifiedPOTableModel.refresh();
+                   inventoryUpdateTableModel.refresh();
                 }
             }
         });
