@@ -255,6 +255,55 @@ public class ItemService {
             JOptionPane.showMessageDialog(parent, "Item updated successfully!");
         }
     }
+    public void editItemQuantity(Component parent, Item item) {
+        if (item == null) {
+            return;
+        }
+
+        // Jpanel's Input
+        JSpinner stockSpinner = new JSpinner(new SpinnerNumberModel(item.getStockQuantity(), 0, 10000, 1));
+        
+        // JPanel UI start here
+        JPanel editPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.anchor = GridBagConstraints.WEST;
+
+        // Row 0: Title
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        editPanel.add(new JLabel("Edit Item Details:"), gbc);
+        gbc.gridwidth = 1;
+
+        // Row 1: Stock Quantity
+        gbc.gridx = 0;
+        gbc.gridy++;
+        editPanel.add(new JLabel("Stock Quantity:"), gbc);
+        gbc.gridx = 1;
+        editPanel.add(stockSpinner, gbc);
+
+        // JPanel UI end here
+
+        // Comfirm Dialog
+        int result = JOptionPane.showConfirmDialog(
+                parent,
+                editPanel,
+                "Edit Item",
+                JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.PLAIN_MESSAGE
+        );
+
+        // Update logic here
+        if (result == JOptionPane.OK_OPTION) {
+            item.setStockQuantity((int) stockSpinner.getValue());
+
+            // Save changes to repository
+            itemRepo.update(item);
+
+            JOptionPane.showMessageDialog(parent, "Item updated successfully!");
+        }
+    }
 
     private void deleteItem(Component parent, Item item) {
         JPanel panel = new JPanel();

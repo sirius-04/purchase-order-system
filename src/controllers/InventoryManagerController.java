@@ -235,7 +235,7 @@ public class InventoryManagerController extends BaseController {
                     ItemTableModel itemModel = (ItemTableModel) itemTable.getModel();
                     Item selectedItem = itemModel.getItemAt(row);
 
-                    itemService.editItem(dashboard, selectedItem); 
+                    itemService.editItemQuantity(dashboard, selectedItem); 
                     itemModel.refresh(); 
                 }
             }
