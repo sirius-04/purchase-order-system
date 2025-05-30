@@ -16,7 +16,6 @@ import java.awt.event.KeyEvent;
 import java.util.Map;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import models.PurchaseOrder;
 import models.Item;
 import models.users.InventoryManager;
 import views.InventoryManagerDashboard;
@@ -46,7 +45,7 @@ public class InventoryManagerController extends BaseController {
     
      // table models
     ItemTableModel itemTableModel = new ItemTableModel();
-    PurchaseOrderTableModel fulfiledPOTableModel = new PurchaseOrderTableModel(PurchaseOrderTableModel.POStatus.FULFILLED);
+    PurchaseOrderTableModel fulfiledPOTableModel = new PurchaseOrderTableModel(PurchaseOrderTableModel.POStatus.APPROVED);
     PurchaseOrderTableModel verifiedPOTableModel = new PurchaseOrderTableModel(PurchaseOrderTableModel.POStatus.VERIFIED);
     InventoryUpdateTableModel inventoryUpdateTableModel = new InventoryUpdateTableModel();
     
