@@ -4,6 +4,9 @@
  */
 package views;
 
+import javax.swing.JTable;
+import javax.swing.JTextField;
+
 /**
  *
  * @author ngoh
@@ -30,7 +33,6 @@ public class PurchaseManagerDashboard extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         orderTable = new javax.swing.JTable();
-        addOrderButton = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         orderSearchInput = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
@@ -76,8 +78,6 @@ public class PurchaseManagerDashboard extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(orderTable);
 
-        addOrderButton.setText("Add New");
-
         jLabel2.setText("Search:");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -85,17 +85,13 @@ public class PurchaseManagerDashboard extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 939, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(793, 793, 793)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(orderSearchInput, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addGap(48, 48, 48)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(addOrderButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 939, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(orderSearchInput, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(58, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -105,11 +101,9 @@ public class PurchaseManagerDashboard extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(orderSearchInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 560, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(addOrderButton)
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addContainerGap(73, Short.MAX_VALUE))
         );
 
         itemPanel.addTab("Purchase Orders", jPanel1);
@@ -372,7 +366,6 @@ public class PurchaseManagerDashboard extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton addOrderButton;
     private javax.swing.JTextField historicalRequisitionSearchInput;
     private javax.swing.JTable historicalRequisitionTable;
     private javax.swing.JTable itemNotOnSaleTable;
@@ -407,4 +400,56 @@ public class PurchaseManagerDashboard extends javax.swing.JFrame {
     private javax.swing.JTextField supplierSearchInput;
     private javax.swing.JTable supplierTable;
     // End of variables declaration//GEN-END:variables
+
+    public JTextField getHistoricalRequisitionSearchInput() {
+        return historicalRequisitionSearchInput;
+    }
+
+    public JTable getHistoricalRequisitionTable() {
+        return historicalRequisitionTable;
+    }
+
+    public JTable getItemNotOnSaleTable() {
+        return itemNotOnSaleTable;
+    }
+
+    public JTextField getItemNotSaleSearchInput() {
+        return itemNotSaleSearchInput;
+    }
+
+    public JTable getItemOnSaleTable() {
+        return itemOnSaleTable;
+    }
+
+    public CustomPanel.TabbedPaneCustom getItemPanel() {
+        return itemPanel;
+    }
+
+    public JTextField getItemSaleSearchInput() {
+        return itemSaleSearchInput;
+    }
+
+    public JTextField getOrderSearchInput() {
+        return orderSearchInput;
+    }
+
+    public JTable getOrderTable() {
+        return orderTable;
+    }
+
+    public JTable getPendingRequisitionTable() {
+        return pendingRequisitionTable;
+    }
+
+    public JTextField getRequisitionSearchInput() {
+        return requisitionSearchInput;
+    }
+
+    public JTextField getSupplierSearchInput() {
+        return supplierSearchInput;
+    }
+
+    public JTable getSupplierTable() {
+        return supplierTable;
+    }
 }
