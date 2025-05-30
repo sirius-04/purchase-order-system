@@ -115,7 +115,6 @@ public class SalesManagerController extends BaseController {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     String input = textField.getText().trim();
                     searchFunction.accept(input);
-                    textField.setText("");
                 }
             }
         });
