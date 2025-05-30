@@ -276,6 +276,7 @@ public class ItemService {
             if (deleteItem == JOptionPane.YES_OPTION) {
                 item.setStatus(Item.Status.deleted);
                 itemRepo.update(item);
+                itemSupplierRepo.delete(item.getItemId());
 
                 JOptionPane.showMessageDialog(parent, "Item deleted successfully.", "Deleted", JOptionPane.INFORMATION_MESSAGE);
             }
@@ -284,7 +285,7 @@ public class ItemService {
     }
 
     private String[] getSupplierOptions() {
-        List<Supplier> supplierList = supplierRepo.getAll().stream().filter(supplier -> supplier.getStatus() == Supplier.Status.active).toList();
+        List<Supplier> supplierList = supplierRepo.getAll();
         String[] supplierOptions = new String[supplierList.size()];
 
         for (int i = 0; i < supplierList.size(); i++) {

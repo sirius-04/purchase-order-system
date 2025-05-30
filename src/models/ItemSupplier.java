@@ -34,6 +34,6 @@ public class ItemSupplier implements Identifiable {
 
     @Override
     public String getId() {
-        return null;
+        return itemId;
     }
 }

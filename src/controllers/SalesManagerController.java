@@ -10,12 +10,15 @@ import views.SalesManagerDashboard;
 import javax.swing.*;
 import java.awt.event.*;
 import models.Item;
+import models.Supplier;
+import services.SupplierService;
 
 public class SalesManagerController extends BaseController {
 
     private final SalesManagerDashboard dashboard;
     private final SalesService salesService = new SalesService();
     private final ItemService itemService = new ItemService();
+    private final SupplierService supplierService = new SupplierService();
 
     // Table Models
     private final ItemOnSaleTableModel itemOnSaleTableModel = new ItemOnSaleTableModel();
@@ -66,8 +69,8 @@ public class SalesManagerController extends BaseController {
     private void setupSaleListeners() {
         dashboard.getAddSalesButton().addActionListener(e -> {
             salesService.addSale(dashboard);
-            refreshSalesPanel();
-            refreshItemPanel();
+
+            refreshAll();
         });
 
         dashboard.getSalesTable().addMouseListener(new MouseAdapter() {
@@ -76,8 +79,7 @@ public class SalesManagerController extends BaseController {
                 Sales selectedSale = saleTableModel.getSalesAt(row);
                 if (selectedSale != null) {
                     salesService.displaySaleDetails(dashboard, selectedSale);
-                    refreshSalesPanel();
-                    refreshItemPanel();
+                    refreshAll();
                 }
             }
         });
@@ -89,21 +91,32 @@ public class SalesManagerController extends BaseController {
     private void setupItemListeners() {
         dashboard.getAddItemButton().addActionListener(e -> {
             itemService.addItem(dashboard);
-            refreshSalesPanel();
-            refreshItemPanel();
+
+            refreshAll();
         });
-        
+
         dashboard.getItemOnSaleTable().addMouseListener(new MouseAdapter() {
-           public void mouseClicked(MouseEvent evt) {
-               int row = dashboard.getItemOnSaleTable().getSelectedRow();
-               Item selectedItem = itemOnSaleTableModel.getItemAt(row);
-               if (selectedItem != null) {
-                   itemService.displayItemDetails(dashboard, selectedItem);
-                   
-                   refreshSalesPanel();
-                   refreshItemPanel();
-               }
-           } 
+            public void mouseClicked(MouseEvent evt) {
+                int row = dashboard.getItemOnSaleTable().getSelectedRow();
+                Item selectedItem = itemOnSaleTableModel.getItemAt(row);
+                if (selectedItem != null) {
+                    itemService.displayItemDetails(dashboard, selectedItem);
+
+                    refreshAll();
+                }
+            }
+        });
+
+        dashboard.getItemNotOnSaleTable().addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
+                int row = dashboard.getItemNotOnSaleTable().getSelectedRow();
+                Item selectedItem = itemOnSaleTableModel.getItemAt(row);
+                if (selectedItem != null) {
+                    itemService.displayItemDetails(dashboard, selectedItem);
+
+                    refreshAll();
+                }
+            }
         });
 
         setupSearchFieldListener(dashboard.getItemSearchInput(), itemOnSaleTableModel::filterByKeyword);
@@ -111,6 +124,24 @@ public class SalesManagerController extends BaseController {
     }
 
     private void setupSupplierListeners() {
+        dashboard.getAddSupplierButton().addActionListener(e -> {
+            supplierService.addSupplier(dashboard);
+
+            refreshAll();
+        });
+
+        dashboard.getSupplierTable().addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
+                int row = dashboard.getSupplierTable().getSelectedRow();
+                Supplier selectedSupplier = supplierTableModel.getSupplierAt(row);
+                if (selectedSupplier != null) {
+                    supplierService.displaySupplierDetails(dashboard, selectedSupplier);
+
+                    refreshAll();
+                }
+            }
+        });
+
         setupSearchFieldListener(dashboard.getSupplierSearchInput(), supplierTableModel::filterByKeyword);
     }
 
@@ -148,5 +179,15 @@ public class SalesManagerController extends BaseController {
     private void refreshItemPanel() {
         itemOnSaleTableModel.refresh();
         itemNotOnSaleTableModel.refresh();
+    }
+
+    private void refreshSupplierPanel() {
+        supplierTableModel.refresh();
+    }
+
+    private void refreshAll() {
+        refreshSalesPanel();
+        refreshItemPanel();
+        refreshSupplierPanel();
     }
 }
