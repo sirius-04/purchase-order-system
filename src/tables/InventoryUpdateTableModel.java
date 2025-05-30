@@ -16,7 +16,7 @@ import repository.ItemRepository;
  *
  * @author Chan Yong Liang
  */
-public class InventoryUpdateTableModel extends AbstractTableModel {
+public class InventoryUpdateTableModel extends AbstractTableModel implements SearchableTableModel {
 
     private final String[] columns = {
         "Inventory Update ID",
@@ -40,6 +40,20 @@ public class InventoryUpdateTableModel extends AbstractTableModel {
         fireTableDataChanged();
     }
 
+    @Override
+    public void filterByKeyword(String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            refresh();
+            return;
+        }
+        
+        String lowerKeyword = keyword.toLowerCase();
+
+        inventoryUpdates = inventoryRepo.getAll().stream()
+                .filter(item -> item.getInventoryUpdateId().toLowerCase().contains(lowerKeyword) || item.getItemId().toLowerCase().contains(lowerKeyword))
+                .toList();
+        fireTableDataChanged();
+    }
     @Override
     public int getRowCount() {
         return inventoryUpdates.size();

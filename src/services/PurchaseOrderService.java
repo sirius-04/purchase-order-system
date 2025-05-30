@@ -6,17 +6,13 @@ package services;
 
 import java.awt.Component;
 import java.util.List;
-import models.InventoryUpdate;
-import models.Payment;
+import javax.swing.JOptionPane;
 import models.PurchaseOrder;
 import models.Supplier;
-import repository.InventoryUpdateRepository;
 import repository.ItemRepository;
 import repository.ItemSupplierRepository;
-import repository.PaymentRepository;
 import repository.PurchaseOrdersRepository;
 import repository.SupplierRepository;
-import utils.IdGenerator;
 
 /**
  *
@@ -26,7 +22,6 @@ public class PurchaseOrderService {
 
     private final PurchaseOrdersRepository purchaseOrderRepo = new PurchaseOrdersRepository();
     private final SupplierRepository supplierRepo = new SupplierRepository();
-    private final InventoryUpdateRepository inventoryRepo = new InventoryUpdateRepository();
     private final ItemRepository itemRepo = new ItemRepository();
     private final ItemSupplierRepository itemSupplierRepo = new ItemSupplierRepository();
 
@@ -40,24 +35,6 @@ public class PurchaseOrderService {
         }
 
         return supplierOptions;
-    }
-    
-     private void createPaymentForInventoryUpdate(InventoryUpdate inventory) {
-        PaymentRepository paymentRepo = new PaymentRepository();
-
-        IdGenerator idGen = new IdGenerator();
-        String newPaymentId = idGen.generateNewId(Payment.class);
-
-        // Create Payment object and save to file
-        Payment newPayment = new Payment(
-                newPaymentId,
-                inventory.getInventoryUpdateId(),
-                inventory.getTotalAmount(),
-                java.time.LocalDate.now().toString(),
-                models.Payment.Status.pending
-        );
-
-        paymentRepo.save(newPayment);
     }
 
     public void addApprovalListener(Component parent, PurchaseOrder po) {
@@ -115,7 +92,7 @@ public class PurchaseOrderService {
                 PurchaseOrder updatedPO = new PurchaseOrder(po.getPurchaseOrderId(), po.getItemId(), 
                                                             po.getPurchaseRequisitionId(), po.getPurchaseManagerId(), 
                                                             Integer.parseInt(newQuantity), newPrice, po.getDate(), 
-                                                            PurchaseOrder.Status.approved, newSupplierId);
+                                                            PurchaseOrder.Status.fulfilled, newSupplierId);
 
                 purchaseOrderRepo.update(updatedPO);
 
@@ -126,104 +103,24 @@ public class PurchaseOrderService {
             }
         }
     }
-
-    public void verifyUpdate(Component parent, InventoryUpdate inventory) {
-        int option = javax.swing.JOptionPane.showConfirmDialog(
-                parent,
-                "Do you want to process payment?",
-                "Verify update inventory",
-                javax.swing.JOptionPane.YES_NO_OPTION
+    
+    public void verifyPO(Component parent, PurchaseOrder po) {
+        if (po == null) return;
+        
+        int result = JOptionPane.showConfirmDialog(
+            parent,
+            "Are you sure you want to verify this Purchase Order?",
+            "Confirm Verification",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE
         );
 
-        if (option == javax.swing.JOptionPane.YES_OPTION) {
+        if (result == JOptionPane.YES_OPTION) {
+            po.setStatus(PurchaseOrder.Status.verified);
 
-            InventoryUpdate updatedInventory = new InventoryUpdate(inventory.getInventoryUpdateId(), inventory.getItemId(), 
-                                               inventory.getSupplierId(), inventory.getUpdateQuantity(), inventory.getTotalAmount());
-
-            inventoryRepo.update(updatedInventory);
-
-            //after verify create new payment
-            createPaymentForInventoryUpdate(updatedInventory);
-
-            javax.swing.JOptionPane.showMessageDialog(parent, "Please go to payment", "Success", javax.swing.JOptionPane.INFORMATION_MESSAGE);
-
-        } else {
-            javax.swing.JOptionPane.showMessageDialog(parent, "Failed to process. Please try again.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+             purchaseOrderRepo.update(po); 
+            JOptionPane.showMessageDialog(parent, "Purchase Order verified.");
         }
-    }
-
-
-    public boolean processPayment(Component parent, Payment payment) {
-                            
-        if (payment.getStatus() == Payment.Status.successed) {
-            javax.swing.JOptionPane.showMessageDialog(parent, "This payment has already been processed.", "Info", javax.swing.JOptionPane.INFORMATION_MESSAGE);
-        }
-
-        InventoryUpdate inventoryUpdate = inventoryRepo.find(payment.getInventoryUpdateId());
-        Supplier supplier = supplierRepo.find(inventoryUpdate.getSupplierId());
-
-        String accountNum = supplier.getAccountNum();
-        Double amountToPaid = payment.getAmountPaid();
-
-        javax.swing.JPanel panel = new javax.swing.JPanel(new java.awt.GridLayout(2, 2, 5, 5));
-        panel.setPreferredSize(new java.awt.Dimension(350, 100));
-        javax.swing.JTextField accountNumField = new javax.swing.JTextField(accountNum);
-        javax.swing.JTextField amountToPaidField = new javax.swing.JTextField(String.valueOf(amountToPaid));
-
-        panel.add(new javax.swing.JLabel("Account Number:"));
-        panel.add(accountNumField);
-        panel.add(new javax.swing.JLabel("Amount To Paid:"));
-        panel.add(amountToPaidField);
-
-        int option = javax.swing.JOptionPane.showConfirmDialog(
-                parent,
-                panel,
-                "Process Payment",
-                javax.swing.JOptionPane.OK_CANCEL_OPTION,
-                javax.swing.JOptionPane.PLAIN_MESSAGE
-        );
-
-        if (option == javax.swing.JOptionPane.OK_OPTION) {
-            String enteredAccountNum = accountNumField.getText();
-            String enteredAmountStr = amountToPaidField.getText();
-
-            if (enteredAccountNum.isEmpty() || enteredAmountStr.isEmpty()) {
-                javax.swing.JOptionPane.showMessageDialog(parent, "All fields are required.", "Warning", javax.swing.JOptionPane.WARNING_MESSAGE);
-            }
-
-            double enteredAmount = 0;
-
-            try {
-                enteredAmount = Double.parseDouble(enteredAmountStr);
-            } catch (NumberFormatException e) {
-                javax.swing.JOptionPane.showMessageDialog(parent, "Invalid amount format.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
-            }
-
-            int confirm = javax.swing.JOptionPane.showConfirmDialog(
-                    parent,
-                    "Do you want to confirm this payment?",
-                    "Confirm Payment",
-                    javax.swing.JOptionPane.YES_NO_OPTION
-            );
-
-            if (confirm == javax.swing.JOptionPane.YES_OPTION) {
-                Payment updatedPayment = new Payment(
-                        payment.getPaymentId(),
-                        inventoryUpdate.getInventoryUpdateId(),
-                        payment.getAmountPaid() - enteredAmount,
-                        java.time.LocalDate.now().toString(),
-                        models.Payment.Status.successed
-                );
-
-                PaymentRepository paymentRepo = new PaymentRepository();
-                paymentRepo.update(updatedPayment);     
-
-                javax.swing.JOptionPane.showMessageDialog(parent, "Payment processed successfully!", "Success", javax.swing.JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                javax.swing.JOptionPane.showMessageDialog(parent, "Payment not confirmed.", "Info", javax.swing.JOptionPane.INFORMATION_MESSAGE);
-            }
-        }
-    return false;
     }
 }
 
