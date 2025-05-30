@@ -62,7 +62,7 @@ public class SupplierService {
         }
 
         String newSupplierId = idGenerator.generateNewId(Supplier.class);
-        Supplier newSupplier = new Supplier(newSupplierId, supplierName, contact, email, bankAccount);
+        Supplier newSupplier = new Supplier(newSupplierId, supplierName, contact, email, bankAccount, Supplier.Status.active);
         supplierRepo.save(newSupplier);
         return newSupplier;
     }

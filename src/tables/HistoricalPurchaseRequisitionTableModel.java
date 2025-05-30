@@ -46,7 +46,7 @@ public class HistoricalPurchaseRequisitionTableModel extends AbstractTableModel 
         historicalRequisitions = new ArrayList<>();
 
         for (PurchaseRequisition pr : allRequisitions) {
-            if (pr.getStatus() != PurchaseRequisition.Status.pending) {
+            if (pr.getStatus() != PurchaseRequisition.Status.pending && pr.getStatus() != PurchaseRequisition.Status.deleted) {
                 historicalRequisitions.add(pr);
             }
         }
@@ -66,7 +66,7 @@ public class HistoricalPurchaseRequisitionTableModel extends AbstractTableModel 
 
         historicalRequisitions = requisitionRepo.getAll().stream()
             .filter(pr -> {
-                if (pr.getStatus() == PurchaseRequisition.Status.pending) return false;
+                if (pr.getStatus() == PurchaseRequisition.Status.pending || pr.getStatus() == PurchaseRequisition.Status.deleted) return false;
 
                 // PR ID
                 boolean matchesRequisitionId = pr.getRequisitionId().toLowerCase().contains(lowerKeyword);

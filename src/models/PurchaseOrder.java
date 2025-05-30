@@ -13,7 +13,8 @@ public class PurchaseOrder implements Identifiable {
     public enum Status {
         pending,
         approved,
-        verified
+        verified,
+        deleted
     }
 
     private String purchaseOrderId;

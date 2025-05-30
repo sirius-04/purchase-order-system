@@ -14,7 +14,8 @@ public class PurchaseRequisition implements Identifiable {
     public enum Status {
         pending,
         approved,
-        rejected
+        rejected,
+        deleted
     }
 
     private String requisitionId;

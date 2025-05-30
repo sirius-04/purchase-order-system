@@ -9,8 +9,8 @@ package models.users;
  * @author Chan Yong Liang
  */
 public class Admin extends User {
-    public Admin(String userId, UserRole userRole, String username, String password) {
-        super(userId, userRole.Admin, username, password);
+    public Admin(String userId, UserRole userRole, String username, String password, Status status) {
+        super(userId, userRole.Admin, username, password, status);
     }
 
     public String getUserId() {

@@ -23,7 +23,7 @@ public class DailySalesTableModel extends AbstractTableModel implements Searchab
         "Time", "Sale ID", "Item ID", "Item Name", "Quantity", "Price Per Unit", "Amount"
     };
 
-    private  List<Sales> salesList = new ArrayList<>();
+    private List<Sales> salesList = new ArrayList<>();
     private final ItemRepository itemRepo = new ItemRepository();
 
     public DailySalesTableModel() {
@@ -35,7 +35,7 @@ public class DailySalesTableModel extends AbstractTableModel implements Searchab
         String today = DateTimeService.getCurrentDate();
 
         List<Sales> todaysSales = salesRepo.getAll().stream()
-                .filter(sale -> today.equals(sale.getDate()))
+                .filter(sale -> today.equals(sale.getDate()) && sale.getStatus() == Sales.Status.added)
                 .toList();
 
         salesList.clear();
@@ -119,7 +119,7 @@ public class DailySalesTableModel extends AbstractTableModel implements Searchab
         loadData();
         fireTableDataChanged();
     }
-    
+
     @Override
     public void filterByKeyword(String keyword) {
         if (keyword == null || keyword.trim().isEmpty()) {
@@ -129,17 +129,16 @@ public class DailySalesTableModel extends AbstractTableModel implements Searchab
 
         SalesRepository salesRepo = new SalesRepository();
         String today = DateTimeService.getCurrentDate();
-        
+
         String lowerKeyword = keyword.toLowerCase();
 
         List<Sales> todaysSales = salesRepo.getAll().stream()
-                .filter(sale -> today.equals(sale.getDate()) 
-                        && sale.getSalesId().toLowerCase().contains(lowerKeyword))
+                .filter(sale -> today.equals(sale.getDate()) && sale.getStatus() == Sales.Status.added && sale.getSalesId().toLowerCase().contains(lowerKeyword))
                 .toList();
-        
+
         salesList.clear();
         salesList.addAll(todaysSales);
-        
+
         fireTableDataChanged();
     }
 }

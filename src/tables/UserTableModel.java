@@ -20,7 +20,8 @@ public class UserTableModel extends AbstractTableModel {
         "User ID",
         "Username",
         "Password",
-        "Role"
+        "Role",
+        "Status"
     };
     
     private final UserRepository userRepo = new UserRepository();
@@ -67,6 +68,8 @@ public class UserTableModel extends AbstractTableModel {
                 "********";
             case 3 ->
                 user.getUserRole();
+            case 4 ->
+                user.getStatus();
             default ->
                 null;
         };

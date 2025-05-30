@@ -9,6 +9,7 @@ import views.SalesManagerDashboard;
 
 import javax.swing.*;
 import java.awt.event.*;
+import models.Item;
 
 public class SalesManagerController extends BaseController {
 
@@ -90,6 +91,19 @@ public class SalesManagerController extends BaseController {
             itemService.addItem(dashboard);
             refreshSalesPanel();
             refreshItemPanel();
+        });
+        
+        dashboard.getItemOnSaleTable().addMouseListener(new MouseAdapter() {
+           public void mouseClicked(MouseEvent evt) {
+               int row = dashboard.getItemOnSaleTable().getSelectedRow();
+               Item selectedItem = itemOnSaleTableModel.getItemAt(row);
+               if (selectedItem != null) {
+                   itemService.displayItemDetails(dashboard, selectedItem);
+                   
+                   refreshSalesPanel();
+                   refreshItemPanel();
+               }
+           } 
         });
 
         setupSearchFieldListener(dashboard.getItemSearchInput(), itemOnSaleTableModel::filterByKeyword);

@@ -31,7 +31,11 @@ public class SupplierTableModel extends AbstractTableModel implements Searchable
     }
 
     public void refresh() {
-        suppliers = supplierRepo.getAll();
+        suppliers = supplierRepo.getAll()
+                .stream()
+                .filter(supplier -> supplier.getStatus() != Supplier.Status.deleted)
+                .toList();
+        
         fireTableDataChanged();
     }
     
@@ -49,6 +53,7 @@ public class SupplierTableModel extends AbstractTableModel implements Searchable
                 || supplier.getEmail().toLowerCase().contains(lowerKeyword)
                 || supplier.getContactNum().toLowerCase().contains(lowerKeyword)
                 || supplier.getName().toLowerCase().contains(lowerKeyword)
+                && supplier.getStatus() != Supplier.Status.deleted
                 )
                 .toList();
         

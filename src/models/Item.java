@@ -12,7 +12,8 @@ public class Item implements Identifiable {
 
     public enum Status {
         onSale,
-        notOnSale
+        notOnSale,
+        deleted
     };
 
     private String itemId;

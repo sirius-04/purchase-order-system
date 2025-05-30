@@ -11,7 +11,7 @@ import repository.UserRepository;
 public class AuthenticationManager {
     
     static UserRepository userRepo = new UserRepository();
-    static List<User> userList = userRepo.getAll();
+    static List<User> userList = userRepo.getAll().stream().filter(user -> user.getStatus() == User.Status.active).toList();
 
     // custom exceptions for different login errors
     public static class UserNotFoundException extends Exception {

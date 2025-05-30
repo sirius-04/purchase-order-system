@@ -10,20 +10,26 @@ package models;
  */
 public class Supplier implements Identifiable {
 
-    // fields: supplierID,name,contactNum,email
+    public enum Status {
+        active,
+        deleted
+    }
+    
     private String supplierId;
     private String name;
     private String contactNum;
     private String email;
     private String accountNum;
+    private Status status;
 
     // Constructor
-    public Supplier(String supplierId, String name, String contactNum, String email, String accountNum) {
+    public Supplier(String supplierId, String name, String contactNum, String email, String accountNum, Status status) {
         this.supplierId = supplierId;
         this.name = name;
         this.contactNum = contactNum;
         this.email = email;
         this.accountNum = accountNum;
+        this.status = status;
     }
     
     // override interface
@@ -72,4 +78,14 @@ public class Supplier implements Identifiable {
     public void setAccountNum(String accountNum) {
         this.accountNum = accountNum;
     }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+    
+    
 }

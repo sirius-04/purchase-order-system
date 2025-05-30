@@ -70,7 +70,8 @@ public class SalesService {
                     quantity,
                     currentDate,
                     currentTime,
-                    totalAmount
+                    totalAmount,
+                    Sales.Status.added
             );
 
             int updatedStockQuantity = selectedItem.getStockQuantity() - quantity;
@@ -186,7 +187,9 @@ public class SalesService {
                 }
             }
 
-            salesRepo.delete(sale);
+            sale.setStatus(Sales.Status.deleted);
+            salesRepo.update(sale);
+            
             JOptionPane.showMessageDialog(parent, "Sale deleted successfully.", "Deleted", JOptionPane.INFORMATION_MESSAGE);
         }
     }

@@ -10,8 +10,8 @@ package models.users;
  */
 public class SalesManager extends User {
 
-    public SalesManager(String userId, UserRole userRole, String username, String password) {
-        super(userId, userRole.SalesManager, username, password);
+    public SalesManager(String userId, UserRole userRole, String username, String password, Status status) {
+        super(userId, userRole.SalesManager, username, password, status);
     }
 
     public String getUserId() {
@@ -44,6 +44,14 @@ public class SalesManager extends User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
 }

@@ -12,16 +12,24 @@ import models.Identifiable;
  */
 
 public abstract class User implements Identifiable {
+    
+    public enum Status {
+        active,
+        deleted
+    }
+    
     protected String userId;
     protected UserRole userRole;
     protected String username;
     protected String password;
+    protected Status status;
     
-    public User(String userId, UserRole userRole, String username, String password) {
+    public User(String userId, UserRole userRole, String username, String password, Status status) {
         this.userId = userId;
         this.userRole = userRole;
         this.username = username;
         this.password = password;
+        this.status = status;
     }
     
     @Override
@@ -60,4 +68,14 @@ public abstract class User implements Identifiable {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+    
+    
 }

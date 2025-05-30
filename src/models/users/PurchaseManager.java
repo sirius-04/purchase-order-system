@@ -9,8 +9,8 @@ package models.users;
  * @author Chan Yong Liang
  */
 public class PurchaseManager extends User {
-    public PurchaseManager(String userId, UserRole userRole, String username, String password) {
-        super(userId, userRole.PurchaseManager, username, password);
+    public PurchaseManager(String userId, UserRole userRole, String username, String password, Status status) {
+        super(userId, userRole.PurchaseManager, username, password, status);
     }
 
     public String getUserId() {
@@ -43,5 +43,13 @@ public class PurchaseManager extends User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }

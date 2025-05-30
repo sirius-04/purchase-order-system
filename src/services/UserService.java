@@ -13,8 +13,6 @@ import models.users.PurchaseManager;
 import models.users.SalesManager;
 import models.users.User;
 import models.users.UserRole;
-import static models.users.UserRole.InventoryManager;
-import static models.users.UserRole.PurchaseManager;
 import repository.UserRepository;
 import utils.IdGenerator;
 import views.AdminDashboard;
@@ -53,11 +51,11 @@ public class UserService {
         User newUser;
         
         switch (role) {
-            case Admin -> newUser = new Admin(newUserId, role, username, password);
-            case SalesManager -> newUser = new SalesManager(newUserId, role, username, password);
-            case FinanceManager -> newUser = new FinanceManager(newUserId, role, username, password);
-            case InventoryManager -> newUser = new InventoryManager(newUserId, role, username, password);
-            case PurchaseManager -> newUser = new PurchaseManager(newUserId, role, username, password);
+            case Admin -> newUser = new Admin(newUserId, role, username, password, Admin.Status.active);
+            case SalesManager -> newUser = new SalesManager(newUserId, role, username, password, SalesManager.Status.active);
+            case FinanceManager -> newUser = new FinanceManager(newUserId, role, username, password, FinanceManager.Status.active);
+            case InventoryManager -> newUser = new InventoryManager(newUserId, role, username, password, InventoryManager.Status.active);
+            case PurchaseManager -> newUser = new PurchaseManager(newUserId, role, username, password, PurchaseManager.Status.active);
             default -> throw new IllegalArgumentException("Unsupported role: " + role);
         }
         
