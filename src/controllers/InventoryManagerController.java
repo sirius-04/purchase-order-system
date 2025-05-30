@@ -95,6 +95,5 @@ public class InventoryManagerController extends BaseController {
         // po table
         purchaseOrderTable = dashboard.getOrderTable();
         purchaseOrderTable.setModel(purchaseOrderTableModel);
-
     }
 }
