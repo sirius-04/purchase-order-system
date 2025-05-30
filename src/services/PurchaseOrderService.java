@@ -90,9 +90,9 @@ public class PurchaseOrderService {
                 double newPrice = updatedQuantity * itemRepo.find(po.getItemId()).getPrice();
 
                 PurchaseOrder updatedPO = new PurchaseOrder(po.getPurchaseOrderId(), po.getItemId(), 
-                                                            po.getPurchaseRequisitionId(), po.getPurchaseManagerId(), 
+                                                            po.getPurchaseRequisitionId(), po.getUserId(), 
                                                             Integer.parseInt(newQuantity), newPrice, po.getDate(), 
-                                                            PurchaseOrder.Status.fulfilled, newSupplierId);
+                                                            PurchaseOrder.Status.approved, newSupplierId);
 
                 purchaseOrderRepo.update(updatedPO);
 

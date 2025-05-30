@@ -28,7 +28,7 @@ public class PendingPurchaseRequisitionTableModel extends AbstractTableModel imp
         "Generated Date",
         "Required Date",
         "Supplier ID",
-        "Sales Manager"
+        "Raised User"
     };
 
     private final PurchaseRequisitionRepository requisitionRepo = new PurchaseRequisitionRepository();
@@ -80,7 +80,7 @@ public class PendingPurchaseRequisitionTableModel extends AbstractTableModel imp
                 // Item Name
                 boolean matchesItemName = item != null && item.getName().toLowerCase().contains(lowerKeyword);
 
-                User sm = salesManagerRepo.find(pr.getSalesManagerId());
+                User sm = salesManagerRepo.find(pr.getUserId());
 
                 // Sales Manager Name
                 boolean matchesSalesManager = sm != null && sm.getUsername().toLowerCase().contains(lowerKeyword);
@@ -116,7 +116,7 @@ public class PendingPurchaseRequisitionTableModel extends AbstractTableModel imp
 
         PurchaseRequisition pr = pendingRequisitions.get(rowIndex);
         Item item = itemRepo.find(pr.getItemId());
-        User sm = salesManagerRepo.find(pr.getSalesManagerId());
+        User sm = salesManagerRepo.find(pr.getUserId());
 
         return switch (columnIndex) {
             case 0 ->

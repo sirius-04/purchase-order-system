@@ -30,7 +30,7 @@ public class PurchaseOrderTableModel extends AbstractTableModel implements Searc
         "Item Name",
         "Quantity",
         "Price",
-        "Purchase Manager ID",
+        "Raised User",
         "Status",
         "Supplier ID"
     };
@@ -49,7 +49,7 @@ public class PurchaseOrderTableModel extends AbstractTableModel implements Searc
     public static enum POStatus {
         ALL,
         PENDING,
-        FULFILLED,
+        APPROVED,
         VERIFIED;
 
         public static POStatus fromString(String value) {
@@ -80,7 +80,7 @@ public class PurchaseOrderTableModel extends AbstractTableModel implements Searc
         } else {
             PurchaseOrder.Status status = switch (statusFilter) {
                 case PENDING -> PurchaseOrder.Status.pending;
-                case FULFILLED -> PurchaseOrder.Status.fulfilled;
+                case APPROVED -> PurchaseOrder.Status.approved;
                 case VERIFIED -> PurchaseOrder.Status.verified;
                 default -> null;
             };
@@ -102,7 +102,7 @@ public class PurchaseOrderTableModel extends AbstractTableModel implements Searc
         } else {
             PurchaseOrder.Status poStatus = switch (statusFilter) {
                 case PENDING -> PurchaseOrder.Status.pending;
-                case FULFILLED -> PurchaseOrder.Status.fulfilled;
+                case APPROVED -> PurchaseOrder.Status.approved;
                 case VERIFIED -> PurchaseOrder.Status.verified;
                 default -> null;
             };
@@ -173,7 +173,7 @@ public class PurchaseOrderTableModel extends AbstractTableModel implements Searc
             case 2 -> item != null ? item.getName() : "Unknown Item";
             case 3 -> po.getQuantity();
             case 4 -> po.getPrice();
-            case 5 -> po.getPurchaseManagerId();
+            case 5 -> po.getUserId();
             case 6 -> po.getStatus();
             case 7 -> po.getSupplierId();
             default -> null;

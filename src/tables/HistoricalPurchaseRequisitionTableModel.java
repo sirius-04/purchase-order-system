@@ -28,7 +28,7 @@ public class HistoricalPurchaseRequisitionTableModel extends AbstractTableModel 
         "Generated Date",
         "Required Date",
         "Supplier ID",
-        "Sales Manager"
+        "Raised User"
     };
 
     private final PurchaseRequisitionRepository requisitionRepo = new PurchaseRequisitionRepository();
@@ -79,7 +79,7 @@ public class HistoricalPurchaseRequisitionTableModel extends AbstractTableModel 
                 // Item Name
                 boolean matchesItemName = item != null && item.getName().toLowerCase().contains(lowerKeyword);
 
-                User sm = salesManagerRepo.find(pr.getSalesManagerId());
+                User sm = salesManagerRepo.find(pr.getUserId());
 
                 // Sales Manager Name
                 boolean matchesSalesManager = sm != null && sm.getUsername().toLowerCase().contains(lowerKeyword);
@@ -115,7 +115,7 @@ public class HistoricalPurchaseRequisitionTableModel extends AbstractTableModel 
 
         PurchaseRequisition pr = historicalRequisitions.get(rowIndex);
         Item item = itemRepo.find(pr.getItemId());
-        User sm = salesManagerRepo.find(pr.getSalesManagerId());
+        User sm = salesManagerRepo.find(pr.getUserId());
 
         return switch (columnIndex) {
             case 0 ->
