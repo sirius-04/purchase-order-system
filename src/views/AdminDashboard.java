@@ -4,6 +4,7 @@
  */
 package views;
 
+import java.awt.Color;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
@@ -157,17 +158,33 @@ public class AdminDashboard extends javax.swing.JFrame {
 
         jLabel6.setText("Search:");
 
+        userSearchInput.setForeground(new java.awt.Color(153, 153, 153));
+        userSearchInput.setText("Search by ID, Name...");
+        userSearchInput.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                userSearchInputFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                userSearchInputFocusLost(evt);
+            }
+        });
+        userSearchInput.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                userSearchInputActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(userSearchInput, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(userSearchInput, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
                         .addGap(65, 65, 65)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 944, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -209,6 +226,17 @@ public class AdminDashboard extends javax.swing.JFrame {
 
         jLabel11.setText("Search:");
 
+        itemSaleSearchInput.setForeground(new java.awt.Color(153, 153, 153));
+        itemSaleSearchInput.setText("Search by ID, Name...");
+        itemSaleSearchInput.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                itemSaleSearchInputFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                itemSaleSearchInputFocusLost(evt);
+            }
+        });
+
         jLabel4.setText("Item Not On Sale");
 
         itemOnSaleTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -227,6 +255,17 @@ public class AdminDashboard extends javax.swing.JFrame {
         jLabel5.setText("Item On Sale");
 
         jLabel13.setText("Search:");
+
+        itemNotSaleSearchInput.setForeground(new java.awt.Color(153, 153, 153));
+        itemNotSaleSearchInput.setText("Search by ID, Name...");
+        itemNotSaleSearchInput.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                itemNotSaleSearchInputFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                itemNotSaleSearchInputFocusLost(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -303,6 +342,17 @@ public class AdminDashboard extends javax.swing.JFrame {
 
         jLabel7.setText("Search:");
 
+        supplierSearchInput.setForeground(new java.awt.Color(153, 153, 153));
+        supplierSearchInput.setText("Search by ID, Name...");
+        supplierSearchInput.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                supplierSearchInputFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                supplierSearchInputFocusLost(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -351,6 +401,17 @@ public class AdminDashboard extends javax.swing.JFrame {
 
         jLabel9.setText("Search:");
 
+        historicalRequisitionSearchInput.setForeground(new java.awt.Color(153, 153, 153));
+        historicalRequisitionSearchInput.setText("Search by ID, Name...");
+        historicalRequisitionSearchInput.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                historicalRequisitionSearchInputFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                historicalRequisitionSearchInputFocusLost(evt);
+            }
+        });
+
         historicalRequisitionTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null, null},
@@ -367,6 +428,22 @@ public class AdminDashboard extends javax.swing.JFrame {
         jLabel10.setText("Historical Purchase Requisitions");
 
         jLabel14.setText("Search:");
+
+        requisitionSearchInput.setForeground(new java.awt.Color(153, 153, 153));
+        requisitionSearchInput.setText("Search by ID, Name...");
+        requisitionSearchInput.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                requisitionSearchInputFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                requisitionSearchInputFocusLost(evt);
+            }
+        });
+        requisitionSearchInput.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                requisitionSearchInputActionPerformed(evt);
+            }
+        });
 
         addPRButton.setText("Add new");
 
@@ -433,6 +510,17 @@ public class AdminDashboard extends javax.swing.JFrame {
         jScrollPane5.setViewportView(orderTable);
 
         jLabel12.setText("Search:");
+
+        orderSearchInput.setForeground(new java.awt.Color(153, 153, 153));
+        orderSearchInput.setText("Search by ID, Name...");
+        orderSearchInput.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                orderSearchInputFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                orderSearchInputFocusLost(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -527,6 +615,126 @@ public class AdminDashboard extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_addItemButtonActionPerformed
 
+    private void userSearchInputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_userSearchInputFocusGained
+        if (userSearchInput.getText().equals("Search by ID, Name..."))
+        {
+            userSearchInput.setText("");
+            userSearchInput.setForeground(new Color(0,0,0));
+        }
+    }//GEN-LAST:event_userSearchInputFocusGained
+
+    private void userSearchInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_userSearchInputFocusLost
+        if (userSearchInput.getText().equals(""))
+        {
+            userSearchInput.setText("Search by ID, Name...");
+            userSearchInput.setForeground(new Color(153, 153, 153));
+        }
+    }//GEN-LAST:event_userSearchInputFocusLost
+
+    private void itemSaleSearchInputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_itemSaleSearchInputFocusGained
+        if (itemSaleSearchInput.getText().equals("Search by ID, Name..."))
+        {
+            itemSaleSearchInput.setText("");
+            itemSaleSearchInput.setForeground(new Color(0,0,0));
+        }
+    }//GEN-LAST:event_itemSaleSearchInputFocusGained
+
+    private void itemSaleSearchInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_itemSaleSearchInputFocusLost
+        if (itemSaleSearchInput.getText().equals(""))
+        {
+            itemSaleSearchInput.setText("Search by ID, Name...");
+            itemSaleSearchInput.setForeground(new Color(153, 153, 153));
+        }
+    }//GEN-LAST:event_itemSaleSearchInputFocusLost
+
+    private void itemNotSaleSearchInputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_itemNotSaleSearchInputFocusGained
+        if (itemNotSaleSearchInput.getText().equals("Search by ID, Name..."))
+        {
+            itemNotSaleSearchInput.setText("");
+            itemNotSaleSearchInput.setForeground(new Color(0,0,0));
+        }
+    }//GEN-LAST:event_itemNotSaleSearchInputFocusGained
+
+    private void itemNotSaleSearchInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_itemNotSaleSearchInputFocusLost
+        if (itemNotSaleSearchInput.getText().equals(""))
+        {
+            itemNotSaleSearchInput.setText("Search by ID, Name...");
+            itemNotSaleSearchInput.setForeground(new Color(153, 153, 153));
+        }
+    }//GEN-LAST:event_itemNotSaleSearchInputFocusLost
+
+    private void supplierSearchInputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_supplierSearchInputFocusGained
+        if (supplierSearchInput.getText().equals("Search by ID, Name..."))
+        {
+            supplierSearchInput.setText("");
+            supplierSearchInput.setForeground(new Color(0,0,0));
+        }
+    }//GEN-LAST:event_supplierSearchInputFocusGained
+
+    private void supplierSearchInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_supplierSearchInputFocusLost
+        if (supplierSearchInput.getText().equals(""))
+        {
+            supplierSearchInput.setText("Search by ID, Name...");
+            supplierSearchInput.setForeground(new Color(153, 153, 153));
+        }
+    }//GEN-LAST:event_supplierSearchInputFocusLost
+
+    private void requisitionSearchInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_requisitionSearchInputActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_requisitionSearchInputActionPerformed
+
+    private void requisitionSearchInputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_requisitionSearchInputFocusGained
+        if (requisitionSearchInput.getText().equals("Search by ID, Name..."))
+        {
+            requisitionSearchInput.setText("");
+            requisitionSearchInput.setForeground(new Color(0,0,0));
+        }
+    }//GEN-LAST:event_requisitionSearchInputFocusGained
+
+    private void requisitionSearchInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_requisitionSearchInputFocusLost
+        if (requisitionSearchInput.getText().equals(""))
+        {
+            requisitionSearchInput.setText("Search by ID, Name...");
+            requisitionSearchInput.setForeground(new Color(153, 153, 153));
+        }
+    }//GEN-LAST:event_requisitionSearchInputFocusLost
+
+    private void historicalRequisitionSearchInputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_historicalRequisitionSearchInputFocusGained
+        if (historicalRequisitionSearchInput.getText().equals("Search by ID, Name..."))
+        {
+            historicalRequisitionSearchInput.setText("");
+            historicalRequisitionSearchInput.setForeground(new Color(0,0,0));
+        }
+    }//GEN-LAST:event_historicalRequisitionSearchInputFocusGained
+
+    private void historicalRequisitionSearchInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_historicalRequisitionSearchInputFocusLost
+        if (historicalRequisitionSearchInput.getText().equals(""))
+        {
+            historicalRequisitionSearchInput.setText("Search by ID, Name...");
+            historicalRequisitionSearchInput.setForeground(new Color(153, 153, 153));
+        }
+    }//GEN-LAST:event_historicalRequisitionSearchInputFocusLost
+
+    private void orderSearchInputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_orderSearchInputFocusGained
+        if (orderSearchInput.getText().equals("Search by ID, Name..."))
+        {
+            orderSearchInput.setText("");
+            orderSearchInput.setForeground(new Color(0,0,0));
+        }
+    }//GEN-LAST:event_orderSearchInputFocusGained
+
+    private void orderSearchInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_orderSearchInputFocusLost
+        if (orderSearchInput.getText().equals(""))
+        {
+            orderSearchInput.setText("Search by ID, Name...");
+            orderSearchInput.setForeground(new Color(153, 153, 153));
+        }
+    }//GEN-LAST:event_orderSearchInputFocusLost
+
+    private void userSearchInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userSearchInputActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_userSearchInputActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -620,7 +828,19 @@ public class AdminDashboard extends javax.swing.JFrame {
         selectedRole.setSelectedIndex(0);
     }
     
-    public JTextField getSupplierSearch() {
+    public JTextField getUserSearchInput() {
+        return userSearchInput;
+    }
+    
+    public JTextField getItemSaleSearchInput() {
+        return itemSaleSearchInput;
+    }
+    
+    public JTextField getItemNotSaleSearchInput() {
+        return itemNotSaleSearchInput;
+    }
+    
+    public JTextField getsupplierSearchInput() {
         return supplierSearchInput;
     }
     
@@ -638,6 +858,17 @@ public class AdminDashboard extends javax.swing.JFrame {
     
     public JButton getExportButton() {
         return exportButton;
+      
+    public JTextField getRequisitionSearchInput() {
+        return requisitionSearchInput;
+    }
+    
+    public JTextField getHistoricalRequisitionSearchInput() {
+        return historicalRequisitionSearchInput;
+    }
+    
+    public JTextField getOrderSearchInput() {
+        return orderSearchInput;
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

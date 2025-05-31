@@ -8,6 +8,8 @@ import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.time.Month;
@@ -22,6 +24,8 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.JTextField;
+import models.Item;
 import models.Supplier;
 import models.users.Admin;
 import models.users.User;
@@ -97,10 +101,109 @@ public class AdminController extends BaseController {
         registerNewUser();
         handleUserEditAndDelete();
         addItemButtonListener();
+       
         setupSupplierListeners();
         setupGeneratePOListener();
         setupPOClickListener();
         exportListeners();
+        editItemListener();
+        
+        // User - Search
+        JTextField userSearch = dashboard.getUserSearchInput();
+        userSearch.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    String inputText = userSearch.getText();
+                    userTableModel.filterByKeyword(inputText);
+                    
+                    userSearch.setText("");
+                }
+            }
+        });
+        
+        // Item On Sale - Search
+        JTextField itemOnSaleSaerch = dashboard.getItemSaleSearchInput();
+        itemOnSaleSaerch.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    String inputText = itemOnSaleSaerch.getText();
+                    itemOnSaleTableModel.filterByKeyword(inputText);
+                    
+                    itemOnSaleSaerch.setText("");
+                }
+            }
+        });
+        
+        // Item Not On Sale - Search
+        JTextField itemNotOnSaleSaerch = dashboard.getItemNotSaleSearchInput();
+        itemNotOnSaleSaerch.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    String inputText = itemNotOnSaleSaerch.getText();
+                    itemNotOnSaleTableModel.filterByKeyword(inputText);
+                    
+                    itemNotOnSaleSaerch.setText("");
+                }
+            }
+        });
+        
+        // Supplier - Search
+        JTextField supplierSearch = dashboard.getsupplierSearchInput();
+        supplierSearch.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    String inputText = supplierSearch.getText();
+                    supplierTableModel.filterByKeyword(inputText);
+                    
+                    supplierSearch.setText("");
+                }
+            }
+        });
+        
+        // Pending PR - Search
+        JTextField pendingPRSearch = dashboard.getRequisitionSearchInput();
+        pendingPRSearch.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    String inputText = pendingPRSearch.getText();
+                    pendingRequisitionTableModel.filterByKeyword(inputText);
+                    
+                    pendingPRSearch.setText("");
+                }
+            }
+        });
+        
+        // Historical PR - Search
+        JTextField historicalPRSearch = dashboard.getHistoricalRequisitionSearchInput();
+        historicalPRSearch.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    String inputText = historicalPRSearch.getText();
+                    historicalRequisitionTableModel.filterByKeyword(inputText);
+                    
+                    historicalPRSearch.setText("");
+                }
+            }
+        });
+        // PO - Search
+        JTextField poSearch = dashboard.getOrderSearchInput();
+        poSearch.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    String inputText = poSearch.getText();
+                    purchaseOrderTableModel.filterByKeyword(inputText);
+                    
+                    poSearch.setText("");
+                }
+            }
+        });
     }
     
     private void loadTables() {
@@ -154,7 +257,6 @@ public class AdminController extends BaseController {
             userTableModel.refresh();
         });
     }
-    
     
     private void handleUserEditAndDelete() {
     userTable.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -234,6 +336,79 @@ public class AdminController extends BaseController {
                 pendingRequisitionTableModel.refresh();
             }
         );
+    }
+    
+     // Edit Item
+    private void editItemListener() {
+       itemOnSaleTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int row = itemOnSaleTable.getSelectedRow();
+                if (row != -1) {
+                   ItemOnSaleTableModel itemOnSaleTableModel = (ItemOnSaleTableModel) itemOnSaleTable.getModel();
+    
+                   Item selectedItem = itemOnSaleTableModel.getItemAt(row);
+                   
+                   
+                   // User action
+                   String[] options = {"Edit Item", "Delete Item", "Cancel"};
+                   int choice = javax.swing.JOptionPane.showOptionDialog(
+                        dashboard,
+                        "What would you like to do with this item ?",
+                        "Options",
+                        javax.swing.JOptionPane.DEFAULT_OPTION,
+                        javax.swing.JOptionPane.PLAIN_MESSAGE,
+                        null,
+                        options,
+                        options[0]
+                    );
+                   
+                   if (choice == 0) { 
+                        itemService.editItem(dashboard, selectedItem);
+                   
+                   } else if (choice == 1) { 
+                        itemService.displayItemDetails(dashboard, selectedItem);
+                   }
+                   
+                   itemOnSaleTableModel.refresh();
+                   itemNotOnSaleTableModel.refresh();
+                }
+            }
+        });
+       itemNotOnSaleTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int row = itemNotOnSaleTable.getSelectedRow();
+                if (row != -1) {
+                   ItemNotOnSaleTableModel itemNotOnSaleTableModel = (ItemNotOnSaleTableModel) itemNotOnSaleTable.getModel();
+    
+                   Item selectedItem = itemNotOnSaleTableModel.getItemAt(row);
+                   
+                   // User action
+                   String[] options = {"Edit Item", "Delete Item", "Cancel"};
+                   int choice = javax.swing.JOptionPane.showOptionDialog(
+                        dashboard,
+                        "What would you like to do with this item ?",
+                        "Options",
+                        javax.swing.JOptionPane.DEFAULT_OPTION,
+                        javax.swing.JOptionPane.PLAIN_MESSAGE,
+                        null,
+                        options,
+                        options[0]
+                    );
+                   
+                   if (choice == 0) { 
+                        itemService.editItem(dashboard, selectedItem);
+                   
+                   } else if (choice == 1) { 
+                        itemService.displayItemDetails(dashboard, selectedItem);
+                   }
+                   
+                   itemOnSaleTableModel.refresh();
+                   itemNotOnSaleTableModel.refresh();
+                }
+            }
+        });
     }
     
     private void setupPOClickListener() {

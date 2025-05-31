@@ -175,22 +175,33 @@ public class ItemService {
 
         // Jpanel's Input
         JTextField nameField = new JTextField(item.getName(), 20);
-        JSpinner stockSpinner = new JSpinner(new SpinnerNumberModel(item.getStockQuantity(), 0, 10000, 1));
         JTextField priceField = new JTextField(String.valueOf(item.getPrice()));
-        JComboBox<Item.Status> statusCombo = new JComboBox<>(Item.Status.values());
+        JTextField sellPrice = new JTextField(String.valueOf(item.getSellPrice()));
+        JSpinner stockSpinner = new JSpinner(new SpinnerNumberModel(item.getStockQuantity(), 0, 10000, 1));
+        JComboBox<Item.Status> statusCombo = new JComboBox<>(
+            new Item.Status[] { Item.Status.onSale, Item.Status.notOnSale
+        });
+        String[] supplierOptions = getSupplierOptions();
+        JComboBox<String> supplierCombo = new JComboBox<>(supplierOptions);
+        
         // onSale -> On Sale, notOnSale -> No On Sale
-        statusCombo.setRenderer(new DefaultListCellRenderer() {
+       statusCombo.setRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(JList<?> list, Object value, int index,
-                    boolean isSelected, boolean cellHasFocus) {
+                                                          boolean isSelected, boolean cellHasFocus) {
                 super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                 if (value instanceof Item.Status) {
                     Item.Status status = (Item.Status) value;
-                    setText(status == Item.Status.onSale ? "On Sale" : "Not On Sale");
+                    switch (status) {
+                        case onSale -> setText("On Sale");
+                        case notOnSale -> setText("Not On Sale");
+                        default -> setText("Unknown");
+                    }
                 }
                 return this;
             }
         });
+
 
         // JPanel UI start here
         JPanel editPanel = new JPanel(new GridBagLayout());
@@ -211,21 +222,35 @@ public class ItemService {
         gbc.gridx = 1;
         editPanel.add(nameField, gbc);
 
-        // Row 2: Stock Quantity
-        gbc.gridx = 0;
-        gbc.gridy++;
-        editPanel.add(new JLabel("Stock Quantity:"), gbc);
-        gbc.gridx = 1;
-        editPanel.add(stockSpinner, gbc);
-
-        // Row 3: Price
+        // Row 2: Cost Price
         gbc.gridx = 0;
         gbc.gridy++;
         editPanel.add(new JLabel("Price (cost):"), gbc);
         gbc.gridx = 1;
         editPanel.add(priceField, gbc);
+        
+        // Row 3: Sell Price
+        gbc.gridx = 0;
+        gbc.gridy++;
+        editPanel.add(new JLabel("Price (sell):"), gbc);
+        gbc.gridx = 1;
+        editPanel.add(sellPrice, gbc);
+        
+        // Row 4: Stock Quantity
+        gbc.gridx = 0;
+        gbc.gridy++;
+        editPanel.add(new JLabel("Stock Quantity:"), gbc);
+        gbc.gridx = 1;
+        editPanel.add(stockSpinner, gbc);
+        
+        // Row 5: Supplier
+        gbc.gridx = 0;
+        gbc.gridy++;
+        editPanel.add(new JLabel("Supplier:"), gbc);
+        gbc.gridx = 1;
+        editPanel.add(supplierCombo, gbc);
 
-        // Row 4: Status
+        // Row 6: Status
         gbc.gridx = 0;
         gbc.gridy++;
         editPanel.add(new JLabel("Status:"), gbc);
@@ -245,8 +270,10 @@ public class ItemService {
         // Update logic here
         if (result == JOptionPane.OK_OPTION) {
             item.setName(nameField.getText().trim());
-            item.setStockQuantity((int) stockSpinner.getValue());
             item.setPrice(Double.parseDouble(priceField.getText().trim()));
+            item.setSellPrice(Double.parseDouble(sellPrice.getText().trim()));
+            item.setStockQuantity((int) stockSpinner.getValue());
+            item.setSupplierId((String) supplierCombo.getSelectedItem());
             item.setStatus((Item.Status) statusCombo.getSelectedItem());
 
             // Save changes to repository
