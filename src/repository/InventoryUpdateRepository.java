@@ -5,6 +5,7 @@
 package repository;
 
 import models.InventoryUpdate;
+import models.InventoryUpdate.Status;
 
 /**
  *
@@ -13,7 +14,7 @@ import models.InventoryUpdate;
 public class InventoryUpdateRepository extends BaseRepository<InventoryUpdate> {
 
     public InventoryUpdateRepository() {
-        super("inventory_update", "%s,%s,%s,%d,%.2f");
+        super("inventory_update", "%s,%s,%s,%d,%.2f,%s");
     }
 
     @Override
@@ -23,7 +24,8 @@ public class InventoryUpdateRepository extends BaseRepository<InventoryUpdate> {
                 inventoryUpdate.getItemId(),
                 inventoryUpdate.getSupplierId(),
                 inventoryUpdate.getUpdateQuantity(),
-                inventoryUpdate.getTotalAmount()
+                inventoryUpdate.getTotalAmount(),
+                inventoryUpdate.getStatus()
         );
     }
 
@@ -34,7 +36,8 @@ public class InventoryUpdateRepository extends BaseRepository<InventoryUpdate> {
         String supplierId = columns[2].trim();
         int updateQuantity = Integer.parseInt(columns[3].trim());
         double totalAmount = Double.parseDouble(columns[4].trim());
+        Status status = Status.valueOf(columns[5].trim());
 
-        return new InventoryUpdate(inventoryUpdateId, itemId, supplierId, updateQuantity, totalAmount);
+        return new InventoryUpdate(inventoryUpdateId, itemId, supplierId, updateQuantity, totalAmount, status);
     }
 }

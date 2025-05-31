@@ -36,7 +36,9 @@ public class InventoryUpdateTableModel extends AbstractTableModel implements Sea
     }
 
     public void refresh() {
-        this.inventoryUpdates = inventoryRepo.getAll();
+        this.inventoryUpdates = inventoryRepo.getAll().stream()
+            .filter(inv -> inv.getStatus() == InventoryUpdate.Status.pending)
+            .toList();
         fireTableDataChanged();
     }
 

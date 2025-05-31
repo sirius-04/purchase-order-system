@@ -5,13 +5,19 @@
 package controllers;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JTable;
 import models.Item;
+import models.Supplier;
 import models.users.Admin;
+import models.users.User;
 import models.users.UserRole;
 import services.ItemService;
+import services.PurchaseOrderService;
+import services.SupplierService;
 import services.UserService;
 import tables.HistoricalPurchaseRequisitionTableModel;
 import tables.ItemNotOnSaleTableModel;
@@ -31,6 +37,7 @@ public class AdminController extends BaseController {
     private AdminDashboard dashboard;
     private ItemService itemService = new ItemService();
     private UserService userService = new UserService();
+    private SupplierService supplierService = new SupplierService();
     
     UserTableModel userTableModel = new UserTableModel();
     ItemOnSaleTableModel itemOnSaleTableModel = new ItemOnSaleTableModel();
@@ -67,7 +74,13 @@ public class AdminController extends BaseController {
     @Override
     protected void setupCustomListeners() {
         registerNewUser();
+        handleUserEditAndDelete();
         addItemButtonListener();
+       
+        setupSupplierListeners();
+        setupGeneratePOListener();
+        setupPOClickListener();
+      
         editItemListener();
     }
     
@@ -123,6 +136,97 @@ public class AdminController extends BaseController {
         });
     }
     
+    private void handleUserEditAndDelete() {
+    userTable.addMouseListener(new java.awt.event.MouseAdapter() {
+        @Override
+        public void mouseClicked(java.awt.event.MouseEvent evt) {
+            int row = userTable.getSelectedRow();
+            if (row != -1) {
+                UserTableModel userModel = (UserTableModel) userTable.getModel();
+                User user = userModel.getUserAt(row);
+
+                String[] options = {"Edit User", "Delete User", "Cancel"};
+                int choice = javax.swing.JOptionPane.showOptionDialog(
+                        dashboard,
+                        "What would you like to do with user '" + user.getUsername() + "'?",
+                        "User Options",
+                        javax.swing.JOptionPane.DEFAULT_OPTION,
+                        javax.swing.JOptionPane.PLAIN_MESSAGE,
+                        null,
+                        options,
+                        options[0]
+                );
+
+                if (choice == 0) { 
+                    userService.renameUserOrChangePassword(dashboard, user);
+                    userModel.refresh();
+                } else if (choice == 1) { 
+                    int confirm = javax.swing.JOptionPane.showConfirmDialog(
+                            dashboard,
+                            "Are you sure you want to delete user '" + user.getUsername() + "'?",
+                            "Confirm Delete",
+                            javax.swing.JOptionPane.YES_NO_OPTION
+                    );
+
+                    if (confirm == javax.swing.JOptionPane.YES_OPTION) {
+                        userService.deleteUser(dashboard, user);
+                        userModel.refresh();
+                        javax.swing.JOptionPane.showMessageDialog(dashboard, "User deleted successfully!", "Success", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+                    }
+                }
+            }
+        }
+    });
+}
+
+   private void setupSupplierListeners() {
+        SupplierTableModel supplierModel = (SupplierTableModel) supplierTable.getModel();
+        dashboard.getAddSupplierButton().addActionListener(e -> {
+            supplierService.addSupplier(dashboard);
+
+            supplierModel.refresh();
+        });
+
+        dashboard.getSupplierTable().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent evt) {
+                int row = dashboard.getSupplierTable().getSelectedRow();
+                Supplier selectedSupplier = supplierTableModel.getSupplierAt(row);
+                if (selectedSupplier != null) {
+                    supplierService.displaySupplierDetails(dashboard, selectedSupplier);
+
+                    supplierModel.refresh();
+                }
+            }
+        });
+    }
+   
+    private void setupGeneratePOListener() {
+        PurchaseOrderService purchaseOrderService = new PurchaseOrderService();
+        Admin currentAdmin = (Admin) currentUser;
+
+        purchaseOrderService.setupGeneratePOListener(
+            dashboard.getPendingPRTable(),
+            currentAdmin,
+            () -> {
+                purchaseOrderTableModel.refresh();
+                historicalRequisitionTableModel.refresh();
+                pendingRequisitionTableModel.refresh();
+            }
+        );
+    }
+    
+    private void setupPOClickListener() {
+        PurchaseOrderService purchaseOrderService = new PurchaseOrderService();
+        Admin currentAdmin = (Admin) currentUser;
+
+        purchaseOrderService.setupPOTableClickListener(
+            purchaseOrderTable,
+            currentAdmin,
+            () -> purchaseOrderTableModel.refresh()
+        );
+    }
+  
     // Edit Item
     private void editItemListener() {
        itemOnSaleTable.addMouseListener(new java.awt.event.MouseAdapter() {
