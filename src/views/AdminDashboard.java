@@ -858,7 +858,8 @@ public class AdminDashboard extends javax.swing.JFrame {
     
     public JButton getExportButton() {
         return exportButton;
-      
+    }
+    
     public JTextField getRequisitionSearchInput() {
         return requisitionSearchInput;
     }
