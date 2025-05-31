@@ -3,47 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/dede/Documents/APU/Degree%20Y1%20S1/Java%20(T)/JavaAssignment/purchase-order-system/src/models/Payment.java</file>
-            <file>file:/Users/dede/Documents/APU/Degree%20Y1%20S1/Java%20(T)/JavaAssignment/purchase-order-system/src/controllers/SalesManagerController.java</file>
-            <file>file:/Users/dede/Documents/APU/Degree%20Y1%20S1/Java%20(T)/JavaAssignment/purchase-order-system/src/views/SalesManagerDashboard.java</file>
-            <file>file:/Users/dede/Documents/APU/Degree%20Y1%20S1/Java%20(T)/JavaAssignment/purchase-order-system/src/tables/PurchaseOrderTableModel.java</file>
-            <file>file:/Users/dede/Documents/APU/Degree%20Y1%20S1/Java%20(T)/JavaAssignment/purchase-order-system/src/controllers/InventoryManagerController.java</file>
-            <file>file:/Users/dede/Documents/APU/Degree%20Y1%20S1/Java%20(T)/JavaAssignment/purchase-order-system/src/controllers/AdminController.java</file>
-            <file>file:/Users/dede/Documents/APU/Degree%20Y1%20S1/Java%20(T)/JavaAssignment/purchase-order-system/src/controllers/PurchaseManagerController.java</file>
-            <file>file:/Users/dede/Documents/APU/Degree%20Y1%20S1/Java%20(T)/JavaAssignment/purchase-order-system/src/tables/ItemNotOnSaleTableModel.java</file>
-            <file>file:/Users/dede/Documents/APU/Degree%20Y1%20S1/Java%20(T)/JavaAssignment/purchase-order-system/src/tables/InventoryUpdateTableModel.java</file>
-            <file>file:/Users/dede/Documents/APU/Degree%20Y1%20S1/Java%20(T)/JavaAssignment/purchase-order-system/src/tables/DailySalesTableModel.java</file>
-            <file>file:/Users/dede/Documents/APU/Degree%20Y1%20S1/Java%20(T)/JavaAssignment/purchase-order-system/src/tables/HistoricalPurchaseRequisitionTableModel.java</file>
-            <file>file:/Users/dede/Documents/APU/Degree%20Y1%20S1/Java%20(T)/JavaAssignment/purchase-order-system/src/tables/ItemOnSaleTableModel.java</file>
-            <file>file:/Users/dede/Documents/APU/Degree%20Y1%20S1/Java%20(T)/JavaAssignment/purchase-order-system/src/tables/ItemSaleTableModel.java</file>
-            <file>file:/Users/dede/Documents/APU/Degree%20Y1%20S1/Java%20(T)/JavaAssignment/purchase-order-system/src/tables/ItemTableModel.java</file>
-            <file>file:/Users/dede/Documents/APU/Degree%20Y1%20S1/Java%20(T)/JavaAssignment/purchase-order-system/src/tables/PendingPurchaseRequisitionTableModel.java</file>
-            <file>file:/Users/dede/Documents/APU/Degree%20Y1%20S1/Java%20(T)/JavaAssignment/purchase-order-system/src/tables/SupplierTableModel.java</file>
-            <file>file:/Users/dede/Documents/APU/Degree%20Y1%20S1/Java%20(T)/JavaAssignment/purchase-order-system/src/controllers/FinanceManagerController.java</file>
-            <file>file:/Users/dede/Documents/APU/Degree%20Y1%20S1/Java%20(T)/JavaAssignment/purchase-order-system/src/services/PDFExportService.java</file>
-            <file>file:/Users/dede/Documents/APU/Degree%20Y1%20S1/Java%20(T)/JavaAssignment/purchase-order-system/src/tables/PaymentTableModel.java</file>
-            <file>file:/Users/dede/Documents/APU/Degree%20Y1%20S1/Java%20(T)/JavaAssignment/purchase-order-system/.gitignore</file>
-            <file>file:/Users/dede/Documents/APU/Degree%20Y1%20S1/Java%20(T)/JavaAssignment/purchase-order-system/src/controllers/MainController.java</file>
-        </group>
-    </open-files>
-</project-private>
-
-<?xml version="1.0" encoding="UTF-8"?>
-<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
-    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
             <file>file:/Users/ngoh/POS/purchase-order-system/src/controllers/AdminController.java</file>
             <file>file:/Users/ngoh/POS/purchase-order-system/src/tables/ItemOnSaleTableModel.java</file>
-            <file>file:/Users/ngoh/POS/purchase-order-system/src/views/FinanceManagerDashboard.java</file>
-            <file>file:/Users/ngoh/POS/purchase-order-system/src/controllers/MainController.java</file>
             <file>file:/Users/ngoh/POS/purchase-order-system/src/controllers/FinanceManagerController.java</file>
-            <file>file:/Users/ngoh/POS/purchase-order-system/src/views/Main.java</file>
-            <file>file:/Users/ngoh/POS/purchase-order-system/src/views/SalesManagerDashboard.java</file>
-            <file>file:/Users/ngoh/POS/purchase-order-system/src/models/users/UserRole.java</file>
-            <file>file:/Users/ngoh/POS/purchase-order-system/src/controllers/factory/ControllerFactory.java</file>
             <file>file:/Users/ngoh/POS/purchase-order-system/src/views/AdminDashboard.java</file>
-            <file>file:/Users/ngoh/POS/purchase-order-system/src/controllers/SalesManagerController.java</file>
+            <file>file:/Users/ngoh/POS/purchase-order-system/src/services/InventoryUpdateService.java</file>
         </group>
     </open-files>
 </project-private>

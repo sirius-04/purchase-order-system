@@ -5,12 +5,17 @@
 package controllers;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JTable;
+import models.Supplier;
 import models.users.Admin;
+import models.users.User;
 import models.users.UserRole;
 import services.ItemService;
+import services.SupplierService;
 import services.UserService;
 import tables.HistoricalPurchaseRequisitionTableModel;
 import tables.ItemNotOnSaleTableModel;
@@ -30,6 +35,7 @@ public class AdminController extends BaseController {
     private AdminDashboard dashboard;
     private ItemService itemService = new ItemService();
     private UserService userService = new UserService();
+    private SupplierService supplierService = new SupplierService();
     
     UserTableModel userTableModel = new UserTableModel();
     ItemOnSaleTableModel itemOnSaleTableModel = new ItemOnSaleTableModel();
@@ -66,7 +72,9 @@ public class AdminController extends BaseController {
     @Override
     protected void setupCustomListeners() {
         registerNewUser();
+        changeUsernameOrPassword();
         addItemButtonListener();
+        setupSupplierListeners();
     }
     
     private void loadTables() {
@@ -118,6 +126,44 @@ public class AdminController extends BaseController {
             userService.registerUser(dashboard, username, password, role);
             
             userTableModel.refresh();
+        });
+    }
+    
+    private void changeUsernameOrPassword() {
+        userTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt){
+                int row = userTable.getSelectedRow();
+                if (row != -1) {
+                    UserTableModel userModel = (UserTableModel) userTable.getModel();
+                    User user = userModel.getUserAt(row);
+                    
+                    userService.renameUserOrChangePassword(dashboard, user);
+                    userModel.refresh();    
+                }
+            }
+        });
+    }
+    
+   private void setupSupplierListeners() {
+        SupplierTableModel supplierModel = (SupplierTableModel) supplierTable.getModel();
+        dashboard.getAddSupplierButton().addActionListener(e -> {
+            supplierService.addSupplier(dashboard);
+
+            supplierModel.refresh();
+        });
+
+        dashboard.getSupplierTable().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent evt) {
+                int row = dashboard.getSupplierTable().getSelectedRow();
+                Supplier selectedSupplier = supplierTableModel.getSupplierAt(row);
+                if (selectedSupplier != null) {
+                    supplierService.displaySupplierDetails(dashboard, selectedSupplier);
+
+                    supplierModel.refresh();
+                }
+            }
         });
     }
 }

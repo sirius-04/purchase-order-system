@@ -20,7 +20,7 @@ public abstract class User implements Identifiable {
     
     protected String userId;
     protected UserRole userRole;
-    protected String username;
+    public String username;
     protected String password;
     protected Status status;
     
