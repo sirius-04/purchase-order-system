@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JTable;
+import models.Item;
 import models.users.Admin;
 import models.users.UserRole;
 import services.ItemService;
@@ -67,6 +68,7 @@ public class AdminController extends BaseController {
     protected void setupCustomListeners() {
         registerNewUser();
         addItemButtonListener();
+        editItemListener();
     }
     
     private void loadTables() {
@@ -121,5 +123,39 @@ public class AdminController extends BaseController {
         });
     }
     
-    // Update Item
+    // Edit Item
+    private void editItemListener() {
+       itemOnSaleTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int row = itemOnSaleTable.getSelectedRow();
+                if (row != -1) {
+                   ItemOnSaleTableModel itemOnSaleTableModel = (ItemOnSaleTableModel) itemOnSaleTable.getModel();
+    
+                   Item selectedItem = itemOnSaleTableModel.getItemAt(row);
+                   
+                   itemService.editItem(dashboard, selectedItem);
+                   
+                   itemOnSaleTableModel.refresh();
+                   itemNotOnSaleTableModel.refresh();
+                }
+            }
+        });
+       itemNotOnSaleTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int row = itemNotOnSaleTable.getSelectedRow();
+                if (row != -1) {
+                   ItemNotOnSaleTableModel itemNotOnSaleTableModel = (ItemNotOnSaleTableModel) itemNotOnSaleTable.getModel();
+    
+                   Item selectedItem = itemNotOnSaleTableModel.getItemAt(row);
+                   
+                   itemService.editItem(dashboard, selectedItem);
+                   
+                   itemOnSaleTableModel.refresh();
+                   itemNotOnSaleTableModel.refresh();
+                }
+            }
+        });
+    }
 }
