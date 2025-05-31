@@ -9,17 +9,23 @@ package models;
  * @author Chan Yong Liang
  */
 public class InventoryUpdate implements Identifiable {
-
+    
+    public enum Status {
+        pending,
+        verified,
+    }
     private String inventoryUpdateId, itemId, supplierId;
     private int updateQuantity;
     private double totalAmount;
+    private Status status;
 
-    public InventoryUpdate(String inventoryUpdateId, String itemId, String supplierId, int updateQuantity, double totalAmount) {
+    public InventoryUpdate(String inventoryUpdateId, String itemId, String supplierId, int updateQuantity, double totalAmount, Status status) {
         this.inventoryUpdateId = inventoryUpdateId;
         this.itemId = itemId;
         this.supplierId = supplierId;
         this.updateQuantity = updateQuantity;
         this.totalAmount = totalAmount;
+        this.status = status;
     }
 
     @Override
@@ -65,6 +71,14 @@ public class InventoryUpdate implements Identifiable {
 
     public void setTotalAmount(double totalAmount) {
         this.totalAmount = totalAmount;
+    }
+    
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
 }

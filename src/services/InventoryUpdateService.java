@@ -47,13 +47,14 @@ public class InventoryUpdateService {
         if (option == javax.swing.JOptionPane.YES_OPTION) {
 
             InventoryUpdate updatedInventory = new InventoryUpdate(inventory.getInventoryUpdateId(), inventory.getItemId(), 
-                                               inventory.getSupplierId(), inventory.getUpdateQuantity(), inventory.getTotalAmount());
+                                               inventory.getSupplierId(), inventory.getUpdateQuantity(), inventory.getTotalAmount(),
+                                               InventoryUpdate.Status.verified);
 
             inventoryRepo.update(updatedInventory);
 
             //after verify create new payment
             createPaymentForInventoryUpdate(updatedInventory);
-
+            
             javax.swing.JOptionPane.showMessageDialog(parent, "Please go to payment", "Success", javax.swing.JOptionPane.INFORMATION_MESSAGE);
 
         } else {

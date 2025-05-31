@@ -176,7 +176,8 @@ public class PurchaseOrderService {
                     po.getItemId(),
                     po.getSupplierId(),
                     po.getQuantity(),
-                    po.getPrice()
+                    po.getPrice(),
+                    models.InventoryUpdate.Status.pending
             );
 
             inventoryUpdateRepo.save(newInventoryUpdate);
