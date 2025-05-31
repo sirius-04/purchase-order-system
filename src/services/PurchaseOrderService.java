@@ -342,18 +342,32 @@ public class PurchaseOrderService {
             dialog.setLocationRelativeTo(parent);
 
             editButton.addActionListener(e -> {
-                dialog.dispose();
-                showEditPODialog(po, userEditor, onUpdateCallback);
+                if (po.getStatus() == PurchaseOrder.Status.pending) {
+                    dialog.dispose();
+                    showEditPODialog(po, userEditor, onUpdateCallback);
+                } else {
+                    JOptionPane.showMessageDialog(parent, 
+                        "This Purchase Order is currently '" + po.getStatus() + "' and cannot be edited.", 
+                        "Edit Not Allowed", 
+                        JOptionPane.INFORMATION_MESSAGE);
+                }
             });
 
             deleteButton.addActionListener(e -> {
-                int confirm = JOptionPane.showConfirmDialog(parent, "Mark this Purchase Order as deleted?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
+                dialog.dispose();
+
+                int confirm = JOptionPane.showConfirmDialog(
+                    parent,
+                    "Mark this Purchase Order as deleted?",
+                    "Confirm Delete",
+                    JOptionPane.YES_NO_OPTION
+                );
+
                 if (confirm == JOptionPane.YES_OPTION) {
                     try {
                         po.setStatus(PurchaseOrder.Status.deleted); 
                         purchaseOrderRepo.update(po); 
                         JOptionPane.showMessageDialog(parent, "Marked as deleted successfully!");
-                        dialog.dispose();
                         if (onUpdateCallback != null) onUpdateCallback.run();
                     } catch (Exception ex) {
                         ex.printStackTrace();
