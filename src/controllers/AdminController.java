@@ -4,13 +4,25 @@
  */
 package controllers;
 
+import java.awt.BorderLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.time.Month;
+import java.time.Year;
+import java.time.YearMonth;
+import java.time.format.TextStyle;
+import java.util.Locale;
+import java.util.Map;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import models.Item;
@@ -18,8 +30,12 @@ import models.Supplier;
 import models.users.Admin;
 import models.users.User;
 import models.users.UserRole;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
 import services.ItemService;
+import services.PDFExportService;
 import services.PurchaseOrderService;
+import services.ReportService;
 import services.SupplierService;
 import services.UserService;
 import tables.HistoricalPurchaseRequisitionTableModel;
@@ -41,6 +57,7 @@ public class AdminController extends BaseController {
     private ItemService itemService = new ItemService();
     private UserService userService = new UserService();
     private SupplierService supplierService = new SupplierService();
+    private PDFExportService pdfExportService = new PDFExportService();
     
     UserTableModel userTableModel = new UserTableModel();
     ItemOnSaleTableModel itemOnSaleTableModel = new ItemOnSaleTableModel();
@@ -57,6 +74,9 @@ public class AdminController extends BaseController {
     private JTable pendingPRTable;
     private JTable historicalPRTable;
     private JTable purchaseOrderTable;
+    private JFreeChart dailyProfitChart;
+    private JFreeChart stockReportChart;
+    private JFreeChart currentChart;
     
     
     public AdminController(Admin adminUser) {
@@ -72,6 +92,8 @@ public class AdminController extends BaseController {
     @Override
     protected void loadInitialData() {
         loadTables();
+        setupMonthComboBox();
+        setupChartComboBox();
     }
 
     @Override
@@ -83,7 +105,7 @@ public class AdminController extends BaseController {
         setupSupplierListeners();
         setupGeneratePOListener();
         setupPOClickListener();
-      
+        exportListeners();
         editItemListener();
         
         // User - Search
@@ -398,6 +420,126 @@ public class AdminController extends BaseController {
             currentAdmin,
             () -> purchaseOrderTableModel.refresh()
         );
+    } 
+    
+    private void setupMonthComboBox() {
+        JComboBox<String> monthCombo = (JComboBox<String>) dashboard.getMonthComboBox();
+        monthCombo.removeAllItems();
+
+        String[] months = {"January", "February", "March", "April", "May", "June", 
+                          "July", "August", "September", "October", "November", "December"};
+        for (String month : months) {
+            monthCombo.addItem(month);
+        }
+
+        String currentMonth = YearMonth.now().getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
+        monthCombo.setSelectedItem(currentMonth);
+
+        monthCombo.addActionListener(e -> showDailyProfitChart());
     }
-  
+    
+    private void setupChartComboBox() {
+        JComboBox<String> chartCombo = (JComboBox<String>) dashboard.getChartComboBox();
+        chartCombo.removeAllItems();
+        
+        String[] charts = {"Stock Chart", "Finance Chart"};
+        for (String chart: charts) {
+            chartCombo.addItem(chart);
+        }
+        chartCombo.setSelectedItem("Finance Chart");
+        
+        chartCombo.addActionListener(e -> {
+            String selectedChart = (String) chartCombo.getSelectedItem();
+            if ("Stock Chart".equals(selectedChart)) {
+                showStockReportChart();
+            } else if ("Finance Chart".equals(selectedChart)) {
+                showDailyProfitChart();
+            }
+        });
+    }
+    
+    private void showDailyProfitChart() {
+        ReportService reportService = new ReportService();
+
+        String selectedMonthName = (String) dashboard.getMonthComboBox().getSelectedItem();
+        int year = Year.now().getValue();
+        int month = Month.valueOf(selectedMonthName.toUpperCase()).getValue();
+        YearMonth selectedYearMonth = YearMonth.of(year, month);
+
+        Map<String, Double> dailyProfitMap = reportService.getDailyProfit(selectedYearMonth);
+        
+        JPanel chartContainer = dashboard.getChartPanel();
+        
+        chartContainer.removeAll();
+        chartContainer.setLayout(new BorderLayout());
+
+      
+        dailyProfitChart = reportService.createDailyProfitChart(dailyProfitMap, selectedYearMonth);
+        currentChart = dailyProfitChart;
+
+        ChartPanel chartPanel = new ChartPanel(dailyProfitChart);
+        chartPanel.setPreferredSize(new java.awt.Dimension(
+            chartContainer.getWidth(),
+            chartContainer.getHeight()
+        ));
+
+        JPanel wrapperPanel = new JPanel(new GridBagLayout());
+        wrapperPanel.setBackground(chartContainer.getBackground());
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.fill = GridBagConstraints.NONE;
+
+        wrapperPanel.add(chartPanel, gbc);
+        chartContainer.add(wrapperPanel, BorderLayout.CENTER);
+        
+        chartContainer.revalidate();
+        chartContainer.repaint();
+    }
+    
+    private void showStockReportChart() {
+        ReportService reportService = new ReportService();
+        Map<String, Double> quantityMap = reportService.getStockQuantities();
+        Map<String, Double> priceMap = reportService.getItemPrices();
+        
+        JPanel stockChartContainer = dashboard.getChartPanel();
+        
+        stockReportChart = reportService.createStockReportChart(quantityMap, priceMap);
+        currentChart = stockReportChart;
+        
+        stockChartContainer.removeAll();
+        stockChartContainer.setLayout(new BorderLayout());
+
+        ChartPanel chartPanel = new ChartPanel(stockReportChart);
+        chartPanel.setPreferredSize(new java.awt.Dimension(
+            stockChartContainer.getWidth(), 
+            stockChartContainer.getHeight()
+        ));
+        
+        JPanel wrapperPanel = new JPanel(new GridBagLayout());
+        wrapperPanel.setBackground(stockChartContainer.getBackground());
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.fill = GridBagConstraints.NONE;
+
+        wrapperPanel.add(chartPanel, gbc);
+
+        stockChartContainer.setLayout(new BorderLayout());
+        stockChartContainer.add(wrapperPanel, BorderLayout.CENTER);
+        stockChartContainer.revalidate();
+        stockChartContainer.repaint();
+    }
+    
+    private void exportListeners() {
+        dashboard.getExportButton().addActionListener(e -> {
+            if (currentChart != null) {
+                String selectedChart = (String) dashboard.getChartComboBox().getSelectedItem();
+                String filename = "Chart_Report_" + selectedChart.replace(" ", "_");
+                pdfExportService.exportChartToPDF(currentChart, filename);
+            } else {
+                JOptionPane.showMessageDialog(dashboard, "No chart available to export");
+            }
+        });
+    }
 }
