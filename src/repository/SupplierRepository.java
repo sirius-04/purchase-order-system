@@ -4,19 +4,31 @@
  */
 package repository;
 
+import java.util.List;
 import models.Supplier;
 
 /**
  *
  * @author dede
  */
-public class SupplierRepository extends BaseRepository<Supplier>{
-    
-     public SupplierRepository() {
+public class SupplierRepository extends BaseRepository<Supplier> {
+
+    public SupplierRepository() {
         super("suppliers", "%s,%s,%s,%s,%s,%s");
     }
-    
-     @Override
+
+    public boolean checkNameExists(String supplierName) {
+        List<Supplier> supplierList = getAll();
+
+        for (Supplier supplier : supplierList) {
+            if (supplier.getName().equalsIgnoreCase(supplierName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
     protected String formatToRow(Supplier supplier) {
         return String.format(rowFormat,
                 supplier.getSupplierId(),
@@ -39,5 +51,5 @@ public class SupplierRepository extends BaseRepository<Supplier>{
 
         return new Supplier(supplierId, name, contactNum, email, accountNum, status);
     }
-    
+
 }

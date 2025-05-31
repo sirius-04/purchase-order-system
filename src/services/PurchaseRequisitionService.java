@@ -8,8 +8,6 @@ package services;
  *
  * @author Acer
  */
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import models.Item;
 import models.PurchaseRequisition;
 import models.users.SalesManager;
@@ -23,7 +21,6 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
-import tables.PendingPurchaseRequisitionTableModel;
 
 public class PurchaseRequisitionService {
 

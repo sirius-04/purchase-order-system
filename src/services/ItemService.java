@@ -101,6 +101,12 @@ public class ItemService {
         }
 
         String enteredName = nameField.getText().trim();
+
+        if (itemRepo.checkNameExists(enteredName)) {
+            JOptionPane.showMessageDialog(parent, "Item name already exists. Please choose a different name.", "Duplicate Name", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         int enteredQuantity = (Integer) stockSpinner.getValue();
         double enteredPrice, enteredSellPrice;
         try {
@@ -179,29 +185,31 @@ public class ItemService {
         JTextField sellPrice = new JTextField(String.valueOf(item.getSellPrice()));
         JSpinner stockSpinner = new JSpinner(new SpinnerNumberModel(item.getStockQuantity(), 0, 10000, 1));
         JComboBox<Item.Status> statusCombo = new JComboBox<>(
-            new Item.Status[] { Item.Status.onSale, Item.Status.notOnSale
-        });
+                new Item.Status[]{Item.Status.onSale, Item.Status.notOnSale
+                });
         String[] supplierOptions = getSupplierOptions();
         JComboBox<String> supplierCombo = new JComboBox<>(supplierOptions);
-        
+
         // onSale -> On Sale, notOnSale -> No On Sale
-       statusCombo.setRenderer(new DefaultListCellRenderer() {
+        statusCombo.setRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(JList<?> list, Object value, int index,
-                                                          boolean isSelected, boolean cellHasFocus) {
+                    boolean isSelected, boolean cellHasFocus) {
                 super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                 if (value instanceof Item.Status) {
                     Item.Status status = (Item.Status) value;
                     switch (status) {
-                        case onSale -> setText("On Sale");
-                        case notOnSale -> setText("Not On Sale");
-                        default -> setText("Unknown");
+                        case onSale ->
+                            setText("On Sale");
+                        case notOnSale ->
+                            setText("Not On Sale");
+                        default ->
+                            setText("Unknown");
                     }
                 }
                 return this;
             }
         });
-
 
         // JPanel UI start here
         JPanel editPanel = new JPanel(new GridBagLayout());
@@ -228,21 +236,21 @@ public class ItemService {
         editPanel.add(new JLabel("Price (cost):"), gbc);
         gbc.gridx = 1;
         editPanel.add(priceField, gbc);
-        
+
         // Row 3: Sell Price
         gbc.gridx = 0;
         gbc.gridy++;
         editPanel.add(new JLabel("Price (sell):"), gbc);
         gbc.gridx = 1;
         editPanel.add(sellPrice, gbc);
-        
+
         // Row 4: Stock Quantity
         gbc.gridx = 0;
         gbc.gridy++;
         editPanel.add(new JLabel("Stock Quantity:"), gbc);
         gbc.gridx = 1;
         editPanel.add(stockSpinner, gbc);
-        
+
         // Row 5: Supplier
         gbc.gridx = 0;
         gbc.gridy++;
@@ -269,19 +277,49 @@ public class ItemService {
 
         // Update logic here
         if (result == JOptionPane.OK_OPTION) {
-            item.setName(nameField.getText().trim());
+            List<ItemSupplier> linkList = itemSupplierRepo.getAll();
+            String oldSupplierId = item.getSupplierId();
+            String enteredName = nameField.getText().trim();
+
+            if (itemRepo.checkNameExists(enteredName)) {
+                JOptionPane.showMessageDialog(parent, "Item name already exists. Please choose a different name.", "Duplicate Name", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            item.setName(enteredName);
             item.setPrice(Double.parseDouble(priceField.getText().trim()));
             item.setSellPrice(Double.parseDouble(sellPrice.getText().trim()));
             item.setStockQuantity((int) stockSpinner.getValue());
-            item.setSupplierId((String) supplierCombo.getSelectedItem());
+            String newSupplierId = (String) supplierCombo.getSelectedItem();
+            item.setSupplierId(newSupplierId);
             item.setStatus((Item.Status) statusCombo.getSelectedItem());
 
-            // Save changes to repository
             itemRepo.update(item);
 
+            if (!oldSupplierId.equals(newSupplierId)) {
+                boolean deleted = false;
+
+                for (ItemSupplier link : linkList) {
+                    if (link.getItemId().equals(item.getItemId()) && link.getSupplierId().equals(oldSupplierId)) {
+                        itemSupplierRepo.delete(link);
+                        deleted = true;
+                        break;
+                    }
+                }
+
+                if (!deleted) {
+                    System.out.println("Warning: Original ItemSupplier link not found for deletion.");
+                }
+
+                ItemSupplier newLink = new ItemSupplier(item.getItemId(), newSupplierId);
+                itemSupplierRepo.save(newLink);
+            }
+
             JOptionPane.showMessageDialog(parent, "Item updated successfully!");
+
         }
     }
+
     public void editItemQuantity(Component parent, Item item) {
         if (item == null) {
             return;
@@ -289,7 +327,7 @@ public class ItemService {
 
         // Jpanel's Input
         JSpinner stockSpinner = new JSpinner(new SpinnerNumberModel(item.getStockQuantity(), 0, 10000, 1));
-        
+
         // JPanel UI start here
         JPanel editPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -311,7 +349,6 @@ public class ItemService {
         editPanel.add(stockSpinner, gbc);
 
         // JPanel UI end here
-
         // Comfirm Dialog
         int result = JOptionPane.showConfirmDialog(
                 parent,
@@ -369,9 +406,5 @@ public class ItemService {
         }
 
         return supplierOptions;
-    }
-
-    private void addNewSupplier() {
-        System.out.println("add new supplier");
     }
 }

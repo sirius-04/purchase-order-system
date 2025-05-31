@@ -1,5 +1,6 @@
 package controllers;
 
+import com.toedter.calendar.JDateChooser;
 import models.users.SalesManager;
 import models.Sales;
 import services.ItemService;
@@ -9,9 +10,15 @@ import views.SalesManagerDashboard;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import models.Item;
+import models.PurchaseRequisition;
 import models.Supplier;
+import services.PurchaseRequisitionService;
 import services.SupplierService;
+import utils.DateTimeService;
+import utils.LowStockRenderer;
 
 public class SalesManagerController extends BaseController {
 
@@ -19,6 +26,11 @@ public class SalesManagerController extends BaseController {
     private final SalesService salesService = new SalesService();
     private final ItemService itemService = new ItemService();
     private final SupplierService supplierService = new SupplierService();
+    private final PurchaseRequisitionService PRService = new PurchaseRequisitionService();
+
+    // tables
+    JTable salesTable;
+    JTable itemSaleTable;
 
     // Table Models
     private final ItemOnSaleTableModel itemOnSaleTableModel = new ItemOnSaleTableModel();
@@ -29,6 +41,8 @@ public class SalesManagerController extends BaseController {
     private final HistoricalPurchaseRequisitionTableModel historicalPurchaseRequisitionTableModel = new HistoricalPurchaseRequisitionTableModel();
     private final PendingPurchaseRequisitionTableModel pendingPurchaseRequisitionTableModel = new PendingPurchaseRequisitionTableModel();
     private final PurchaseOrderTableModel purchaseOrderTableModel = new PurchaseOrderTableModel(PurchaseOrderTableModel.POStatus.ALL);
+
+    private final String today = DateTimeService.getCurrentDate();
 
     public SalesManagerController(SalesManager salesManagerUser) {
         super(salesManagerUser);
@@ -43,7 +57,7 @@ public class SalesManagerController extends BaseController {
     @Override
     protected void loadInitialData() {
         loadTables();
-        updateTotalSaleAmount();
+        updateTotalSaleAmount(today);
     }
 
     @Override
@@ -58,8 +72,19 @@ public class SalesManagerController extends BaseController {
     private void loadTables() {
         dashboard.getItemOnSaleTable().setModel(itemOnSaleTableModel);
         dashboard.getItemNotOnSaleTable().setModel(itemNotOnSaleTableModel);
-        dashboard.getSalesTable().setModel(saleTableModel);
-        dashboard.getItemSaleTable().setModel(itemSaleTableModel);
+
+        LowStockRenderer rowRenderer = new LowStockRenderer(4);
+        for (int i = 0; i < dashboard.getItemOnSaleTable().getColumnCount(); i++) {
+            dashboard.getItemOnSaleTable().getColumnModel().getColumn(i).setCellRenderer(rowRenderer);
+            dashboard.getItemNotOnSaleTable().getColumnModel().getColumn(i).setCellRenderer(rowRenderer);
+        }
+
+        salesTable = dashboard.getSalesTable();
+        salesTable.setModel(saleTableModel);
+
+        itemSaleTable = dashboard.getItemSaleTable();
+        itemSaleTable.setModel(itemSaleTableModel);
+
         dashboard.getSupplierTable().setModel(supplierTableModel);
         dashboard.getPendingRequisitionTable().setModel(pendingPurchaseRequisitionTableModel);
         dashboard.getHistoricalRequisitionTable().setModel(historicalPurchaseRequisitionTableModel);
@@ -73,7 +98,7 @@ public class SalesManagerController extends BaseController {
             refreshAll();
         });
 
-        dashboard.getSalesTable().addMouseListener(new MouseAdapter() {
+        salesTable.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent evt) {
                 int row = dashboard.getSalesTable().getSelectedRow();
                 Sales selectedSale = saleTableModel.getSalesAt(row);
@@ -89,6 +114,20 @@ public class SalesManagerController extends BaseController {
     }
 
     private void setupItemListeners() {
+        JDateChooser dateChooser = dashboard.getDateChooser();
+
+        dateChooser.getDateEditor().addPropertyChangeListener("date", evt -> {
+            Date selectedDate = dateChooser.getDate();
+
+            if (selectedDate != null) {
+                String formattedDate = new SimpleDateFormat("yyyy-MM-dd").format(selectedDate);
+
+                saleTableModel.setDate(formattedDate);
+                itemSaleTableModel.setDate(formattedDate);
+                updateTotalSaleAmount(formattedDate);
+            }
+        });
+
         dashboard.getAddItemButton().addActionListener(e -> {
             itemService.addItem(dashboard);
 
@@ -146,6 +185,27 @@ public class SalesManagerController extends BaseController {
     }
 
     private void setupPRListeners() {
+        dashboard.getAddRequisitionButton().addActionListener(e -> {
+            PRService.showCreateForm(dashboard, () -> {
+            });
+
+            refreshAll();
+        });
+
+        dashboard.getPendingRequisitionTable().addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
+                int row = dashboard.getPendingRequisitionTable().getSelectedRow();
+                PurchaseRequisition selectedPR = pendingPurchaseRequisitionTableModel.getRequisitionAt(row);
+
+                if (selectedPR != null) {
+                    PRService.showActionPanel(selectedPR, dashboard, () -> {
+                    });
+
+                    refreshAll();
+                }
+            }
+        });
+
         setupSearchFieldListener(dashboard.getRequisitionSearch(), pendingPurchaseRequisitionTableModel::filterByKeyword);
         setupSearchFieldListener(dashboard.getHistoricalRequisitionSearch(), historicalPurchaseRequisitionTableModel::filterByKeyword);
     }
@@ -165,15 +225,15 @@ public class SalesManagerController extends BaseController {
         });
     }
 
-    private void updateTotalSaleAmount() {
-        double total = salesService.calculateTodaySalesTotal();
+    private void updateTotalSaleAmount(String date) {
+        double total = salesService.calculateDailySalesTotal(date);
         dashboard.getTotalAmount().setText(Double.toString(total));
     }
 
     private void refreshSalesPanel() {
         saleTableModel.refresh();
         itemSaleTableModel.refresh();
-        updateTotalSaleAmount();
+        updateTotalSaleAmount(today);
     }
 
     private void refreshItemPanel() {
@@ -185,9 +245,20 @@ public class SalesManagerController extends BaseController {
         supplierTableModel.refresh();
     }
 
+    private void refreshPRPanel() {
+        historicalPurchaseRequisitionTableModel.refresh();
+        pendingPurchaseRequisitionTableModel.refresh();
+    }
+
+    private void refreshPOPanel() {
+        purchaseOrderTableModel.refresh();
+    }
+
     private void refreshAll() {
         refreshSalesPanel();
         refreshItemPanel();
         refreshSupplierPanel();
+        refreshPRPanel();
+        refreshPOPanel();
     }
 }

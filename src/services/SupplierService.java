@@ -116,6 +116,11 @@ public class SupplierService {
         String email = sEmailField.getText().trim();
         String bankAccount = sBankField.getText().trim();
 
+        if (supplierRepo.checkNameExists(supplierName)) {
+            JOptionPane.showMessageDialog(parent, "Supplier name already exists. Please choose a different name.", "Duplicate Name", JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
+
         if (supplierName.isEmpty() || contact.isEmpty() || email.isEmpty() || bankAccount.isEmpty()) {
             JOptionPane.showMessageDialog(parent, "All supplier fields must be filled.", "Input Error", JOptionPane.ERROR_MESSAGE);
             return null;
@@ -187,6 +192,11 @@ public class SupplierService {
             String contact = contactField.getText().trim();
             String email = emailField.getText().trim();
             String bank = bankField.getText().trim();
+
+            if (supplierRepo.checkNameExists(name)) {
+                JOptionPane.showMessageDialog(parent, "Supplier name already exists. Please choose a different name.", "Duplicate Name", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
             if (name.isEmpty() || contact.isEmpty() || email.isEmpty() || bank.isEmpty()) {
                 JOptionPane.showMessageDialog(parent, "All fields must be filled.", "Validation Error", JOptionPane.ERROR_MESSAGE);

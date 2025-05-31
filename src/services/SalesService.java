@@ -227,11 +227,10 @@ public class SalesService {
         }
     }
 
-    public double calculateTodaySalesTotal() {
-        String today = DateTimeService.getCurrentDate();
-
+    public double calculateDailySalesTotal(String date) {
+        
         return salesRepo.getAll().stream()
-                .filter(sale -> today.equals(sale.getDate()))
+                .filter(sale -> date.equals(sale.getDate()))
                 .mapToDouble(Sales::getTotalAmount)
                 .sum();
     }
