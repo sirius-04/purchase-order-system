@@ -46,20 +46,22 @@ public class PurchaseOrderTableModel extends AbstractTableModel implements Searc
     private List<PurchaseOrder> purchaseOrders = new ArrayList<>();
     private final POStatus statusFilter;
 
-    public static enum POStatus {
-        ALL,
-        PENDING,
-        APPROVED,
-        VERIFIED;
+   public static enum POStatus {
+    ALL,
+    PENDING,
+    APPROVED,
+    VERIFIED,
+    DELETED;
 
-        public static POStatus fromString(String value) {
-            try {
-                return POStatus.valueOf(value.toUpperCase());
-            } catch (IllegalArgumentException e) {
-                return POStatus.ALL;
-            }
+    public static POStatus fromString(String value) {
+        try {
+            return POStatus.valueOf(value.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            return POStatus.ALL;
         }
     }
+}
+
     
     public PurchaseOrderTableModel(POStatus statusFilter) {
         this.statusFilter = statusFilter;
@@ -76,7 +78,13 @@ public class PurchaseOrderTableModel extends AbstractTableModel implements Searc
         List<PurchaseOrder> allOrders = orderRepo.getAll();
 
         if (statusFilter == POStatus.ALL) {
-            this.purchaseOrders = allOrders;
+            this.purchaseOrders = allOrders.stream()
+                .filter(po -> po.getStatus() != PurchaseOrder.Status.deleted)
+                .collect(Collectors.toList());
+        } else if (statusFilter == POStatus.DELETED) {
+            this.purchaseOrders = allOrders.stream()
+                .filter(po -> po.getStatus() == PurchaseOrder.Status.deleted)
+                .collect(Collectors.toList());
         } else {
             PurchaseOrder.Status status = switch (statusFilter) {
                 case PENDING -> PurchaseOrder.Status.pending;
@@ -91,14 +99,21 @@ public class PurchaseOrderTableModel extends AbstractTableModel implements Searc
 
         fireTableDataChanged();
     }
-    
+
+
     public void filterByKeyword(String keyword) {
         List<PurchaseOrder> allOrders = orderRepo.getAll();
 
         // Step 1: Filter by statusFilter first (same as refresh logic)
         List<PurchaseOrder> filteredByStatus;
         if (statusFilter == POStatus.ALL) {
-            filteredByStatus = allOrders;
+            filteredByStatus = allOrders.stream()
+                .filter(po -> po.getStatus() != PurchaseOrder.Status.deleted)
+                .collect(Collectors.toList());
+        } else if (statusFilter == POStatus.DELETED) {
+            filteredByStatus = allOrders.stream()
+                .filter(po -> po.getStatus() == PurchaseOrder.Status.deleted)
+                .collect(Collectors.toList());
         } else {
             PurchaseOrder.Status poStatus = switch (statusFilter) {
                 case PENDING -> PurchaseOrder.Status.pending;
@@ -193,8 +208,9 @@ public class PurchaseOrderTableModel extends AbstractTableModel implements Searc
 enum POStatus {
     ALL,
     PENDING,
-    FULFILLED,
-    VERIFIED;
+    APPROVED,
+    VERIFIED,
+    DELETED;
 
     public static POStatus fromString(String value) {
         try {
