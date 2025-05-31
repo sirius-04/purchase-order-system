@@ -15,6 +15,7 @@ import models.users.Admin;
 import models.users.User;
 import models.users.UserRole;
 import services.ItemService;
+import services.PurchaseOrderService;
 import services.SupplierService;
 import services.UserService;
 import tables.HistoricalPurchaseRequisitionTableModel;
@@ -72,9 +73,11 @@ public class AdminController extends BaseController {
     @Override
     protected void setupCustomListeners() {
         registerNewUser();
-        changeUsernameOrPassword();
+        handleUserEditAndDelete();
         addItemButtonListener();
         setupSupplierListeners();
+        setupGeneratePOListener();
+        setupPOClickListener();
     }
     
     private void loadTables() {
@@ -129,22 +132,50 @@ public class AdminController extends BaseController {
         });
     }
     
-    private void changeUsernameOrPassword() {
-        userTable.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt){
-                int row = userTable.getSelectedRow();
-                if (row != -1) {
-                    UserTableModel userModel = (UserTableModel) userTable.getModel();
-                    User user = userModel.getUserAt(row);
-                    
+    
+    private void handleUserEditAndDelete() {
+    userTable.addMouseListener(new java.awt.event.MouseAdapter() {
+        @Override
+        public void mouseClicked(java.awt.event.MouseEvent evt) {
+            int row = userTable.getSelectedRow();
+            if (row != -1) {
+                UserTableModel userModel = (UserTableModel) userTable.getModel();
+                User user = userModel.getUserAt(row);
+
+                String[] options = {"Edit User", "Delete User", "Cancel"};
+                int choice = javax.swing.JOptionPane.showOptionDialog(
+                        dashboard,
+                        "What would you like to do with user '" + user.getUsername() + "'?",
+                        "User Options",
+                        javax.swing.JOptionPane.DEFAULT_OPTION,
+                        javax.swing.JOptionPane.PLAIN_MESSAGE,
+                        null,
+                        options,
+                        options[0]
+                );
+
+                if (choice == 0) { 
                     userService.renameUserOrChangePassword(dashboard, user);
-                    userModel.refresh();    
+                    userModel.refresh();
+                } else if (choice == 1) { 
+                    int confirm = javax.swing.JOptionPane.showConfirmDialog(
+                            dashboard,
+                            "Are you sure you want to delete user '" + user.getUsername() + "'?",
+                            "Confirm Delete",
+                            javax.swing.JOptionPane.YES_NO_OPTION
+                    );
+
+                    if (confirm == javax.swing.JOptionPane.YES_OPTION) {
+                        userService.deleteUser(dashboard, user);
+                        userModel.refresh();
+                        javax.swing.JOptionPane.showMessageDialog(dashboard, "User deleted successfully!", "Success", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+                    }
                 }
             }
-        });
-    }
-    
+        }
+    });
+}
+
    private void setupSupplierListeners() {
         SupplierTableModel supplierModel = (SupplierTableModel) supplierTable.getModel();
         dashboard.getAddSupplierButton().addActionListener(e -> {
@@ -166,4 +197,30 @@ public class AdminController extends BaseController {
             }
         });
     }
+   
+    private void setupGeneratePOListener() {
+        PurchaseOrderService purchaseOrderService = new PurchaseOrderService();
+        Admin currentAdmin = (Admin) currentUser;
+
+        purchaseOrderService.setupGeneratePOListener(
+            dashboard.getPendingPRTable(),
+            currentAdmin,
+            () -> {
+                purchaseOrderTableModel.refresh();
+                historicalRequisitionTableModel.refresh();
+                pendingRequisitionTableModel.refresh();
+            }
+        );
+    }
+    
+    private void setupPOClickListener() {
+        PurchaseOrderService purchaseOrderService = new PurchaseOrderService();
+        Admin currentAdmin = (Admin) currentUser;
+
+        purchaseOrderService.setupPOTableClickListener(
+            purchaseOrderTable,
+            currentAdmin,
+            () -> purchaseOrderTableModel.refresh()
+        );
+    } 
 }

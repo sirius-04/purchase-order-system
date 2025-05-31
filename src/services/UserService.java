@@ -135,4 +135,8 @@ public class UserService {
         }
         return false;
     }
+    
+    public void deleteUser(Component parent, User user) {
+        userRepo.delete(user);
+    }
 }
