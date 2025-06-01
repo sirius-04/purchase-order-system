@@ -40,14 +40,14 @@ public class PaymentTableModel extends AbstractTableModel {
 
     public void refresh() {
         payments = paymentRepo.getAll();
-        
+
         this.payments.sort((newPayment, oldPayment) -> {
             if (newPayment.getStatus() == oldPayment.getStatus()) {
                 return 0;
             }
             return newPayment.getStatus() == Payment.Status.pending ? -1 : 1;
         });
-        
+
         fireTableDataChanged();
     }
 
@@ -112,4 +112,4 @@ public class PaymentTableModel extends AbstractTableModel {
         }
         return payments.get(rowIndex);
     }
-}
+        }
