@@ -152,7 +152,7 @@ public class SalesManagerController extends BaseController {
         dashboard.getItemNotOnSaleTable().addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent evt) {
                 int row = dashboard.getItemNotOnSaleTable().getSelectedRow();
-                Item selectedItem = itemOnSaleTableModel.getItemAt(row);
+                Item selectedItem = itemNotOnSaleTableModel.getItemAt(row);
                 if (selectedItem != null) {
                     itemService.displayItemDetails(dashboard, selectedItem);
 
