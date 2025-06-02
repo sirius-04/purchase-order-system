@@ -1,2 +1,2 @@
-iu001,i001,su001,20,200.00,pending
-iu002,i001,su001,20,500.00,pending
+iu001,i001,su001,20,250.00,pending
+iu002,i001,su001,10,150.00,pending
