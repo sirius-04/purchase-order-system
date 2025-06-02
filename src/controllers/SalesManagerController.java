@@ -93,7 +93,12 @@ public class SalesManagerController extends BaseController {
 
     private void setupSaleListeners() {
         dashboard.getAddSalesButton().addActionListener(e -> {
-            salesService.addSale(dashboard);
+            Date selectedDate = dashboard.getDateChooser().getDate();
+            String formattedDate = selectedDate != null
+                    ? new SimpleDateFormat("yyyy-MM-dd").format(selectedDate)
+                    : today;
+
+            salesService.addSale(dashboard, formattedDate);
 
             refreshAll();
         });
