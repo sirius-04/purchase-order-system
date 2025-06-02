@@ -193,9 +193,11 @@ public class SupplierService {
             String email = emailField.getText().trim();
             String bank = bankField.getText().trim();
 
-            if (supplierRepo.checkNameExists(name)) {
-                JOptionPane.showMessageDialog(parent, "Supplier name already exists. Please choose a different name.", "Duplicate Name", JOptionPane.ERROR_MESSAGE);
-                return;
+            if (!name.equals(supplier.getName())) {
+                if (supplierRepo.checkNameExists(name)) {
+                    JOptionPane.showMessageDialog(parent, "Supplier name already exists. Please choose a different name.", "Duplicate Name", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
             }
 
             if (name.isEmpty() || contact.isEmpty() || email.isEmpty() || bank.isEmpty()) {
