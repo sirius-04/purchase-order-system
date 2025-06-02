@@ -281,11 +281,13 @@ public class ItemService {
             String oldSupplierId = item.getSupplierId();
             String enteredName = nameField.getText().trim();
 
-            if (!item.getName().equals(enteredName) && itemRepo.checkNameExists(enteredName)) {
-                JOptionPane.showMessageDialog(parent, "Item name already exists. Please choose a different name.", "Duplicate Name", JOptionPane.ERROR_MESSAGE);
-                return;
+            if (!enteredName.equals(item.getName())) {
+                if (itemRepo.checkNameExists(enteredName)) {
+                    JOptionPane.showMessageDialog(parent, "Item name already exists. Please choose a different name.", "Duplicate Name", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
             }
-            
+
             item.setName(enteredName);
             item.setPrice(Double.parseDouble(priceField.getText().trim()));
             item.setSellPrice(Double.parseDouble(sellPrice.getText().trim()));
