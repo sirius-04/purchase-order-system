@@ -4,6 +4,7 @@ import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import models.users.SalesManager;
@@ -115,6 +116,7 @@ public class SalesManagerDashboard extends javax.swing.JFrame {
         orderTable = new javax.swing.JTable();
         jLabel11 = new javax.swing.JLabel();
         orderSearchInput = new javax.swing.JTextField();
+        logOutPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -598,6 +600,19 @@ public class SalesManagerDashboard extends javax.swing.JFrame {
 
         orderPanel.addTab("Purchase Orders", jPanel3);
 
+        javax.swing.GroupLayout logOutPanelLayout = new javax.swing.GroupLayout(logOutPanel);
+        logOutPanel.setLayout(logOutPanelLayout);
+        logOutPanelLayout.setHorizontalGroup(
+            logOutPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1022, Short.MAX_VALUE)
+        );
+        logOutPanelLayout.setVerticalGroup(
+            logOutPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 718, Short.MAX_VALUE)
+        );
+
+        orderPanel.addTab("Log Out", logOutPanel);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -850,7 +865,9 @@ public class SalesManagerDashboard extends javax.swing.JFrame {
         return dateChooser;
     }
 
-    
+    public JPanel getLogOut(){
+        return logOutPanel;
+    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addItemButton;
@@ -895,6 +912,7 @@ public class SalesManagerDashboard extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
+    private javax.swing.JPanel logOutPanel;
     private CustomPanel.TabbedPaneCustom orderPanel;
     private javax.swing.JTextField orderSearchInput;
     private javax.swing.JTable orderTable;

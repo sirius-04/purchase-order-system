@@ -4,10 +4,13 @@
  */
 package controllers;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.JFrame;
 import javax.swing.JTable;
 import models.users.PurchaseManager;
 import services.PurchaseOrderService;
+import services.UserService;
 import tables.HistoricalPurchaseRequisitionTableModel;
 import tables.ItemNotOnSaleTableModel;
 import tables.ItemOnSaleTableModel;
@@ -23,7 +26,8 @@ import views.PurchaseManagerDashboard;
 public class PurchaseManagerController extends BaseController {
 
     private PurchaseManagerDashboard dashboard;
-
+    private UserService userService = new UserService();
+    
     // table models
     ItemOnSaleTableModel itemOnSaleTableModel = new ItemOnSaleTableModel();
     ItemNotOnSaleTableModel itemNotOnSaleTableModel = new ItemNotOnSaleTableModel();
@@ -58,6 +62,7 @@ public class PurchaseManagerController extends BaseController {
     @Override
     protected void setupCustomListeners() {
         POListener();
+        logOut();
     }
 
     //refresh
@@ -126,6 +131,15 @@ public class PurchaseManagerController extends BaseController {
                 currentManager,
                 () -> refreshPOPanel()
         );
+    }
+    
+     private void logOut() {
+       dashboard.getLogOut().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                userService.userLogOut(dashboard, currentUser);
+            }
+        });
     }
 
 }

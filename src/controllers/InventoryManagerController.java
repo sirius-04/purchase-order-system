@@ -13,6 +13,8 @@ import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Map;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -30,6 +32,7 @@ import services.ReportService;
 import services.ItemService;
 import models.PurchaseOrder;
 import services.PurchaseOrderService;
+import services.UserService;
 
 /**
  *
@@ -42,6 +45,7 @@ public class InventoryManagerController extends BaseController {
     private ItemService itemService = new ItemService();
     private PurchaseOrderService poService = new PurchaseOrderService();
     private PDFExportService pdfExportService = new PDFExportService();
+    private UserService userService = new UserService();
     
      // table models
     ItemTableModel itemTableModel = new ItemTableModel();
@@ -84,6 +88,8 @@ public class InventoryManagerController extends BaseController {
         
         // stock report
         setupExportListeners();
+        
+        logOut();
     
         // Status selection
         JComboBox<String> statusComboBox = dashboard.getStatusComboBox();
@@ -263,5 +269,13 @@ public class InventoryManagerController extends BaseController {
             }
         });
     }
-
+    
+     private void logOut() {
+       dashboard.getLogOut().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                userService.userLogOut(dashboard, currentUser);
+            }
+        });
+    }
 }

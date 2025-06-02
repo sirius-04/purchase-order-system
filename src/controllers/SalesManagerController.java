@@ -17,6 +17,7 @@ import models.PurchaseRequisition;
 import models.Supplier;
 import services.PurchaseRequisitionService;
 import services.SupplierService;
+import services.UserService;
 import utils.DateTimeService;
 import utils.LowStockRenderer;
 
@@ -27,6 +28,7 @@ public class SalesManagerController extends BaseController {
     private final ItemService itemService = new ItemService();
     private final SupplierService supplierService = new SupplierService();
     private final PurchaseRequisitionService PRService = new PurchaseRequisitionService();
+    private final UserService userService = new UserService();
 
     // tables
     JTable salesTable;
@@ -67,6 +69,7 @@ public class SalesManagerController extends BaseController {
         setupSupplierListeners();
         setupPRListeners();
         setupPOListeners();
+        logOut();
     }
 
     private void loadTables() {
@@ -260,5 +263,14 @@ public class SalesManagerController extends BaseController {
         refreshSupplierPanel();
         refreshPRPanel();
         refreshPOPanel();
+    }
+    
+     private void logOut() {
+       dashboard.getLogOut().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                userService.userLogOut(dashboard, currentUser);
+            }
+        });
     }
 }
