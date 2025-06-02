@@ -4,6 +4,8 @@
  */
 package models;
 
+import models.users.UserRole;
+
 /**
  *
  * @author Chan Yong Liang
@@ -26,6 +28,8 @@ public class PurchaseOrder implements Identifiable {
     private String date;
     private Status status;
     private String supplierId;
+    private String editedByUserId;
+    private UserRole editedByRole;
 
     // constructor
     public PurchaseOrder(String purchaseOrderId, String itemId, String purchaseRequisitionId,
@@ -114,5 +118,21 @@ public class PurchaseOrder implements Identifiable {
 
     public String getSupplierId() {
         return supplierId;
+    }
+    
+    public String getEditedByUserId() {
+        return editedByUserId;
+    }
+
+    public void setEditedByUserId(String editedByUserId) {
+        this.editedByUserId = editedByUserId;
+    }
+
+    public UserRole getEditedByRole() {
+        return editedByRole;
+    }
+
+    public void setEditedByRole(UserRole editedByRole) {
+        this.editedByRole = editedByRole;
     }
 }

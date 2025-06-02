@@ -4,8 +4,10 @@
  */
 package views;
 
+import java.awt.Color;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 /**
@@ -74,12 +76,17 @@ public class AdminDashboard extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         requisitionSearchInput = new javax.swing.JTextField();
+        addPRButton = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
         orderTable = new javax.swing.JTable();
         jLabel12 = new javax.swing.JLabel();
         orderSearchInput = new javax.swing.JTextField();
         jPanel7 = new javax.swing.JPanel();
+        chartPanel = new javax.swing.JPanel();
+        exportButton = new javax.swing.JButton();
+        monthComboBox = new javax.swing.JComboBox<>();
+        chartComboBox = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -131,7 +138,7 @@ public class AdminDashboard extends javax.swing.JFrame {
                     .addComponent(selectedRole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(46, 46, 46)
                 .addComponent(createUserButton)
-                .addContainerGap(378, Short.MAX_VALUE))
+                .addContainerGap(400, Short.MAX_VALUE))
         );
 
         reportPanel.addTab("Register", jPanel1);
@@ -151,17 +158,33 @@ public class AdminDashboard extends javax.swing.JFrame {
 
         jLabel6.setText("Search:");
 
+        userSearchInput.setForeground(new java.awt.Color(153, 153, 153));
+        userSearchInput.setText("Search by ID, Name...");
+        userSearchInput.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                userSearchInputFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                userSearchInputFocusLost(evt);
+            }
+        });
+        userSearchInput.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                userSearchInputActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(userSearchInput, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(userSearchInput, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
                         .addGap(65, 65, 65)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 944, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -170,7 +193,7 @@ public class AdminDashboard extends javax.swing.JFrame {
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(30, Short.MAX_VALUE)
+                .addContainerGap(52, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(userSearchInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -203,6 +226,17 @@ public class AdminDashboard extends javax.swing.JFrame {
 
         jLabel11.setText("Search:");
 
+        itemSaleSearchInput.setForeground(new java.awt.Color(153, 153, 153));
+        itemSaleSearchInput.setText("Search by ID, Name...");
+        itemSaleSearchInput.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                itemSaleSearchInputFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                itemSaleSearchInputFocusLost(evt);
+            }
+        });
+
         jLabel4.setText("Item Not On Sale");
 
         itemOnSaleTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -221,6 +255,17 @@ public class AdminDashboard extends javax.swing.JFrame {
         jLabel5.setText("Item On Sale");
 
         jLabel13.setText("Search:");
+
+        itemNotSaleSearchInput.setForeground(new java.awt.Color(153, 153, 153));
+        itemNotSaleSearchInput.setText("Search by ID, Name...");
+        itemNotSaleSearchInput.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                itemNotSaleSearchInputFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                itemNotSaleSearchInputFocusLost(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -275,7 +320,7 @@ public class AdminDashboard extends javax.swing.JFrame {
                     .addComponent(itemNotSaleSearchInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(52, Short.MAX_VALUE))
+                .addContainerGap(74, Short.MAX_VALUE))
         );
 
         reportPanel.addTab("Items", jPanel3);
@@ -297,6 +342,17 @@ public class AdminDashboard extends javax.swing.JFrame {
 
         jLabel7.setText("Search:");
 
+        supplierSearchInput.setForeground(new java.awt.Color(153, 153, 153));
+        supplierSearchInput.setText("Search by ID, Name...");
+        supplierSearchInput.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                supplierSearchInputFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                supplierSearchInputFocusLost(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -315,7 +371,7 @@ public class AdminDashboard extends javax.swing.JFrame {
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap(46, Short.MAX_VALUE)
+                .addContainerGap(68, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(supplierSearchInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -345,6 +401,17 @@ public class AdminDashboard extends javax.swing.JFrame {
 
         jLabel9.setText("Search:");
 
+        historicalRequisitionSearchInput.setForeground(new java.awt.Color(153, 153, 153));
+        historicalRequisitionSearchInput.setText("Search by ID, Name...");
+        historicalRequisitionSearchInput.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                historicalRequisitionSearchInputFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                historicalRequisitionSearchInputFocusLost(evt);
+            }
+        });
+
         historicalRequisitionTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null, null},
@@ -362,32 +429,48 @@ public class AdminDashboard extends javax.swing.JFrame {
 
         jLabel14.setText("Search:");
 
+        requisitionSearchInput.setForeground(new java.awt.Color(153, 153, 153));
+        requisitionSearchInput.setText("Search by ID, Name...");
+        requisitionSearchInput.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                requisitionSearchInputFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                requisitionSearchInputFocusLost(evt);
+            }
+        });
+        requisitionSearchInput.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                requisitionSearchInputActionPerformed(evt);
+            }
+        });
+
+        addPRButton.setText("Add new");
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addGap(68, 68, 68)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 930, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 930, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(jPanel5Layout.createSequentialGroup()
-                                    .addComponent(jLabel8)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel9)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(requisitionSearchInput, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(69, 69, 69))
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jLabel10)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 542, Short.MAX_VALUE)
-                        .addComponent(jLabel14)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(historicalRequisitionSearchInput, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(70, 70, 70))))
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 930, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 930, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addComponent(jLabel8)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel9)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(requisitionSearchInput, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel5Layout.createSequentialGroup()
+                            .addComponent(jLabel14)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(historicalRequisitionSearchInput, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(addPRButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel10))
+                .addGap(94, 94, 94))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -399,7 +482,9 @@ public class AdminDashboard extends javax.swing.JFrame {
                     .addComponent(requisitionSearchInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(addPRButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
                     .addComponent(jLabel14)
@@ -426,6 +511,17 @@ public class AdminDashboard extends javax.swing.JFrame {
 
         jLabel12.setText("Search:");
 
+        orderSearchInput.setForeground(new java.awt.Color(153, 153, 153));
+        orderSearchInput.setText("Search by ID, Name...");
+        orderSearchInput.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                orderSearchInputFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                orderSearchInputFocusLost(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
@@ -443,7 +539,7 @@ public class AdminDashboard extends javax.swing.JFrame {
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addContainerGap(38, Short.MAX_VALUE)
+                .addContainerGap(60, Short.MAX_VALUE)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
                     .addComponent(orderSearchInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -454,15 +550,47 @@ public class AdminDashboard extends javax.swing.JFrame {
 
         reportPanel.addTab("Purchase Orders", jPanel6);
 
+        javax.swing.GroupLayout chartPanelLayout = new javax.swing.GroupLayout(chartPanel);
+        chartPanel.setLayout(chartPanelLayout);
+        chartPanelLayout.setHorizontalGroup(
+            chartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 935, Short.MAX_VALUE)
+        );
+        chartPanelLayout.setVerticalGroup(
+            chartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 515, Short.MAX_VALUE)
+        );
+
+        exportButton.setText("Export");
+
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1074, Short.MAX_VALUE)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addGap(69, 69, 69)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+                        .addComponent(chartComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(monthComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(exportButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(chartPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(70, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 706, Short.MAX_VALUE)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addGap(65, 65, 65)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(monthComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(chartComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(chartPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(exportButton)
+                .addContainerGap(66, Short.MAX_VALUE))
         );
 
         reportPanel.addTab("Report", jPanel7);
@@ -486,6 +614,126 @@ public class AdminDashboard extends javax.swing.JFrame {
     private void addItemButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addItemButtonActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_addItemButtonActionPerformed
+
+    private void userSearchInputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_userSearchInputFocusGained
+        if (userSearchInput.getText().equals("Search by ID, Name..."))
+        {
+            userSearchInput.setText("");
+            userSearchInput.setForeground(new Color(0,0,0));
+        }
+    }//GEN-LAST:event_userSearchInputFocusGained
+
+    private void userSearchInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_userSearchInputFocusLost
+        if (userSearchInput.getText().equals(""))
+        {
+            userSearchInput.setText("Search by ID, Name...");
+            userSearchInput.setForeground(new Color(153, 153, 153));
+        }
+    }//GEN-LAST:event_userSearchInputFocusLost
+
+    private void itemSaleSearchInputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_itemSaleSearchInputFocusGained
+        if (itemSaleSearchInput.getText().equals("Search by ID, Name..."))
+        {
+            itemSaleSearchInput.setText("");
+            itemSaleSearchInput.setForeground(new Color(0,0,0));
+        }
+    }//GEN-LAST:event_itemSaleSearchInputFocusGained
+
+    private void itemSaleSearchInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_itemSaleSearchInputFocusLost
+        if (itemSaleSearchInput.getText().equals(""))
+        {
+            itemSaleSearchInput.setText("Search by ID, Name...");
+            itemSaleSearchInput.setForeground(new Color(153, 153, 153));
+        }
+    }//GEN-LAST:event_itemSaleSearchInputFocusLost
+
+    private void itemNotSaleSearchInputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_itemNotSaleSearchInputFocusGained
+        if (itemNotSaleSearchInput.getText().equals("Search by ID, Name..."))
+        {
+            itemNotSaleSearchInput.setText("");
+            itemNotSaleSearchInput.setForeground(new Color(0,0,0));
+        }
+    }//GEN-LAST:event_itemNotSaleSearchInputFocusGained
+
+    private void itemNotSaleSearchInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_itemNotSaleSearchInputFocusLost
+        if (itemNotSaleSearchInput.getText().equals(""))
+        {
+            itemNotSaleSearchInput.setText("Search by ID, Name...");
+            itemNotSaleSearchInput.setForeground(new Color(153, 153, 153));
+        }
+    }//GEN-LAST:event_itemNotSaleSearchInputFocusLost
+
+    private void supplierSearchInputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_supplierSearchInputFocusGained
+        if (supplierSearchInput.getText().equals("Search by ID, Name..."))
+        {
+            supplierSearchInput.setText("");
+            supplierSearchInput.setForeground(new Color(0,0,0));
+        }
+    }//GEN-LAST:event_supplierSearchInputFocusGained
+
+    private void supplierSearchInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_supplierSearchInputFocusLost
+        if (supplierSearchInput.getText().equals(""))
+        {
+            supplierSearchInput.setText("Search by ID, Name...");
+            supplierSearchInput.setForeground(new Color(153, 153, 153));
+        }
+    }//GEN-LAST:event_supplierSearchInputFocusLost
+
+    private void requisitionSearchInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_requisitionSearchInputActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_requisitionSearchInputActionPerformed
+
+    private void requisitionSearchInputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_requisitionSearchInputFocusGained
+        if (requisitionSearchInput.getText().equals("Search by ID, Name..."))
+        {
+            requisitionSearchInput.setText("");
+            requisitionSearchInput.setForeground(new Color(0,0,0));
+        }
+    }//GEN-LAST:event_requisitionSearchInputFocusGained
+
+    private void requisitionSearchInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_requisitionSearchInputFocusLost
+        if (requisitionSearchInput.getText().equals(""))
+        {
+            requisitionSearchInput.setText("Search by ID, Name...");
+            requisitionSearchInput.setForeground(new Color(153, 153, 153));
+        }
+    }//GEN-LAST:event_requisitionSearchInputFocusLost
+
+    private void historicalRequisitionSearchInputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_historicalRequisitionSearchInputFocusGained
+        if (historicalRequisitionSearchInput.getText().equals("Search by ID, Name..."))
+        {
+            historicalRequisitionSearchInput.setText("");
+            historicalRequisitionSearchInput.setForeground(new Color(0,0,0));
+        }
+    }//GEN-LAST:event_historicalRequisitionSearchInputFocusGained
+
+    private void historicalRequisitionSearchInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_historicalRequisitionSearchInputFocusLost
+        if (historicalRequisitionSearchInput.getText().equals(""))
+        {
+            historicalRequisitionSearchInput.setText("Search by ID, Name...");
+            historicalRequisitionSearchInput.setForeground(new Color(153, 153, 153));
+        }
+    }//GEN-LAST:event_historicalRequisitionSearchInputFocusLost
+
+    private void orderSearchInputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_orderSearchInputFocusGained
+        if (orderSearchInput.getText().equals("Search by ID, Name..."))
+        {
+            orderSearchInput.setText("");
+            orderSearchInput.setForeground(new Color(0,0,0));
+        }
+    }//GEN-LAST:event_orderSearchInputFocusGained
+
+    private void orderSearchInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_orderSearchInputFocusLost
+        if (orderSearchInput.getText().equals(""))
+        {
+            orderSearchInput.setText("Search by ID, Name...");
+            orderSearchInput.setForeground(new Color(153, 153, 153));
+        }
+    }//GEN-LAST:event_orderSearchInputFocusLost
+
+    private void userSearchInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userSearchInputActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_userSearchInputActionPerformed
 
     /**
      * @param args the command line arguments
@@ -580,14 +828,58 @@ public class AdminDashboard extends javax.swing.JFrame {
         selectedRole.setSelectedIndex(0);
     }
     
-    public JTextField getSupplierSearch() {
+    public JTextField getUserSearchInput() {
+        return userSearchInput;
+    }
+    
+    public JTextField getItemSaleSearchInput() {
+        return itemSaleSearchInput;
+    }
+    
+    public JTextField getItemNotSaleSearchInput() {
+        return itemNotSaleSearchInput;
+    }
+    
+    public JTextField getsupplierSearchInput() {
         return supplierSearchInput;
+    }
+    
+    public JPanel getChartPanel() {
+        return chartPanel;
+    }
+    
+    public JComboBox getMonthComboBox() {
+        return monthComboBox;
+    }
+    
+    public JComboBox getChartComboBox() {
+        return chartComboBox;
+    }
+    
+    public JButton getExportButton() {
+        return exportButton;
+    }
+    
+    public JTextField getRequisitionSearchInput() {
+        return requisitionSearchInput;
+    }
+    
+    public JTextField getHistoricalRequisitionSearchInput() {
+        return historicalRequisitionSearchInput;
+    }
+    
+    public JTextField getOrderSearchInput() {
+        return orderSearchInput;
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addItemButton;
+    private javax.swing.JButton addPRButton;
     private javax.swing.JButton addSupplierButton;
+    private javax.swing.JComboBox<String> chartComboBox;
+    private javax.swing.JPanel chartPanel;
     private javax.swing.JButton createUserButton;
+    private javax.swing.JButton exportButton;
     private javax.swing.JTextField historicalRequisitionSearchInput;
     private javax.swing.JTable historicalRequisitionTable;
     private javax.swing.JTable itemNotOnSaleTable;
@@ -622,6 +914,7 @@ public class AdminDashboard extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JComboBox<String> monthComboBox;
     private javax.swing.JTextField orderSearchInput;
     private javax.swing.JTable orderTable;
     private javax.swing.JPasswordField passwordInput;

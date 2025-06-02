@@ -4,6 +4,7 @@
  */
 package repository;
 
+import java.util.List;
 import models.Item;
 
 /**
@@ -14,6 +15,17 @@ public class ItemRepository extends BaseRepository<Item> {
 
     public ItemRepository() {
         super("items", "%s,%s,%d,%.2f,%.2f,%s,%s");
+    }
+
+    public boolean checkNameExists(String itemName) {
+        List<Item> itemList = getAll();
+
+        for (Item item : itemList) {
+            if (item.getName().equalsIgnoreCase(itemName)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

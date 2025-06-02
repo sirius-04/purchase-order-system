@@ -7,6 +7,8 @@ package controllers;
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.time.Month;
 import java.time.Year;
 import java.time.YearMonth;
@@ -18,6 +20,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import models.InventoryUpdate;
 import models.Payment;
 import models.users.FinanceManager;
@@ -85,6 +88,62 @@ public class FinanceManagerController extends BaseController {
         verifyUpdateListener();
         processPaymentListener();
         exportListeners();
+        
+        // Item Table - PO
+        JTextField poSearch = dashboard.getOrderSearchInput();
+        poSearch.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    String inputText = poSearch.getText();
+                    purchaseOrderTableModel.filterByKeyword(inputText);
+                    
+                    poSearch.setText((""));
+                }
+            }
+        });
+        
+        // Item Table - Inventory
+        JTextField inventorySearch = dashboard.getInventorySearchInput();
+        inventorySearch.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    String inputText = inventorySearch.getText();
+                    inventoryTableModel.filterByKeyword(inputText);
+                    
+                    inventorySearch.setText((""));
+                }
+            }
+        });
+        
+        // Item Table - pending PR
+        JTextField pendingPRSearch = dashboard.getRequisitionSearchInput();
+        pendingPRSearch.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    String inputText = pendingPRSearch.getText();
+                    pendingRequisitionTableModel.filterByKeyword(inputText);
+                    
+                    pendingPRSearch.setText((""));
+                }
+            }
+        });
+        
+        // Item Table - historical PR
+        JTextField historicalPRSearch = dashboard.getHistoricalRequisitionSearchInput();
+        historicalPRSearch.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    String inputText = historicalPRSearch.getText();
+                    historicalRequisitionTableModel.filterByKeyword(inputText);
+                    
+                    historicalPRSearch.setText((""));
+                }
+            }
+        });
     }
 
     private void loadTables() {

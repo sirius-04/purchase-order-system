@@ -4,10 +4,12 @@
  */
 package views;
 
+import java.awt.Color;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 
 /**
  *
@@ -80,6 +82,17 @@ public class FinanceManagerDashboard extends javax.swing.JFrame {
 
         jLabel7.setText("Search:");
 
+        orderSearchInput.setForeground(new java.awt.Color(153, 153, 153));
+        orderSearchInput.setText("Search by ID, Name...");
+        orderSearchInput.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                orderSearchInputFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                orderSearchInputFocusLost(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -122,6 +135,17 @@ public class FinanceManagerDashboard extends javax.swing.JFrame {
         jScrollPane5.setViewportView(inventoryTable);
 
         jLabel8.setText("Search:");
+
+        inventorySearchInput.setForeground(new java.awt.Color(153, 153, 153));
+        inventorySearchInput.setText("Search by ID, Name...");
+        inventorySearchInput.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                inventorySearchInputFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                inventorySearchInputFocusLost(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -167,6 +191,17 @@ public class FinanceManagerDashboard extends javax.swing.JFrame {
         jScrollPane3.setViewportView(supplierPaymentTable);
 
         jLabel1.setText("Search:");
+
+        searchSupplierTable.setForeground(new java.awt.Color(153, 153, 153));
+        searchSupplierTable.setText("Search by ID, Name...");
+        searchSupplierTable.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                searchSupplierTableFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                searchSupplierTableFocusLost(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -254,6 +289,17 @@ public class FinanceManagerDashboard extends javax.swing.JFrame {
 
         jLabel5.setText("Search:");
 
+        requisitionSearchInput.setForeground(new java.awt.Color(153, 153, 153));
+        requisitionSearchInput.setText("Search by ID, Name...");
+        requisitionSearchInput.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                requisitionSearchInputFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                requisitionSearchInputFocusLost(evt);
+            }
+        });
+
         pendingRequisitionTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null, null},
@@ -270,6 +316,17 @@ public class FinanceManagerDashboard extends javax.swing.JFrame {
         jLabel6.setText("Historical Purchase Requisitions");
 
         jLabel9.setText("Search:");
+
+        historicalRequisitionSearchInput.setForeground(new java.awt.Color(153, 153, 153));
+        historicalRequisitionSearchInput.setText("Search by ID, Name...");
+        historicalRequisitionSearchInput.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                historicalRequisitionSearchInputFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                historicalRequisitionSearchInputFocusLost(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -337,6 +394,86 @@ public class FinanceManagerDashboard extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void orderSearchInputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_orderSearchInputFocusGained
+        if (orderSearchInput.getText().equals("Search by ID, Name..."))
+        {
+            orderSearchInput.setText("");
+            orderSearchInput.setForeground(new Color(0,0,0));
+        }
+    }//GEN-LAST:event_orderSearchInputFocusGained
+
+    private void orderSearchInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_orderSearchInputFocusLost
+        if (orderSearchInput.getText().equals(""))
+        {
+            orderSearchInput.setText("Search by ID, Name...");
+            orderSearchInput.setForeground(new Color(153, 153, 153));
+        }
+    }//GEN-LAST:event_orderSearchInputFocusLost
+
+    private void inventorySearchInputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_inventorySearchInputFocusGained
+        if (inventorySearchInput.getText().equals("Search by ID, Name..."))
+        {
+            inventorySearchInput.setText("");
+            inventorySearchInput.setForeground(new Color(0,0,0));
+        }
+    }//GEN-LAST:event_inventorySearchInputFocusGained
+
+    private void inventorySearchInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_inventorySearchInputFocusLost
+        if (inventorySearchInput.getText().equals(""))
+        {
+            inventorySearchInput.setText("Search by ID, Name...");
+            inventorySearchInput.setForeground(new Color(153, 153, 153));
+        }
+    }//GEN-LAST:event_inventorySearchInputFocusLost
+
+    private void searchSupplierTableFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchSupplierTableFocusGained
+        if (searchSupplierTable.getText().equals("Search by ID, Name..."))
+        {
+            searchSupplierTable.setText("");
+            searchSupplierTable.setForeground(new Color(0,0,0));
+        }
+    }//GEN-LAST:event_searchSupplierTableFocusGained
+
+    private void searchSupplierTableFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchSupplierTableFocusLost
+        if (searchSupplierTable.getText().equals(""))
+        {
+            searchSupplierTable.setText("Search by ID, Name...");
+            searchSupplierTable.setForeground(new Color(153, 153, 153));
+        }
+    }//GEN-LAST:event_searchSupplierTableFocusLost
+
+    private void requisitionSearchInputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_requisitionSearchInputFocusGained
+        if (requisitionSearchInput.getText().equals("Search by ID, Name..."))
+        {
+            requisitionSearchInput.setText("");
+            requisitionSearchInput.setForeground(new Color(0,0,0));
+        }
+    }//GEN-LAST:event_requisitionSearchInputFocusGained
+
+    private void requisitionSearchInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_requisitionSearchInputFocusLost
+        if (requisitionSearchInput.getText().equals(""))
+        {
+            requisitionSearchInput.setText("Search by ID, Name...");
+            requisitionSearchInput.setForeground(new Color(153, 153, 153));
+        }
+    }//GEN-LAST:event_requisitionSearchInputFocusLost
+
+    private void historicalRequisitionSearchInputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_historicalRequisitionSearchInputFocusGained
+        if (historicalRequisitionSearchInput.getText().equals("Search by ID, Name..."))
+        {
+            historicalRequisitionSearchInput.setText("");
+            historicalRequisitionSearchInput.setForeground(new Color(0,0,0));
+        }
+    }//GEN-LAST:event_historicalRequisitionSearchInputFocusGained
+
+    private void historicalRequisitionSearchInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_historicalRequisitionSearchInputFocusLost
+        if (historicalRequisitionSearchInput.getText().equals(""))
+        {
+            historicalRequisitionSearchInput.setText("Search by ID, Name...");
+            historicalRequisitionSearchInput.setForeground(new Color(153, 153, 153));
+        }
+    }//GEN-LAST:event_historicalRequisitionSearchInputFocusLost
+
     /**
      * @param args the command line arguments
      */
@@ -402,6 +539,26 @@ public class FinanceManagerDashboard extends javax.swing.JFrame {
     
     public JPanel getChartPanel() {
         return chartPanel;
+    }
+    
+    public JTextField getOrderSearchInput() {
+        return orderSearchInput;
+    }
+    
+    public JTextField getInventorySearchInput() {
+        return inventorySearchInput;
+    }
+    
+    public JTextField getSearchSupplierTable() {
+        return searchSupplierTable;
+    }
+    
+    public JTextField getRequisitionSearchInput() {
+        return requisitionSearchInput;
+    }
+    
+    public JTextField getHistoricalRequisitionSearchInput() {
+        return historicalRequisitionSearchInput;
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

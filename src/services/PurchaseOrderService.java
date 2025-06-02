@@ -31,7 +31,6 @@ import models.Item;
 import models.Supplier;
 import models.InventoryUpdate;
 import models.PurchaseRequisition;
-import models.users.PurchaseManager;
 import models.users.User;
 import repository.ItemRepository;
 import repository.ItemSupplierRepository;
@@ -187,7 +186,7 @@ public class PurchaseOrderService {
         }
     }
     
-     public void setupGeneratePOListener(JTable requisitionTable, PurchaseManager currentManager, Runnable onGenerateCallback) {
+     public void setupGeneratePOListener(JTable requisitionTable, User userEditor, Runnable onGenerateCallback) {
     requisitionTable.addMouseListener(new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent e) {
@@ -198,7 +197,7 @@ public class PurchaseOrderService {
                     PurchaseRequisition pr = requisitionRepo.find(requisitionId);
 
                     if (pr != null) {
-                        showPODialog(requisitionTable, requisitionId, currentManager, onGenerateCallback);
+                        showPODialog(requisitionTable, requisitionId, userEditor, onGenerateCallback);
                     }
                 }
             }
@@ -206,7 +205,7 @@ public class PurchaseOrderService {
     });
 }
     
-    public void showPODialog(Component parent, String requisitionId,PurchaseManager currentManager,Runnable onGenerateCallback) {
+    public void showPODialog(Component parent, String requisitionId, User userEditor,Runnable onGenerateCallback) {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.add(new JLabel("Generating Purchase Order for Requisition ID: " + requisitionId));
@@ -220,7 +219,7 @@ public class PurchaseOrderService {
         if (result == JOptionPane.OK_OPTION) {
             PurchaseRequisition pr = requisitionRepo.find(requisitionId);
             if (pr != null) {
-                showDetailedPRPanel(parent, pr, currentManager, onGenerateCallback);
+                showDetailedPRPanel(parent, pr, userEditor, onGenerateCallback);
             } else {
                 JOptionPane.showMessageDialog(parent, "Requisition not found.", "Error", JOptionPane.ERROR_MESSAGE);
             }
@@ -228,7 +227,7 @@ public class PurchaseOrderService {
     }
 
 
-     private void showDetailedPRPanel(Component parent, PurchaseRequisition pr, PurchaseManager currentManager, Runnable onGenerateCallback) {
+     private void showDetailedPRPanel(Component parent, PurchaseRequisition pr, User userEditor, Runnable onGenerateCallback) {
         JPanel detailPanel = new JPanel();
         detailPanel.setLayout(new BoxLayout(detailPanel, BoxLayout.Y_AXIS));
         detailPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -261,7 +260,7 @@ public class PurchaseOrderService {
         );
 
         if (result == JOptionPane.YES_OPTION) {
-            generatePO(pr, currentManager); 
+            generatePO(pr, userEditor); 
             pr.setStatus(PurchaseRequisition.Status.approved);
             requisitionRepo.update(pr);
             JOptionPane.showMessageDialog(parent, "Purchase Order generated and requisition approved.");
@@ -274,9 +273,9 @@ public class PurchaseOrderService {
         }
     }
 
-    public void generatePO(PurchaseRequisition pr, PurchaseManager manager) {
+    public void generatePO(PurchaseRequisition pr, User userEditor) {
         String poId = idGenerator.generateNewId(PurchaseOrder.class);
-        String purchaseManagerId = manager.getUserId();       
+        String userId = userEditor.getUserId();       
         String itemId = pr.getItemId();
         Item item = itemRepository.find(itemId);
         double price = item.getPrice() * pr.getQuantity(); 
@@ -288,7 +287,7 @@ public class PurchaseOrderService {
             poId,
             pr.getItemId(),
             pr.getRequisitionId(),
-            purchaseManagerId,
+            userId,
             pr.getQuantity(),
             price,
             today,
@@ -302,7 +301,7 @@ public class PurchaseOrderService {
     }
     
     
-   public void setupPOTableClickListener(JTable poTable, PurchaseManager manager, Runnable onUpdate) {
+   public void setupPOTableClickListener(JTable poTable, User userEditor, Runnable onUpdate) {
         poTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -313,12 +312,12 @@ public class PurchaseOrderService {
                     PurchaseOrderTableModel model = (PurchaseOrderTableModel) poTable.getModel();
                     PurchaseOrder order = model.getPurchaseOrderAt(row);
 
-                    showPOActionPanel(poTable, order, manager, onUpdate);
+                    showPOActionPanel(poTable, order, userEditor, onUpdate);
                 }
             }
         });
     }
-    private void showPOActionPanel(Component parent, PurchaseOrder po, PurchaseManager currentManager, Runnable onUpdateCallback) {
+    private void showPOActionPanel(Component parent, PurchaseOrder po, User userEditor, Runnable onUpdateCallback) {
         SwingUtilities.invokeLater(() -> {
             JPanel buttonPanel = new JPanel();
             buttonPanel.setBorder(BorderFactory.createEmptyBorder(20, 30, 20, 30)); 
@@ -343,18 +342,32 @@ public class PurchaseOrderService {
             dialog.setLocationRelativeTo(parent);
 
             editButton.addActionListener(e -> {
-                dialog.dispose();
-                showEditPODialog(po, currentManager, onUpdateCallback);
+                if (po.getStatus() == PurchaseOrder.Status.pending) {
+                    dialog.dispose();
+                    showEditPODialog(po, userEditor, onUpdateCallback);
+                } else {
+                    JOptionPane.showMessageDialog(parent, 
+                        "This Purchase Order is currently '" + po.getStatus() + "' and cannot be edited.", 
+                        "Edit Not Allowed", 
+                        JOptionPane.INFORMATION_MESSAGE);
+                }
             });
 
             deleteButton.addActionListener(e -> {
-                int confirm = JOptionPane.showConfirmDialog(parent, "Mark this Purchase Order as deleted?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
+                dialog.dispose();
+
+                int confirm = JOptionPane.showConfirmDialog(
+                    parent,
+                    "Mark this Purchase Order as deleted?",
+                    "Confirm Delete",
+                    JOptionPane.YES_NO_OPTION
+                );
+
                 if (confirm == JOptionPane.YES_OPTION) {
                     try {
                         po.setStatus(PurchaseOrder.Status.deleted); 
                         purchaseOrderRepo.update(po); 
                         JOptionPane.showMessageDialog(parent, "Marked as deleted successfully!");
-                        dialog.dispose();
                         if (onUpdateCallback != null) onUpdateCallback.run();
                     } catch (Exception ex) {
                         ex.printStackTrace();
@@ -369,7 +382,7 @@ public class PurchaseOrderService {
         });
     }
     
-    private void showEditPODialog(PurchaseOrder po, PurchaseManager currentManager, Runnable onUpdateCallback) {
+    private void showEditPODialog(PurchaseOrder po, User userEditor, Runnable onUpdateCallback) {
         JPanel panel = new JPanel(new GridLayout(0, 2, 10, 10)); 
         panel.setBorder(BorderFactory.createEmptyBorder(20, 30, 20, 30)); 
 
@@ -418,7 +431,7 @@ public class PurchaseOrderService {
                     po.getPurchaseOrderId(),
                     selectedItem.getItemId(),
                     po.getPurchaseRequisitionId(),
-                    currentManager.getUserId(),
+                    userEditor.getUserId(),
                     qty,
                     selectedItem.getPrice() * qty,
                     LocalDate.now().toString(),

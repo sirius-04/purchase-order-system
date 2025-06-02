@@ -29,6 +29,8 @@ public class ItemSaleTableModel extends AbstractTableModel implements Searchable
     private final ItemRepository itemRepo = new ItemRepository();
     private final SalesRepository salesRepo = new SalesRepository();
 
+    private String currentDate = DateTimeService.getCurrentDate();
+
     public ItemSaleTableModel() {
         loadData();
     }
@@ -40,13 +42,11 @@ public class ItemSaleTableModel extends AbstractTableModel implements Searchable
         quantityMap.clear();
         totalAmountMap.clear();
 
-        String today = DateTimeService.getCurrentDate();
-
-        List<Sales> todaySales = salesRepo.getAll().stream()
-                .filter(sale -> today.equals(sale.getDate()))
+        List<Sales> filteredSales = salesRepo.getAll().stream()
+                .filter(sale -> currentDate.equals(sale.getDate()))
                 .collect(Collectors.toList());
 
-        for (Sales sale : todaySales) {
+        for (Sales sale : filteredSales) {
             String itemId = sale.getItemId();
             quantityMap.put(itemId, quantityMap.getOrDefault(itemId, 0) + sale.getQuantity());
             totalAmountMap.put(itemId, totalAmountMap.getOrDefault(itemId, 0.0) + sale.getTotalAmount());
@@ -66,6 +66,11 @@ public class ItemSaleTableModel extends AbstractTableModel implements Searchable
         fireTableDataChanged();
     }
 
+    public void setDate(String date) {
+        this.currentDate = date;
+        refresh();
+    }
+
     @Override
     public int getRowCount() {
         return dataRows.size();
@@ -83,27 +88,38 @@ public class ItemSaleTableModel extends AbstractTableModel implements Searchable
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        if (rowIndex < 0 || rowIndex >= dataRows.size()) return null;
+        if (rowIndex < 0 || rowIndex >= dataRows.size()) {
+            return null;
+        }
 
         Item item = dataRows.get(rowIndex);
         String itemId = item.getItemId();
 
         return switch (columnIndex) {
-            case 0 -> itemId;
-            case 1 -> item.getName();
-            case 2 -> quantityMap.getOrDefault(itemId, 0);
-            case 3 -> item.getSellPrice();
-            case 4 -> totalAmountMap.getOrDefault(itemId, 0.0);
-            default -> null;
+            case 0 ->
+                itemId;
+            case 1 ->
+                item.getName();
+            case 2 ->
+                quantityMap.getOrDefault(itemId, 0);
+            case 3 ->
+                item.getSellPrice();
+            case 4 ->
+                totalAmountMap.getOrDefault(itemId, 0.0);
+            default ->
+                null;
         };
     }
 
     @Override
     public Class<?> getColumnClass(int columnIndex) {
         return switch (columnIndex) {
-            case 2 -> Integer.class;
-            case 3, 4 -> Double.class;
-            default -> String.class;
+            case 2 ->
+                Integer.class;
+            case 3, 4 ->
+                Double.class;
+            default ->
+                String.class;
         };
     }
 
@@ -125,7 +141,7 @@ public class ItemSaleTableModel extends AbstractTableModel implements Searchable
             dataRows.clear();
             dataRows.addAll(allItems.stream()
                     .filter(item -> item.getItemId().toLowerCase().contains(lowerKeyword)
-                            || item.getName().toLowerCase().contains(lowerKeyword))
+                    || item.getName().toLowerCase().contains(lowerKeyword))
                     .collect(Collectors.toList()));
         }
 
