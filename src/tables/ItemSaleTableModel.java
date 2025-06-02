@@ -43,7 +43,7 @@ public class ItemSaleTableModel extends AbstractTableModel implements Searchable
         totalAmountMap.clear();
 
         List<Sales> filteredSales = salesRepo.getAll().stream()
-                .filter(sale -> currentDate.equals(sale.getDate()))
+                .filter(sale -> currentDate.equals(sale.getDate()) && sale.getStatus() == Sales.Status.added)
                 .collect(Collectors.toList());
 
         for (Sales sale : filteredSales) {
