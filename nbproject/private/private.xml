@@ -3,26 +3,28 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/dede/Documents/APU/Degree%20Y1%20S1/Java%20(T)/JavaAssignment/purchase-order-system/src/controllers/AdminController.java</file>
-            <file>file:/Users/dede/Documents/APU/Degree%20Y1%20S1/Java%20(T)/JavaAssignment/purchase-order-system/src/views/AdminDashboard.java</file>
-            <file>file:/Users/dede/Documents/APU/Degree%20Y1%20S1/Java%20(T)/JavaAssignment/purchase-order-system/src/controllers/InventoryManagerController.java</file>
-            <file>file:/Users/dede/Documents/APU/Degree%20Y1%20S1/Java%20(T)/JavaAssignment/purchase-order-system/src/tables/UserTableModel.java</file>
-            <file>file:/Users/dede/Documents/APU/Degree%20Y1%20S1/Java%20(T)/JavaAssignment/purchase-order-system/src/tables/ItemTableModel.java</file>
-            <file>file:/C:/Users/Acer/Documents/GitHub/purchase-order-system/src/services/SalesService.java</file>
-            <file>file:/C:/Users/Acer/Documents/GitHub/purchase-order-system/src/services/PurchaseRequisitionService.java</file>
-            <file>file:/C:/Users/Acer/Documents/GitHub/purchase-order-system/src/services/PurchaseOrderService.java</file>
-            <file>file:/C:/Users/Acer/Documents/GitHub/purchase-order-system/src/models/Sales.java</file>
-            <file>file:/C:/Users/Acer/Documents/GitHub/purchase-order-system/src/data/purchase_orders.txt</file>
-            <file>file:/C:/Users/Acer/Documents/GitHub/purchase-order-system/src/models/PurchaseOrder.java</file>
-            <file>file:/C:/Users/Acer/Documents/GitHub/purchase-order-system/src/data/purchase_requisitions.txt</file>
-            <file>file:/C:/Users/Acer/Documents/GitHub/purchase-order-system/src/data/users.txt</file>
-            <file>file:/C:/Users/Acer/Documents/GitHub/purchase-order-system/src/views/SalesManagerDashboard.java</file>
-            <file>file:/C:/Users/Acer/Documents/GitHub/purchase-order-system/src/tables/PurchaseOrderTableModel.java</file>
-            <file>file:/C:/Users/Acer/Documents/GitHub/purchase-order-system/src/controllers/PurchaseManagerController.java</file>
-            <file>file:/C:/Users/Acer/Documents/GitHub/purchase-order-system/src/repository/UserRepository.java</file>
-            <file>file:/C:/Users/Acer/Documents/GitHub/purchase-order-system/src/data/items.txt</file>
-            <file>file:/C:/Users/Acer/Documents/GitHub/purchase-order-system/src/models/PurchaseRequisition.java</file>
-            <file>file:/C:/Users/Acer/Documents/GitHub/purchase-order-system/src/controllers/SalesManagerController.java</file>
+            <file>file:/Users/ngoh/POS/purchase-order-system/src/controllers/AdminController.java</file>
+            <file>file:/Users/ngoh/POS/purchase-order-system/src/repository/PurchaseOrdersRepository.java</file>
+            <file>file:/Users/ngoh/POS/purchase-order-system/src/services/PDFExportService.java</file>
+            <file>file:/Users/ngoh/POS/purchase-order-system/src/models/InventoryUpdate.java</file>
+            <file>file:/Users/ngoh/POS/purchase-order-system/src/services/PurchaseOrderService.java</file>
+            <file>file:/Users/ngoh/POS/purchase-order-system/src/controllers/BaseController.java</file>
+            <file>file:/Users/ngoh/POS/purchase-order-system/src/views/Main.java</file>
+            <file>file:/Users/ngoh/POS/purchase-order-system/src/controllers/PurchaseManagerController.java</file>
+            <file>file:/Users/ngoh/POS/purchase-order-system/src/repository/InventoryUpdateRepository.java</file>
+            <file>file:/Users/ngoh/POS/purchase-order-system/src/data/items.txt</file>
+            <file>file:/Users/ngoh/POS/purchase-order-system/src/models/PurchaseOrder.java</file>
+            <file>file:/Users/ngoh/POS/purchase-order-system/src/views/AdminDashboard.java</file>
+            <file>file:/Users/ngoh/POS/purchase-order-system/src/services/InventoryUpdateService.java</file>
+            <file>file:/Users/ngoh/POS/purchase-order-system/src/controllers/SalesManagerController.java</file>
+            <file>file:/Users/ngoh/POS/purchase-order-system/src/utils/FileManager.java</file>
+            <file>file:/Users/ngoh/POS/purchase-order-system/src/services/ReportService.java</file>
+            <file>file:/Users/ngoh/POS/purchase-order-system/src/tables/UserTableModel.java</file>
+            <file>file:/Users/ngoh/POS/purchase-order-system/src/controllers/FinanceManagerController.java</file>
+            <file>file:/Users/ngoh/POS/purchase-order-system/src/data/users.txt</file>
+            <file>file:/Users/ngoh/POS/purchase-order-system/src/tables/PurchaseOrderTableModel.java</file>
+            <file>file:/Users/ngoh/POS/purchase-order-system/src/controllers/InventoryManagerController.java</file>
+            <file>file:/Users/ngoh/POS/purchase-order-system/src/services/PurchaseRequisitionService.java</file>
         </group>
     </open-files>
 </project-private>

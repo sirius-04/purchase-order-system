@@ -4,6 +4,7 @@
  */
 package views;
 
+import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
@@ -62,6 +63,7 @@ public class PurchaseManagerDashboard extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         itemNotSaleSearchInput = new javax.swing.JTextField();
+        logOutPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -85,10 +87,10 @@ public class PurchaseManagerDashboard extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(54, 54, 54)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 939, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(793, 793, 793)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(orderSearchInput, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -316,6 +318,19 @@ public class PurchaseManagerDashboard extends javax.swing.JFrame {
 
         itemPanel.addTab("Items", jPanel4);
 
+        javax.swing.GroupLayout logOutPanelLayout = new javax.swing.GroupLayout(logOutPanel);
+        logOutPanel.setLayout(logOutPanelLayout);
+        logOutPanelLayout.setHorizontalGroup(
+            logOutPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1051, Short.MAX_VALUE)
+        );
+        logOutPanelLayout.setVerticalGroup(
+            logOutPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 689, Short.MAX_VALUE)
+        );
+
+        itemPanel.addTab("Log Out", logOutPanel);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -393,6 +408,7 @@ public class PurchaseManagerDashboard extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JPanel logOutPanel;
     private javax.swing.JTextField orderSearchInput;
     private javax.swing.JTable orderTable;
     private javax.swing.JTable pendingRequisitionTable;
@@ -451,5 +467,9 @@ public class PurchaseManagerDashboard extends javax.swing.JFrame {
 
     public JTable getSupplierTable() {
         return supplierTable;
+    }
+    
+    public JPanel getLogOut() {
+        return logOutPanel;
     }
 }

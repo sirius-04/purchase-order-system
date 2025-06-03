@@ -4,6 +4,7 @@
  */
 package services;
 
+import controllers.MainController;
 import java.awt.Component;
 import javax.swing.JOptionPane;
 import models.users.Admin;
@@ -137,6 +138,35 @@ public class UserService {
     }
     
     public void deleteUser(Component parent, User user) {
-        userRepo.delete(user);
+            userRepo.delete(user);
+        }
+
+    public void userLogOut(Component parent, User user) {
+        int confirm = JOptionPane.showConfirmDialog(
+            parent,
+            "Are you sure you want to log out?",
+            "Logout Confirmation",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE
+        );
+
+        if (confirm == JOptionPane.YES_OPTION) {
+
+            user = null;
+
+            if (parent instanceof javax.swing.JFrame) {
+                ((javax.swing.JFrame) parent).dispose();
+            }
+
+            new MainController().start();
+
+            JOptionPane.showMessageDialog(
+                null,
+                "You have successfully logged out!",
+                "Logout Successful",
+                JOptionPane.INFORMATION_MESSAGE
+            );
+        }
     }
+
 }

@@ -102,10 +102,10 @@ public class ItemService {
 
         String enteredName = nameField.getText().trim();
 
-        if (itemRepo.checkNameExists(enteredName)) {
-            JOptionPane.showMessageDialog(parent, "Item name already exists. Please choose a different name.", "Duplicate Name", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+//        if (itemRepo.checkNameExists(enteredName)) {
+//            JOptionPane.showMessageDialog(parent, "Item name already exists. Please choose a different name.", "Duplicate Name", JOptionPane.ERROR_MESSAGE);
+//            return;
+//        }
 
         int enteredQuantity = (Integer) stockSpinner.getValue();
         double enteredPrice, enteredSellPrice;
@@ -281,10 +281,12 @@ public class ItemService {
             String oldSupplierId = item.getSupplierId();
             String enteredName = nameField.getText().trim();
 
-            if (itemRepo.checkNameExists(enteredName)) {
-                JOptionPane.showMessageDialog(parent, "Item name already exists. Please choose a different name.", "Duplicate Name", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
+//            if (!enteredName.equals(item.getName())) {
+//                if (itemRepo.checkNameExists(enteredName)) {
+//                    JOptionPane.showMessageDialog(parent, "Item name already exists. Please choose a different name.", "Duplicate Name", JOptionPane.ERROR_MESSAGE);
+//                    return;
+//                }
+//            }
 
             item.setName(enteredName);
             item.setPrice(Double.parseDouble(priceField.getText().trim()));

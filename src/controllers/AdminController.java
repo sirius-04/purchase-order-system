@@ -108,6 +108,8 @@ public class AdminController extends BaseController {
         exportListeners();
         editItemListener();
         
+        logOut();
+        
         // User - Search
         JTextField userSearch = dashboard.getUserSearchInput();
         userSearch.addKeyListener(new KeyAdapter() {
@@ -539,6 +541,15 @@ public class AdminController extends BaseController {
                 pdfExportService.exportChartToPDF(currentChart, filename);
             } else {
                 JOptionPane.showMessageDialog(dashboard, "No chart available to export");
+            }
+        });
+    }
+    
+    private void logOut() {
+       dashboard.getLogOut().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                userService.userLogOut(dashboard, currentUser);
             }
         });
     }

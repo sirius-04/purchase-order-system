@@ -31,7 +31,7 @@ public class SalesService {
     private final SalesRepository salesRepo = new SalesRepository();
     private final ItemRepository itemRepo = new ItemRepository();
 
-    public void addSale(Component parent) {
+    public void addSale(Component parent, String date) {
 
         List<Item> itemOnSaleList = itemRepo.getAll().stream()
                 .filter(item -> item.getStatus() == Item.Status.onSale)
@@ -60,15 +60,14 @@ public class SalesService {
 
             String generatedSaleId = idGenerator.generateNewId(Sales.class);
             double totalAmount = selectedItem.getSellPrice() * quantity;
-
-            String currentDate = DateTimeService.getCurrentDate();
+            
             String currentTime = DateTimeService.getCurrentTime();
 
             Sales newSale = new Sales(
                     generatedSaleId,
                     selectedItem.getItemId(),
                     quantity,
-                    currentDate,
+                    date,
                     currentTime,
                     totalAmount,
                     Sales.Status.added

@@ -63,6 +63,7 @@ public class InventoryManagerDashboard extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         exportButton = new javax.swing.JButton();
         stockChartPanel = new javax.swing.JPanel();
+        logOutPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -327,6 +328,19 @@ public class InventoryManagerDashboard extends javax.swing.JFrame {
 
         reportPanel.addTab("Stock Report", jPanel4);
 
+        javax.swing.GroupLayout logOutPanelLayout = new javax.swing.GroupLayout(logOutPanel);
+        logOutPanel.setLayout(logOutPanelLayout);
+        logOutPanelLayout.setHorizontalGroup(
+            logOutPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1068, Short.MAX_VALUE)
+        );
+        logOutPanelLayout.setVerticalGroup(
+            logOutPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 662, Short.MAX_VALUE)
+        );
+
+        reportPanel.addTab("Log Out", logOutPanel);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -479,6 +493,10 @@ public class InventoryManagerDashboard extends javax.swing.JFrame {
         return stockChartPanel;
     }
     
+    public JPanel getLogOut() {
+        return logOutPanel;
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
@@ -501,6 +519,7 @@ public class InventoryManagerDashboard extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JPanel logOutPanel;
     private javax.swing.JTextField orderSearchInput;
     private javax.swing.JTable orderTable;
     private CustomPanel.TabbedPaneCustom reportPanel;

@@ -9,6 +9,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.time.Month;
 import java.time.Year;
 import java.time.YearMonth;
@@ -38,6 +40,7 @@ import org.jfree.chart.JFreeChart;
 import services.InventoryUpdateService;
 import services.PDFExportService;
 import services.PaymentService;
+import services.UserService;
 
 /**
  *
@@ -50,6 +53,7 @@ public class FinanceManagerController extends BaseController {
     private PaymentService paymentService = new PaymentService();
     private InventoryUpdateService inventoryUpdateService = new InventoryUpdateService();
     private PDFExportService pdfExportService = new PDFExportService();
+    private UserService userService = new UserService();
 
     // table models
     PaymentTableModel paymentTableModel = new PaymentTableModel();
@@ -88,6 +92,7 @@ public class FinanceManagerController extends BaseController {
         verifyUpdateListener();
         processPaymentListener();
         exportListeners();
+        logOut();
         
         // Item Table - PO
         JTextField poSearch = dashboard.getOrderSearchInput();
@@ -285,6 +290,15 @@ public class FinanceManagerController extends BaseController {
             );
         } else {
             JOptionPane.showMessageDialog(dashboard, "No daily profit chart available to export");
+            }
+        });
+    }
+    
+     private void logOut() {
+       dashboard.getLogOut().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                userService.userLogOut(dashboard, currentUser);
             }
         });
     }
